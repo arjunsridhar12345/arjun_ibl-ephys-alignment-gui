@@ -114,8 +114,8 @@ class LoadDataLocal:
         #    template_path=self.atlas_path, label_path=self.atlas_path
         # )
         self.brain_atlas = CustomAtlas(
-           atlas_image_file=r'D:\IBL-GUI-Histospace-Test-data\Histology\prep_percNorm_Ex_561_Em_593.nii.gz',#ccf_in_713506.nrrd',
-           atlas_labels_file=r'D:\IBL-GUI-Histospace-Test-data\Histology\labels_in_713506.nrrd',
+           atlas_image_file=Path('/root/capsule/data/test_ibl_713506/713506/image_space_histology/ccf_in_713506.nrrd').as_posix(),#ccf_in_713506.nrrd',
+           atlas_labels_file=Path('/root/capsule/data/test_ibl_713506/713506/image_space_histology/labels_in_713506.nrrd').as_posix(),
            force_um = 25,
         )
 

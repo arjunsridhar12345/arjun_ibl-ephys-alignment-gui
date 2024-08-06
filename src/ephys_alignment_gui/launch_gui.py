@@ -1154,7 +1154,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
     Interaction functions
     """
 
-    def on_input_folder_selected(self):
+    def on_folder_selected(self):
         """
         Triggered in offline mode when folder button is clicked
         """
@@ -1162,7 +1162,11 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         folder_path = Path(QtWidgets.QFileDialog.getExistingDirectory(None, "Select Input Directory"))
 
         if folder_path:
-            self.input_folder_line.setText(str(folder_path))
+            if self.sender().text() == 'Reload Directory':
+                self.reload_folder_line.setText(str(folder_path))
+            else:
+                self.input_folder_line.setText(str(folder_path))
+
             self.prev_alignments, shank_options = self.loaddata.get_info(folder_path)
             self.populate_lists(shank_options, self.shank_list, self.shank_combobox)
             self.on_shank_selected(0)
@@ -1170,7 +1174,6 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             return True
         else:
             return False
-    
 
     def on_histology_folder_selected(self):
         """

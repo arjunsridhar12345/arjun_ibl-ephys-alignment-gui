@@ -497,7 +497,12 @@ class Setup():
             self.input_folder_line = QtWidgets.QLineEdit()
             self.input_folder_button = QtWidgets.QToolButton()
             self.input_folder_button.setText('Input Directory')
-            self.input_folder_button.clicked.connect(self.on_input_folder_selected)
+            self.input_folder_button.clicked.connect(self.on_folder_selected)
+
+            self.reload_folder_line = QtWidgets.QLineEdit()
+            self.reload_folder_button = QtWidgets.QToolButton()
+            self.reload_folder_button.setText('Reload Directory')
+            self.reload_folder_button.clicked.connect(self.on_folder_selected)
 
         # Button to load Histology 
         self.histology_folder_button = QtWidgets.QToolButton()
@@ -551,6 +556,8 @@ class Setup():
             self.interaction_layout3.addWidget(self.input_folder_button, stretch=1)
             self.interaction_layout3.addWidget(self.input_folder_line, stretch=2)
             self.interaction_layout3.addWidget(self.shank_combobox, stretch=1)
+            self.interaction_layout3.addWidget(self.reload_folder_button, stretch=1)
+            self.interaction_layout3.addWidget(self.reload_folder_line, stretch=2)
 
         # # Group 3 -- Histology location
         # self.interaction_layout3 = QtWidgets.QHBoxLayout()
