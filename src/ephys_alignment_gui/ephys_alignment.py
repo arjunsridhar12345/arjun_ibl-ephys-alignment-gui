@@ -70,8 +70,8 @@ class EphysAlignment:
         # Force the entry to be on the upper z lim of the atlas to account for cases where channels
         # may be located above the surface of the brain
         entry = (traj_entry.eval_z(self.brain_atlas.bc.zlim))[0, :]
-        if speedy:
-            exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
+        #if speedy:
+         #   exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
         #else:
             #exit = atlas.Insertion.get_brain_exit(traj_exit, self.brain_atlas)
             # The exit is just below the bottom surfacce of the brain
@@ -232,6 +232,7 @@ class EphysAlignment:
             brain_atlas = atlas.AllenAtlas(25)
 
         region_ids = brain_atlas.get_labels(xyz_coords, mapping=mapping)
+        print('These are region ids', region_ids)
         region_info = brain_atlas.regions.get(region_ids)
         boundaries = np.where(np.diff(region_info.id))[0]
         region = np.empty((boundaries.size + 1, 2))
