@@ -1153,6 +1153,17 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
     """
     Interaction functions
     """
+    def _update_ephys_alignments(self, folder_path: Path):
+        self.prev_alignments, shank_options = self.loaddata.get_info(folder_path)
+        self.populate_lists(shank_options, self.shank_list, self.shank_combobox)
+        self.on_shank_selected(0)
+        self.data_button_pressed()
+
+    def load_exisiting_alignments(self):
+        if self.data_status:
+            folder_path = Path(QtWidgets.QFileDialog.getExistingDirectory(None, "Load Existing Alignments"))
+            self.reload_folder_line.setText(str(folder_path))
+            self._update_ephys_alignments(folder_path)
 
     def on_folder_selected(self):
         """
@@ -1162,10 +1173,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         folder_path = Path(QtWidgets.QFileDialog.getExistingDirectory(None, "Select Input Directory"))
 
         if folder_path:
-            if self.sender().text() == 'Reload Directory':
-                self.reload_folder_line.setText(str(folder_path))
-            else:
-                self.input_folder_line.setText(str(folder_path))
+            self.input_folder_line.setText(str(folder_path))
 
             self.prev_alignments, shank_options = self.loaddata.get_info(folder_path)
             self.populate_lists(shank_options, self.shank_list, self.shank_combobox)

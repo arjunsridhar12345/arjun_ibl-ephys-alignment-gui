@@ -501,8 +501,8 @@ class Setup():
 
             self.reload_folder_line = QtWidgets.QLineEdit()
             self.reload_folder_button = QtWidgets.QToolButton()
-            self.reload_folder_button.setText('Reload Directory')
-            self.reload_folder_button.clicked.connect(self.on_folder_selected)
+            self.reload_folder_button.setText('Load Existing Alignment Directory')
+            self.reload_folder_button.clicked.connect(self.load_existing_alignments)
 
         # Button to load Histology 
         self.histology_folder_button = QtWidgets.QToolButton()
