@@ -126,7 +126,6 @@ class LoadDataLocal:
            atlas_labels_file=atlas_labels_path[0].as_posix(),
         )
 
-        print('Regions', self.brain_atlas.regions)
         chn_x = np.unique(self.chn_coords_all[:, 0])
         if self.n_shanks > 1:
             shanks = {}
