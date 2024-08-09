@@ -225,7 +225,7 @@ class LoadDataLocal:
         ]
         ccf_slice = self.brain_atlas.image[index[:, 0], :, index[:, 2]]
         ccf_slice = np.swapaxes(ccf_slice, 0, 1)
-
+        print('Shape', ccf_slice.shape)
         label_slice = self.brain_atlas._label2rgb(
             self.brain_atlas.label[index[:, 0], :, index[:, 2]]
         )
