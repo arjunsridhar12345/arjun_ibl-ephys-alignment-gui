@@ -1174,11 +1174,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
 
         if folder_path:
             self.input_folder_line.setText(str(folder_path))
-
-            self.prev_alignments, shank_options = self.loaddata.get_info(folder_path)
-            self.populate_lists(shank_options, self.shank_list, self.shank_combobox)
-            self.on_shank_selected(0)
-            self.data_button_pressed()
+            self._update_ephys_alignments(folder_path)
             return True
         else:
             return False
