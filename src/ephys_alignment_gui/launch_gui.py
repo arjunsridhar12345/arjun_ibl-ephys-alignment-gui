@@ -1161,7 +1161,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self.data_button_pressed()
 
     def load_existing_alignments(self):
-        folder_path = Path(QtWidgets.QFileDialog.getExistingDirectory(None, "Load Existing Alignments"), directory=RESULTS_PATH.as_posix())
+        folder_path = Path(QtWidgets.QFileDialog.getExistingDirectory(None, "Load Existing Alignments"))
         self.reload_folder_line.setText(str(folder_path))
         self._update_ephys_alignments(folder_path)
 
