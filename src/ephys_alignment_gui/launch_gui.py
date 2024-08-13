@@ -1167,6 +1167,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self._update_ephys_alignments(folder_path)
 
     def on_folder_selected(self):
+        print('Button pushed!')
         """
         Triggered in offline mode when folder button is clicked
         """
