@@ -26,7 +26,7 @@ from ephys_alignment_gui.ephys_alignment import EphysAlignment
 import matplotlib.pyplot as mpl  # noqa  # This is needed to make qt show properly :/
 
 
-RESULTS_PATH = Path('/results')
+RESULTS_PATH = Path('root/capsule/results')
 class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
 
     @staticmethod
