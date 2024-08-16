@@ -207,7 +207,7 @@ class LoadDataLocal:
         with open(xyz_file[0], "r") as f:
             user_picks = json.load(f)
 
-        xyz_picks = np.array(user_picks["xyz_picks"])
+        xyz_picks = np.array(user_picks["xyz_picks"]) * 1000
         """
         xyz_picks = np.array(user_picks["xyz_picks"]) / 1e6
 
