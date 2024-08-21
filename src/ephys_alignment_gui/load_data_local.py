@@ -210,13 +210,10 @@ class LoadDataLocal:
         xyz_picks = np.array(user_picks["xyz_picks"]) * 1000
 
         # This is a hack and will be fixed in the future!
-        temp = xyz_picks[:, 1].copy()
-        xyz_picks[:, 1] = xyz_picks[:, 2].copy()
-        xyz_picks[:, 2] = temp
         
-        xyz_picks[:,1] = -xyz_picks[:,1]-1500
+        xyz_picks[:,1] = 406-xyz_picks[:,1]-1500
         xyz_picks[:,2]= xyz_picks[:,2]-1500
-        xyz_picks[:,0] = 406-xyz_picks[:,0]-1500
+        xyz_picks[:,0] = xyz_picks[:,0]-1500
 
         print(xyz_picks)
         return xyz_picks
