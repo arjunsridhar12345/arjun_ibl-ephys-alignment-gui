@@ -212,7 +212,7 @@ class LoadDataLocal:
         # This is a hack and will be fixed in the future!
         xyz_picks[:,1] = xyz_picks[:, 1] * 25
         xyz_picks[:,2]= xyz_picks[:,2] * 25
-        xyz_picks[:,0] = xyz_picks * 25
+        xyz_picks[:,0] = xyz_picks[:, 0] * 25
         print(xyz_picks)
         return xyz_picks
 
