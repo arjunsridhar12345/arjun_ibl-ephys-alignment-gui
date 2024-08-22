@@ -51,7 +51,7 @@ class EphysAlignment:
         self.region, self.region_label, self.region_colour, self.region_id\
             = self.get_histology_regions(self.xyz_samples, self.sampling_trk, self.brain_atlas)
 
-    def _get_surface_intersection(traj, brain_atlas, surface='top', mode='raise'):
+    def _get_surface_intersection(self, traj, brain_atlas, surface='top', mode='raise'):
         """
         Computes the intersection of a trajectory with either the top or the bottom surface of an atlas.
 
