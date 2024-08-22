@@ -74,7 +74,8 @@ class EphysAlignment:
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
         else:
             print("Brain atlas resolution", self.brain_atlas.res_um)
-            dist = traj_exit.mindist(self.brain_atlas.compute_surface())
+            self.brain_atlas.compute_surface()
+            dist = traj_exit.mindist(self.brain_atlas.srf_xyz)
             print("Brain atlas surface", self.brain_atlas.srf_xyz)
             print("Trajectory distance", dist)
             dist_sort = np.argsort(dist)
