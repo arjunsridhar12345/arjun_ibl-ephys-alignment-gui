@@ -51,6 +51,52 @@ class EphysAlignment:
         self.region, self.region_label, self.region_colour, self.region_id\
             = self.get_histology_regions(self.xyz_samples, self.sampling_trk, self.brain_atlas)
 
+    def _get_surface_intersection(traj, brain_atlas, surface='top', mode='raise'):
+        """
+        Computes the intersection of a trajectory with either the top or the bottom surface of an atlas.
+
+        Parameters
+        ----------
+        traj: iblatlas.atlas.Trajectory object
+        brain_atlas: iblatlas.atlas.BrainAtlas (or descendant) object
+        surface: str, optional (defaults to 'top') 'top' or 'bottom'
+        mode: str, optional (defaults to 'raise') 'raise' or 'none': raise an error if no intersection
+         with the brain surface is found otherwise returns None
+
+        Returns
+        -------
+        xyz: np.array, 3 elements, x, y, z coordinates of the intersection point with the surface
+             None if no intersection is found and mode is not set to 'raise'
+        """
+        brain_atlas.compute_surface()
+        distance = traj.mindist(brain_atlas.srf_xyz) / 1e3
+        dist_sort = np.argsort(distance)
+        # In some cases the nearest two intersection points are not the top and bottom of brain
+        # So we find all intersection points that fall within one voxel and take the one with
+        # highest dV to be entry and lowest dV to be exit
+        
+        idx_lim = np.sum(distance[dist_sort] * 1e6 < np.max(brain_atlas.res_um))
+        if idx_lim == 0:  # no intersection found
+            if mode == 'raise':
+                raise ValueError('No intersection found with brain surface')
+            else:
+                return
+        dist_lim = dist_sort[0:idx_lim]
+        z_val = brain_atlas.srf_xyz[dist_lim, 2]
+        if surface == 'top':
+            ma = np.argmax(z_val)
+            _xyz = brain_atlas.srf_xyz[dist_lim[ma], :]
+            _ixyz = brain_atlas.bc.xyz2i(_xyz)
+            _ixyz[brain_atlas.xyz2dims[2]] += 1
+        elif surface == 'bottom':
+            ma = np.argmin(z_val)
+            _xyz = brain_atlas.srf_xyz[dist_lim[ma], :]
+            _ixyz = brain_atlas.bc.xyz2i(_xyz)
+
+        xyz = brain_atlas.bc.i2xyz(_ixyz.astype(float))
+
+        return xyz
+    
     def get_insertion_track(self, xyz_picks, speedy=False):
         """
         Extends probe trajectory from bottom of brain to upper bound of allen atlas
@@ -75,13 +121,13 @@ class EphysAlignment:
         else:
             print("Brain atlas resolution", self.brain_atlas.res_um)
             self.brain_atlas.compute_surface()
-            dist = traj_exit.mindist(self.brain_atlas.srf_xyz)
+            dist = traj_exit.mindist(self.brain_atlas.srf_xyz) / 1e3
             print("Brain atlas surface", self.brain_atlas.srf_xyz)
             print("Trajectory distance", dist)
             dist_sort = np.argsort(dist)
             print("Min distance", dist[dist_sort] * 1e6)
 
-            exit = atlas.Insertion.get_brain_exit(traj_exit, self.brain_atlas)
+            exit = self._get_surface_intersection(traj_exit, self.brain_atlas)
             # The exit is just below the bottom surfacce of the brain
             exit[2] = exit[2] - 200 / 1e6
 
