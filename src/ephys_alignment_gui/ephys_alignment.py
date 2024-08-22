@@ -79,7 +79,7 @@ class EphysAlignment:
             print("Brain atlas surface", self.brain_atlas.srf_xyz)
             print("Trajectory distance", dist)
             dist_sort = np.argsort(dist)
-            print("Min distance", dist[dist_sort])
+            print("Min distance", dist[dist_sort] * 1e6)
 
             exit = atlas.Insertion.get_brain_exit(traj_exit, self.brain_atlas)
             # The exit is just below the bottom surfacce of the brain
