@@ -235,9 +235,10 @@ class CustomAtlas(BrainAtlas):
         self.atlas_image_file = atlas_image_file
         self.atlas_labels_file = atlas_labels_file
         if force_um is None:
-            dxyz = np.array(self.read_atlas_image())*np.array([1, -1, -1])*1e-6
+            #dxyz = np.array(self.read_atlas_image())*np.array([1, -1, -1])*1e-6
+            dxyz = np.array(self.read_atlas_image())
             print('Atlas scaling', dxyz)
-            self.res_um = dxyz[0]/1e-6
+            self.res_um = dxyz[0]
             print('Resolution', self.res_um)
         else:
             _  = self.read_atlas_image()
