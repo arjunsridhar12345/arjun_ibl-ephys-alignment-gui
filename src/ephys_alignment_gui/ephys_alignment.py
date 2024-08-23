@@ -116,8 +116,9 @@ class EphysAlignment:
         # Force the entry to be on the upper z lim of the atlas to account for cases where channels
         # may be located above the surface of the brain
         entry = (traj_entry.eval_z(self.brain_atlas.bc.zlim))[0, :]
-        if speedy:
-            exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
+        #if speedy:
+        exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
+        """
         else:
             print("Brain atlas resolution", self.brain_atlas.res_um)
             self.brain_atlas.compute_surface()
@@ -130,6 +131,7 @@ class EphysAlignment:
             exit = self._get_surface_intersection(traj_exit, self.brain_atlas)
             # The exit is just below the bottom surfacce of the brain
             exit[2] = exit[2] - 200 / 1e6
+        """
 
         # Catch cases where the exit
         if any(np.isnan(exit)):
