@@ -121,11 +121,11 @@ class EphysAlignment:
         else:
             print("Brain atlas resolution", self.brain_atlas.res_um)
             self.brain_atlas.compute_surface()
-            dist = traj_exit.mindist(self.brain_atlas.srf_xyz) / 1e3
+            dist = traj_exit.mindist(self.brain_atlas.srf_xyz)
             print("Brain atlas surface", self.brain_atlas.srf_xyz)
             print("Trajectory distance", dist)
             dist_sort = np.argsort(dist)
-            print("Min distance", dist[dist_sort] * 1e6)
+            print("Min distance", dist[dist_sort])
 
             exit = self._get_surface_intersection(traj_exit, self.brain_atlas)
             # The exit is just below the bottom surfacce of the brain
