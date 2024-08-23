@@ -69,13 +69,13 @@ class EphysAlignment:
              None if no intersection is found and mode is not set to 'raise'
         """
         brain_atlas.compute_surface()
-        distance = traj.mindist(brain_atlas.srf_xyz) / 1e9
+        distance = traj.mindist(brain_atlas.srf_xyz)
         dist_sort = np.argsort(distance)
         # In some cases the nearest two intersection points are not the top and bottom of brain
         # So we find all intersection points that fall within one voxel and take the one with
         # highest dV to be entry and lowest dV to be exit
         
-        idx_lim = np.sum(distance[dist_sort] * 1e6 < np.max(brain_atlas.res_um))
+        idx_lim = np.sum(distance[dist_sort]  < np.max(brain_atlas.res_um))
         if idx_lim == 0:  # no intersection found
             if mode == 'raise':
                 raise ValueError('No intersection found with brain surface')

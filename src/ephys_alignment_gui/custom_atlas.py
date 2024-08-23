@@ -268,6 +268,7 @@ class CustomAtlas(BrainAtlas):
         IMG2 = sitk.DICOMOrient(IMG,self.read_string) 
         self.image = sitk.GetArrayFromImage(IMG2)
         self.offset = IMG2.GetOrigin()
+        self.spacing = IMG2.GetSpacing()
         return IMG2.GetSpacing()
         
     def read_atlas_labels(self):
