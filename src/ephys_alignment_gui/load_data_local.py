@@ -210,6 +210,10 @@ class LoadDataLocal:
         xyz_picks = np.array(user_picks["xyz_picks"]) / 1e6
 
         # This is a hack and will be fixed in the future!
+        xyz_picks[:, 0] = xyz_picks[:, 0] - 1.5
+        xyz_picks[:, 1] = xyz_picks[:, 1] - 1.5
+        xyz_picks[:, 2] = xyz_picks[:, 2] + 1.5
+        
         xyz_picks[:,1] = xyz_picks[:, 1] * 0.025
         xyz_picks[:,2]= xyz_picks[:,2] * 0.025
         xyz_picks[:,0] = xyz_picks[:, 0] * 0.025
