@@ -238,7 +238,7 @@ class CustomAtlas(BrainAtlas):
             #dxyz = np.array(self.read_atlas_image())*np.array([1, -1, -1])*1e-6
             dxyz = np.array(self.read_atlas_image()) * 1000
             print('Atlas scaling', dxyz)
-            self.res_um = dxyz[0] * 1000
+            self.res_um = dxyz[0] 
             print('Resolution', self.res_um)
         else:
             _  = self.read_atlas_image()
