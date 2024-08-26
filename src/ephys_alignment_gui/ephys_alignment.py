@@ -284,12 +284,12 @@ class EphysAlignment:
         :return region_id: allen atlas id for each brain region along track
         :type region_id: np.array((n_bound))
         """
+        print('xyz coords', xyz_coords)
         if not brain_atlas:
             brain_atlas = atlas.AllenAtlas(25)
 
         region_ids = brain_atlas.get_labels(xyz_coords, mapping=mapping, mode='clip')
       
-        print('Image', brain_atlas.image.shape)
         region_info = brain_atlas.regions.get(region_ids)
         boundaries = np.where(np.diff(region_info.id))[0]
         region = np.empty((boundaries.size + 1, 2))
