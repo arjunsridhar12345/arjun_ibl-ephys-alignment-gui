@@ -290,7 +290,7 @@ class EphysAlignment:
             brain_atlas = atlas.AllenAtlas(25)
 
         xyz_indices = (xyz_coords / brain_atlas.spacing).astype(np.uint16)
-        print('Len xyz indices', len(xyz_indices))
+        print('Xyz indices', xyz_indices)
         region_ids = brain_atlas.image[xyz_indices]
         print('Region ids', region_ids)
         print()
