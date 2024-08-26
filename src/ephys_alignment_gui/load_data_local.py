@@ -210,9 +210,9 @@ class LoadDataLocal:
         xyz_picks = np.array(user_picks["xyz_picks"])
         # This is a hack and will be fixed in the future!
 
-        xyz_picks[:,1] = xyz_picks[:, 1] * self.brain_atlas.spacing[1]
-        xyz_picks[:,2] = xyz_picks[:, 2] * self.brain_atlas.spacing[2]
-        xyz_picks[:,0] = xyz_picks[:, 0] * self.brain_atlas.spacing[0]
+        xyz_picks[:,1] = xyz_picks[:, 1] * self.brain_atlas.spacing
+        xyz_picks[:,2] = xyz_picks[:, 2] * self.brain_atlas.spacing
+        xyz_picks[:,0] = xyz_picks[:, 0] * self.brain_atlas.spacing
         print(xyz_picks)
         return xyz_picks
 
