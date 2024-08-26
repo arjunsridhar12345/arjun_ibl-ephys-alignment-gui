@@ -293,6 +293,7 @@ class EphysAlignment:
         indices = np.argwhere((xyz_indices[:, 0] < brain_atlas.image.shape[1]) & (xyz_indices[:, 1] < brain_atlas.image.shape[0]
                                                                                   & (xyz_indices[:, 2] < brain_atlas.image.shape[2])))
 
+        print('Indices', indices)
         region_ids = brain_atlas.image[indices[:, 1], indices[:, 0], indices[:, 2]]
         print('Region ids', region_ids)
 
