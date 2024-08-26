@@ -289,7 +289,7 @@ class EphysAlignment:
         if not brain_atlas:
             brain_atlas = atlas.AllenAtlas(25)
 
-        region_ids = brain_atlas.get_labels(xyz_coords, mapping=mapping, mode='clip')
+        region_ids = brain_atlas.get_labels(xyz_coords, mapping=mapping)
         print("Region ids", region_ids)
 
         region_info = brain_atlas.regions.get(region_ids)
