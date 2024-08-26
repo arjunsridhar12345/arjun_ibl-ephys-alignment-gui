@@ -289,10 +289,13 @@ class EphysAlignment:
         if not brain_atlas:
             brain_atlas = atlas.AllenAtlas(25)
 
-        xyz_indices = (xyz_coords / brain_atlas.spacing).astype(np.int16)
+        xyz_indices = (xyz_coords / brain_atlas.spacing).astype(np.uint16)
+        print('Len xyz indices', len(xyz_indices))
         region_ids = brain_atlas.image[xyz_indices]
         print('Region ids', region_ids)
-      
+        print()
+
+        regions_ids = []
         region_info = brain_atlas.regions.get(region_ids)
         boundaries = np.where(np.diff(region_info.id))[0]
         region = np.empty((boundaries.size + 1, 2))
