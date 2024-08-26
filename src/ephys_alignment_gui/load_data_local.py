@@ -220,7 +220,7 @@ class LoadDataLocal:
     def get_slice_images(self, xyz_channels):
 
         # Load the CCF images
-        index = self.brain_atlas.bc.xyz2i(xyz_channels)[
+        index = self.brain_atlas.bc.xyz2i(xyz_channels, mode='clip')[
             :, self.brain_atlas.xyz2dims
         ]
         ccf_slice = self.brain_atlas.image[index[:, 0], :, index[:, 2]]
@@ -231,7 +231,7 @@ class LoadDataLocal:
         )
         label_slice = np.swapaxes(label_slice, 0, 1)
 
-        width = [self.brain_atlas.bc.i2x(0), self.brain_atlas.bc.i2x(456)]
+        width = [self.brain_atlas.bc.i2x(0), self.brain_atlas.bc.i2x(self.brain_atlas.image.shape[1])]
         height = [
             self.brain_atlas.bc.i2z(index[0, 2]),
             self.brain_atlas.bc.i2z(index[-1, 2]),
@@ -267,7 +267,7 @@ class LoadDataLocal:
 
                 if hist_path:
                     # hist_atlas = atlas.AllenAtlas(hist_path=hist_path)
-                    hist_atlas = CustomAllenAtlas(
+                    hist_atlas = CustomAtlas(
                         template_path=hist_path, label_path=self.atlas_path
                     )
                     hist_slice = hist_atlas.image[index[:, 0], :, index[:, 2]]
