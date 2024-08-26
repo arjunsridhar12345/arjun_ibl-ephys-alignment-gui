@@ -30,7 +30,7 @@ class EphysAlignment:
             self.track_init = track_prev
             self.feature_init = feature_prev
         else:
-            start_lims = 6000 / 1e6
+            start_lims = 6000
             self.track_init = np.array([-1 * start_lims, start_lims])
             self.feature_init = np.array([-1 * start_lims, start_lims])
 
