@@ -290,8 +290,8 @@ class EphysAlignment:
             brain_atlas = atlas.AllenAtlas(25)
 
         xyz_indices = np.round(xyz_coords).astype(np.uint16)
-        indices = np.argwhere((xyz_indices[:, 0] < brain_atlas.image.shape[1]) & (xyz_indices[:, 1] < brain_atlas.image.shape[0]
-                                                                                  & (xyz_indices[:, 2] < brain_atlas.image.shape[2])))
+        indices = np.argwhere((xyz_indices[:, 0] < brain_atlas.image.shape[1]) & (xyz_indices[:, 1] < brain_atlas.image.shape[0])
+                                                                                  & (xyz_indices[:, 2] < brain_atlas.image.shape[2]))
 
         print('Indices', indices)
         region_ids = brain_atlas.image[indices[:, 1], indices[:, 0], indices[:, 2]]
