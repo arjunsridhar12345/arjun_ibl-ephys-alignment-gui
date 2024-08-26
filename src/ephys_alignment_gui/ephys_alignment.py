@@ -41,14 +41,14 @@ class EphysAlignment:
                                                              self.sampling_trk -
                                                              self.sampling_trk[0])
         # ensure none of the track is outside the y or x lim of atlas
-        """
+        
         xlim = np.bitwise_and(self.xyz_samples[:, 0] > self.brain_atlas.bc.xlim[0],
                               self.xyz_samples[:, 0] < self.brain_atlas.bc.xlim[1])
         ylim = np.bitwise_and(self.xyz_samples[:, 1] < self.brain_atlas.bc.ylim[0],
                               self.xyz_samples[:, 1] > self.brain_atlas.bc.ylim[1])
         rem = np.bitwise_and(xlim, ylim)
         self.xyz_samples = self.xyz_samples[rem]
-        """
+        
         self.region, self.region_label, self.region_colour, self.region_id\
             = self.get_histology_regions(self.xyz_samples, self.sampling_trk, self.brain_atlas)
 
@@ -289,15 +289,9 @@ class EphysAlignment:
         if not brain_atlas:
             brain_atlas = atlas.AllenAtlas(25)
 
-        xyz_indices = np.round(xyz_coords).astype(np.uint16)
-        indices = np.argwhere((xyz_indices[:, 0] < brain_atlas.image.shape[1]) & (xyz_indices[:, 1] < brain_atlas.image.shape[0])
-                                                                                  & (xyz_indices[:, 2] < brain_atlas.image.shape[2]))
-
-        print('Indices', indices)
-        region_ids = brain_atlas.image[indices[:, 1], indices[:, 0], indices[:, 2]]
-        print('Region ids', region_ids)
-
-        regions_ids = []
+        print('Coords', xyz_coords)
+        region_ids = brain_atlas.get_labels(xyz_coords, mapping=mapping, mode='clip')
+      
         region_info = brain_atlas.regions.get(region_ids)
         boundaries = np.where(np.diff(region_info.id))[0]
         region = np.empty((boundaries.size + 1, 2))
