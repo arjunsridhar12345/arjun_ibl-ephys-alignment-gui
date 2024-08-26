@@ -294,7 +294,7 @@ class EphysAlignment:
         xyz_indices = xyz_indices[(xyz_indices[:, 0] < brain_atlas.image.shape[1]) & (xyz_indices[:, 1] < brain_atlas.image.shape[0])
                                                                                       & (xyz_indices[:, 2] < brain_atlas.image.shape[2])]
         region_ids = brain_atlas.image[xyz_indices[:, 1], xyz_indices[:, 0], xyz_indices[:, 2]]
-      
+        print("Region ids", region_ids)
         region_info = brain_atlas.regions.get(region_ids)
         boundaries = np.where(np.diff(region_info.id))[0]
         region = np.empty((boundaries.size + 1, 2))
