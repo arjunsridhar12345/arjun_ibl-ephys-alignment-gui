@@ -213,7 +213,7 @@ class LoadDataLocal:
         xyz_picks[:,1] = xyz_picks[:, 1] - CCF_OFFSET
         xyz_picks[:,2] = -(xyz_picks[:, 2]) + CCF_OFFSET
         xyz_picks[:,0] = xyz_picks[:, 0] - CCF_OFFSET
-        xyz_picks = xyz_picks * self.brain_atlas.spacing
+        
         print(xyz_picks)
         return xyz_picks
 
