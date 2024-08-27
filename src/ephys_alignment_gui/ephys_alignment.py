@@ -116,6 +116,7 @@ class EphysAlignment:
 
         # Force the entry to be on the upper z lim of the atlas to account for cases where channels
         # may be located above the surface of the brain
+        print("Zlim", self.brain_atlas.bc.zlim)
         entry = (traj_entry.eval_z(self.brain_atlas.bc.zlim))[0, :]
         #if speedy:
         exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
