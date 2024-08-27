@@ -210,9 +210,7 @@ class LoadDataLocal:
         xyz_picks = np.array(user_picks["xyz_picks"])
         # This is a hack and will be fixed in the future!
         xyz_picks = xyz_picks * self.brain_atlas.spacing
-        xyz_picks[:,1] = xyz_picks[:, 1] - CCF_OFFSET
-        xyz_picks[:,2] = -(xyz_picks[:, 2]) + CCF_OFFSET
-        xyz_picks[:,0] = xyz_picks[:, 0] - CCF_OFFSET
+        xyz_picks = xyz_picks + CCF_OFFSET
         
         print(xyz_picks)
         return xyz_picks
