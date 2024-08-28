@@ -1161,13 +1161,11 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self.data_button_pressed()
 
     def load_existing_alignments(self):
-        print('Hello button has been pushed')
-        folder_path = Path(QtWidgets.QFileDialog.getExistingDirectory(None, "Load Existing Alignments"))
+        folder_path = Path(QtWidgets.QFileDialog.getExistingDirectory(None, "Load Existing Alignments"), directory=RESULTS_PATH.as_posix())
         self.reload_folder_line.setText(str(folder_path))
         self._update_ephys_alignments(folder_path)
 
     def on_folder_selected(self):
-        print('Button pushed!')
         """
         Triggered in offline mode when folder button is clicked
         """
@@ -1273,7 +1271,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             self.region_fp, self.region_label_fp, self.region_colour_fp, _ \
                 = EphysAlignment.get_histology_regions(self.ephysalign.xyz_samples, self.ephysalign.sampling_trk,
                                                        self.loaddata.brain_atlas)
-
+            print(self.region_label_fp)
             self.features[self.idx], self.track[self.idx], self.xyz_track \
                 = self.ephysalign.get_track_and_feature()
 
