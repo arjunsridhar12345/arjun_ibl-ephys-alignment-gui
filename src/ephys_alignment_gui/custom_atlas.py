@@ -268,7 +268,7 @@ class CustomAtlas(BrainAtlas):
         # Convert sitk to the (ap, ml, dv) np array needed by BrainAtlas
         IMG2 = sitk.DICOMOrient(IMG,self.read_string) 
         self.image = sitk.GetArrayFromImage(IMG2)
-        self.offset = IMG2.GetOrigin()
+        self.offset = IMG.GetOrigin()
         self.spacing = IMG2.GetSpacing()[0] * 1000
         return IMG2.GetSpacing()
         
