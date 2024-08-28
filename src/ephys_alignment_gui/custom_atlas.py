@@ -264,7 +264,7 @@ class CustomAtlas(BrainAtlas):
     
     def read_atlas_image(self):
         # Reads the 
-        IMG = sitk.ReadImage(self.atlas_image_file, outputPixelType=np.int32)
+        IMG = sitk.ReadImage(self.atlas_image_file)
         # Convert sitk to the (ap, ml, dv) np array needed by BrainAtlas
         IMG2 = sitk.DICOMOrient(IMG,self.read_string) 
         self.image = sitk.GetArrayFromImage(IMG2)
