@@ -13,7 +13,6 @@ import iblatlas.atlas as atlas
 
 from .custom_atlas import CustomAllenAtlas,CustomAtlas
 
-CCF_OFFSET = 60
 # temporarily add this in for neuropixel course
 # until figured out fix to problem on win32
 import ssl
@@ -209,9 +208,11 @@ class LoadDataLocal:
     
         xyz_picks = np.array(user_picks["xyz_picks"])
         # This is a hack and will be fixed in the future!
-        xyz_picks[:, 0] = 10.15 - xyz_picks[:, 0]
+        xyz_picks[:, 0] = xyz_picks[:, 0] + self.brain_atlas.offset[0]
+        xyz_picks[:, 1] = xyz_picks[:, 1] + self.brain_atlas.offset[1]
+        xyz_picks[:, 2] = -xyz_picks[:, 2] + self.brain_atlas.offset[0]
+
         xyz_picks = xyz_picks * self.brain_atlas.spacing
-        xyz_picks = xyz_picks + CCF_OFFSET
         
         print(xyz_picks)
         return xyz_picks
