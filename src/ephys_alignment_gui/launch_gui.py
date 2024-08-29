@@ -584,7 +584,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         axis.setTicks([self.hist_data['axis_label']])
         axis.setZValue(10)
         self.set_axis(self.fig_hist, 'bottom', pen='w', label='blank')
-        print('Region Data', self.hist_data['region'])
+        print('Hist Data', self.hist_data)
 
         # Plot each histology region
         for ir, reg in enumerate(self.hist_data['region']):
@@ -605,7 +605,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self.selected_region = self.hist_regions[-2]
 
         # Boundary for final region
-        bound = pg.InfiniteLine(pos=self.hist_data['region'][-1][1], angle=0,
+        bound = pg.InfiniteLine(pos=self.hist_data['region'][-1][1] * self.loaddata.brain_atlas.spacing, angle=0,
                                 pen='w')
 
         fig.addItem(bound)
@@ -669,7 +669,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             fig.addItem(bound)
             self.hist_ref_regions = np.vstack([self.hist_ref_regions, region])
 
-        bound = pg.InfiniteLine(pos=self.hist_data_ref['region'][-1][1], angle=0,
+        bound = pg.InfiniteLine(pos=self.hist_data_ref['region'][-1][1] * self.loaddata.brain_atlas.spacing, angle=0,
                                 pen='w')
         fig.addItem(bound)
         # Add dotted lines to plot to indicate region along probe track where electrode
