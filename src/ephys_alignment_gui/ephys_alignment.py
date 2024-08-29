@@ -109,6 +109,8 @@ class EphysAlignment:
         brain and top of atlas) offset by distance to probe tip
         :type track_extent: np.array((2))
         """
+
+        """
         # Use the first and last quarter of xyz_picks to estimate the trajectory beyond xyz_picks
         n_picks = np.max([4, round(xyz_picks.shape[0] / 4)])
         traj_entry = atlas.Trajectory.fit(xyz_picks[:n_picks, :])
@@ -116,10 +118,11 @@ class EphysAlignment:
 
         # Force the entry to be on the upper z lim of the atlas to account for cases where channels
         # may be located above the surface of the brain
+        
         entry = (traj_entry.eval_z(self.brain_atlas.bc.zlim))[0, :]
         #if speedy:
         exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
-        """
+        
         else:
             print("Brain atlas resolution", self.brain_atlas.res_um)
             self.brain_atlas.compute_surface()
@@ -132,7 +135,7 @@ class EphysAlignment:
             exit = self._get_surface_intersection(traj_exit, self.brain_atlas)
             # The exit is just below the bottom surfacce of the brain
             exit[2] = exit[2] - 200 / 1e6
-        """
+        
 
         # Catch cases where the exit
         if any(np.isnan(exit)):
@@ -142,6 +145,8 @@ class EphysAlignment:
         xyz_track = xyz_track[np.argsort(xyz_track[:, 2]), :]
 
         # Compute distance to first electrode from bottom coordinate
+        """
+        xyz_track = atlas.Trajectory.fit(xyz_picks)
         tip_distance = _cumulative_distance(xyz_track)[1] + (TIP_SIZE_UM / self.brain_atlas.spacing)
         track_length = _cumulative_distance(xyz_track)[-1]
         track_extent = np.array([0, track_length]) - tip_distance
