@@ -37,6 +37,7 @@ class EphysAlignment:
         self.sampling_trk = np.arange(self.track_extent[0],
                                       self.track_extent[-1])
         
+        print('Sampling track', self.sampling_trk)
         self.xyz_samples = histology.interpolate_along_track(self.xyz_track,
                                                              self.sampling_trk -
                                                              self.sampling_trk[0])
@@ -314,7 +315,6 @@ class EphysAlignment:
             coord_rounded = np.round(coord).astype(np.int16)
             region_ids.append(brain_atlas.label[coord_rounded[1], coord_rounded[0], coord_rounded[2]])
 
-        print('Region ids', region_ids)
         region_info = brain_atlas.regions.get(region_ids)
 
         boundaries = np.where(np.diff(region_info.id))[0]
