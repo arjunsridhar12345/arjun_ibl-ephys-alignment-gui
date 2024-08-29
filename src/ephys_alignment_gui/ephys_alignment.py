@@ -37,7 +37,6 @@ class EphysAlignment:
         self.sampling_trk = np.arange(self.track_extent[0],
                                       self.track_extent[-1])
         
-        print('Sampling track', self.sampling_trk)
         self.xyz_samples = histology.interpolate_along_track(self.xyz_track,
                                                              self.sampling_trk -
                                                              self.sampling_trk[0])
@@ -149,7 +148,7 @@ class EphysAlignment:
         """
 
         xyz_svd = atlas.Trajectory.fit(xyz_picks)
-        xyz_track = xyz_svd.vector * np.mgrid[-200:200:1][:,np.newaxis]
+        xyz_track = xyz_svd.vector * np.mgrid[-100:100:1][:,np.newaxis]
         xyz_track += xyz_svd.point
         
         if xyz_track[-1,2] - xyz_track[0,2] < 0:
