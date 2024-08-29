@@ -154,11 +154,14 @@ class EphysAlignment:
         if xyz_track[-1,1] - xyz_track[0,1] < 0:
             xyz_track = np.flipud(xyz_track)
 
+        xyz_track = xyz_track[(xyz_track[:, 0] < self.brain_atlas.image.shape[1]) & (xyz_track[:, 1] < self.brain_atlas.image.shape[0])
+                              & (xyz_track[:, 2] < self.brain_atlas.image.shape[2])]
         print("track", xyz_track)
+        
         tip_distance = _cumulative_distance(xyz_track)[1] + (TIP_SIZE_UM / self.brain_atlas.spacing)
         track_length = _cumulative_distance(xyz_track)[-1]
         track_extent = np.array([0, track_length]) - tip_distance
-
+        
         return xyz_track, track_extent
 
     def get_track_and_feature(self):
