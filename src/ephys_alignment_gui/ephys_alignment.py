@@ -284,7 +284,7 @@ class EphysAlignment:
         region_label = np.copy(region_label) if region_label is not None else np.copy(self.region_label)
         region = self.track2feature(region, feature, track)
         region_label[:, 0] = (self.track2feature(np.float64(region_label[:, 0]), feature,
-                              track))
+                              track) * self.brain_atlas.spacing)
         return region, region_label
 
     @staticmethod
