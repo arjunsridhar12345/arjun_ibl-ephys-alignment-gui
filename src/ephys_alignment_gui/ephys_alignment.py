@@ -146,7 +146,14 @@ class EphysAlignment:
 
         # Compute distance to first electrode from bottom coordinate
         """
-        xyz_track = atlas.Trajectory.fit(xyz_picks).vector
+
+        xyz_svd = atlas.Trajectory.fit(xyz_picks)
+        xyz_track = xyz_svd.vector * np.mgrid[-20:20:1][:,np.newaxis]
+        xyz_track += xyz_svd.point
+        
+        if xyz_track[-1,1] - xyz_track[0,1] < 0:
+            xyz_track = np.flipud(xyz_track)
+
         print("track", xyz_track)
         tip_distance = _cumulative_distance(xyz_track)[1] + (TIP_SIZE_UM / self.brain_atlas.spacing)
         track_length = _cumulative_distance(xyz_track)[-1]
