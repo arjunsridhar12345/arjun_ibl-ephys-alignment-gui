@@ -831,6 +831,9 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         colours = color_bar.map.mapToQColor(scale_factor)
 
         for ir, reg in enumerate(self.scale_data['region']):
+            reg[0] = reg[0] * self.loaddata.brain_atlas.spacing
+            reg[1] = reg[1] * self.loaddata.brain_atlas.spacing
+            
             region = pg.LinearRegionItem(values=(reg[0], reg[1]),
                                          orientation=pg.LinearRegionItem.Horizontal,
                                          brush=colours[ir], movable=False)
