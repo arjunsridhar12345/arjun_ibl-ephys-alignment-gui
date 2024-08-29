@@ -585,9 +585,12 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         axis.setZValue(10)
         self.set_axis(self.fig_hist, 'bottom', pen='w', label='blank')
         print('Region Data', self.hist_data['region'])
-        
+
         # Plot each histology region
         for ir, reg in enumerate(self.hist_data['region']):
+            reg[0] = reg[0] * self.loaddata.brain_atlas.spacing
+            reg[1] = reg[1] * self.loaddata.brain_atlas.spacing
+
             colour = QtGui.QColor(*self.hist_data['colour'][ir])
             region = pg.LinearRegionItem(values=(reg[0], reg[1]),
                                          orientation=pg.LinearRegionItem.Horizontal,
