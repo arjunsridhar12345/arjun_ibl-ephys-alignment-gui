@@ -148,7 +148,7 @@ class EphysAlignment:
         """
 
         xyz_svd = atlas.Trajectory.fit(xyz_picks)
-        xyz_track = xyz_svd.vector * np.mgrid[-200:50:1][:,np.newaxis]
+        xyz_track = xyz_svd.vector * np.mgrid[-50:150:1][:,np.newaxis]
         xyz_track += xyz_svd.point
         
         if xyz_track[-1,2] - xyz_track[0,2] < 0:
