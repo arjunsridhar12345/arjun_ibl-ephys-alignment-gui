@@ -151,7 +151,7 @@ class EphysAlignment:
         xyz_track = xyz_svd.vector * np.mgrid[-200:200:1][:,np.newaxis]
         xyz_track += xyz_svd.point
         
-        if xyz_track[-1,1] - xyz_track[0,1] < 0:
+        if xyz_track[-1,2] - xyz_track[0,2] < 0:
             xyz_track = np.flipud(xyz_track)
 
         xyz_track = xyz_track[(xyz_track[:, 0] < self.brain_atlas.image.shape[1]) & (xyz_track[:, 1] < self.brain_atlas.image.shape[0])
