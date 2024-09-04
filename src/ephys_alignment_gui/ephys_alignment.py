@@ -38,8 +38,8 @@ class EphysAlignment:
                                       self.track_extent[-1])
         
         self.xyz_samples = histology.interpolate_along_track(self.xyz_track,
-                                                             self.sampling_trk -
-                                                             self.sampling_trk[0])
+                                                             self.xyz_track -
+                                                             self.xyz_track[0])
         # ensure none of the track is outside the y or x lim of atlas
         """"
         xlim = np.bitwise_and(self.xyz_samples[:, 0] > self.brain_atlas.bc.xlim[0],
