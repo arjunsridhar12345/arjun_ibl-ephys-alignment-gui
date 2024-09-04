@@ -524,7 +524,7 @@ class EphysAlignment:
         if depths is None:
             depths = self.chn_depths
         # nb using scipy here so we can change to cubic spline if needed
-        channel_depths_track = self.feature2track(depths, feature, track) - self.track_extent[0]
+        channel_depths_track = self.feature2track(depths, feature, track) - self.xyz_track[0]
         xyz_channels = histology.interpolate_along_track(self.xyz_track, channel_depths_track)
         return xyz_channels
 
