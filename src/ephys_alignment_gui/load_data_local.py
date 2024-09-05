@@ -211,7 +211,7 @@ class LoadDataLocal:
         xyz_picks = xyz_picks * self.brain_atlas.spacing
 
         xyz_picks[:, 0] = xyz_picks[:, 0] + (self.brain_atlas.offset[1] * self.brain_atlas.spacing)
-        xyz_picks[:, 1] = xyz_picks[:, 1] + (self.brain_atlas.offset[0] * self.brain_atlas.spacing) + (self.brain_atlas.offset_before_orient[0] * 25)
+        xyz_picks[:, 1] = xyz_picks[:, 1] + (self.brain_atlas.offset_before_orient[0] * 25) + (self.brain_atlas.offset[0] * self.brain_atlas.spacing) +
         xyz_picks[:, 2] = -xyz_picks[:, 2] + (self.brain_atlas.offset[2] *  self.brain_atlas.spacing)
         
         print(xyz_picks)
