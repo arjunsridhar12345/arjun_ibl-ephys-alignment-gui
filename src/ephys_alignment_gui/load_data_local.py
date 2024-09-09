@@ -213,6 +213,7 @@ class LoadDataLocal:
         xyz_picks[:, 1] = xyz_picks[:, 1] - self.brain_atlas.offset[0]
         xyz_picks[:, 2] = -(xyz_picks[:, 2] - self.brain_atlas.offset[2])
         xyz_picks = (xyz_picks * 1000) / self.brain_atlas.spacing
+        xyz_picks[:, 0] = xyz_picks[:, 0] + self.brain_atlas.image.shape[1]
         print(xyz_picks)
         return xyz_picks
 
@@ -229,7 +230,7 @@ class LoadDataLocal:
         print('Shape', ccf_slice.shape)
         label_slice = self.brain_atlas.label[xyz_indices[:, 1], :, xyz_indices[:, 2]]
         
-        label_slice = np.swapaxes(label_slice, 0, 1)
+        #label_slice = np.swapaxes(label_slice, 0, 1)
 
         width = [0, self.brain_atlas.image.shape[1]]
         height = [
