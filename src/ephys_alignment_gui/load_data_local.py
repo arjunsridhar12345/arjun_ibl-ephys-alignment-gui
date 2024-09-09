@@ -207,12 +207,12 @@ class LoadDataLocal:
             user_picks = json.load(f)
     
         xyz_picks = np.array(user_picks["xyz_picks"])
+        xyz_picks = xyz_picks * self.brain_atlas.spacing
+        
         # This is a hack and will be fixed in the future!
         xyz_picks[:, 0] = xyz_picks[:, 0] + self.brain_atlas.offset[0]
         xyz_picks[:, 1] = xyz_picks[:, 1] + self.brain_atlas.offset[1]
         xyz_picks[:, 2] = -xyz_picks[:, 2] + self.brain_atlas.offset[2]
-
-        xyz_picks = xyz_picks * self.brain_atlas.spacing
         
         print(xyz_picks)
         return xyz_picks
@@ -226,7 +226,7 @@ class LoadDataLocal:
         ]
         """
         ccf_slice = self.brain_atlas.image[xyz_indices[:, 1], :, xyz_indices[:, 2]]
-        ccf_slice = np.flipud(np.swapaxes(ccf_slice, 0, 1))
+        ccf_slice = np.swapaxes(ccf_slice, 0, 1)
         print('Shape', ccf_slice.shape)
         label_slice = self.brain_atlas._label2rgb(
             self.brain_atlas.label[xyz_indices[:, 1], :, xyz_indices[:, 2]]
