@@ -207,12 +207,12 @@ class LoadDataLocal:
             user_picks = json.load(f)
     
         xyz_picks = np.array(user_picks["xyz_picks"])
-        xyz_picks = xyz_picks * 1000
 
         # This is a hack and will be fixed in the future!
-        xyz_picks[:, 0] = xyz_picks[:, 0] + self.brain_atlas.offset[0]
-        xyz_picks[:, 1] = xyz_picks[:, 1] + self.brain_atlas.offset[1]
-        xyz_picks[:, 2] = -xyz_picks[:, 2] + self.brain_atlas.offset[2]
+        xyz_picks[:, 0] = -(xyz_picks[:, 0] - self.brain_atlas.offset[0] - 10.15)
+        xyz_picks[:, 1] = xyz_picks[:, 1] - self.brain_atlas.offset[1]
+        xyz_picks[:, 2] = -(xyz_picks[:, 2] - self.brain_atlas.offset[2])
+        xyz_picks = xyz_picks * 1000
         
         print(xyz_picks)
         return xyz_picks
