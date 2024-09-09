@@ -885,7 +885,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self.slice_chns = []
         self.slice_lines = []
         img = pg.ImageItem()
-        img.setImage(data[img_type])
+        img.setImage(np.flipud(data[img_type]))
         transform = [data['scale'][0], 0., 0., 0., data['scale'][1], 0., data['offset'][0],
                      data['offset'][1], 1.]
         img.setTransform(QtGui.QTransform(*transform))
