@@ -208,11 +208,11 @@ class LoadDataLocal:
     
         xyz_picks = np.array(user_picks["xyz_picks"])
         # This is a hack and will be fixed in the future!
-        xyz_picks = xyz_picks * self.brain_atlas.spacing
+        xyz_picks[:, 0] = xyz_picks[:, 0] + self.brain_atlas.offset[0]
+        xyz_picks[:, 1] = xyz_picks[:, 1] + self.brain_atlas.offset[1]
+        xyz_picks[:, 2] = -xyz_picks[:, 2] + self.brain_atlas.offset[2]
 
-        xyz_picks[:, 0] = xyz_picks[:, 0] + (self.brain_atlas.offset[1] * self.brain_atlas.spacing)
-        xyz_picks[:, 1] = xyz_picks[:, 1] + (self.brain_atlas.offset_before_orient[0] * 25) + (self.brain_atlas.offset[0] * self.brain_atlas.spacing)
-        xyz_picks[:, 2] = -xyz_picks[:, 2] + (self.brain_atlas.offset[2] *  self.brain_atlas.spacing)
+        xyz_picks = xyz_picks * self.brain_atlas.spacing
         
         print(xyz_picks)
         return xyz_picks
@@ -355,9 +355,9 @@ class LoadDataLocal:
         channel_dict = {}
         for i in np.arange(brain_regions.id.size):
             channel = {
-                "x": np.float64(brain_regions.xyz[i, 0]),
-                "y": np.float64(brain_regions.xyz[i, 1]),
-                "z": np.float64(brain_regions.xyz[i, 2]),
+                "x": np.float64(brain_regions.xyz[i, 0] * 1e6),
+                "y": np.float64(brain_regions.xyz[i, 1] * 1e6),
+                "z": np.float64(brain_regions.xyz[i, 2] * 1e6),
                 "axial": np.float64(brain_regions.axial[i]),
                 "lateral": np.float64(brain_regions.lateral[i]),
                 "brain_region_id": int(brain_regions.id[i]),
