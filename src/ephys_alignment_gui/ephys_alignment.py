@@ -158,7 +158,6 @@ class EphysAlignment:
                               & (xyz_track[:, 2] < self.brain_atlas.image.shape[2])]
 
         xyz_track = xyz_track[(xyz_track[:, 2] > 0)] 
-        print("track", xyz_track)
         
         tip_distance = _cumulative_distance(xyz_track)[1] + (TIP_SIZE_UM / self.brain_atlas.spacing)
         track_length = _cumulative_distance(xyz_track)[-1]
