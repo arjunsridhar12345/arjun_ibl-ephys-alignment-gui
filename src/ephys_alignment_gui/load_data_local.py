@@ -228,9 +228,8 @@ class LoadDataLocal:
         ccf_slice = np.rot90(self.brain_atlas.image[xyz_indices[:, 1], :, xyz_indices[:, 2]], k=3)
         #ccf_slice = np.swapaxes(ccf_slice, 0, 1)
         print('Shape', ccf_slice.shape)
-        label_slice = label_slice = self.brain_atlas._label2rgb(
-            np.rot90(self.brain_atlas.label[xyz_indices[:, 1], :, xyz_indices[:, 2]], k=3)
-        )
+        label_slice = label_slice = np.rot90(self.brain_atlas.label[xyz_indices[:, 1], :, xyz_indices[:, 2]], k=3)
+        
         
         #label_slice = np.swapaxes(label_slice, 0, 1)
 
