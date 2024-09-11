@@ -41,13 +41,13 @@ class EphysAlignment:
                                                              self.sampling_trk -
                                                              self.sampling_trk[0])
         # ensure none of the track is outside the y or x lim of atlas
-        xlim = np.bitwise_and(self.xyz_samples[:, 0] > self.brain_atlas.bc.xlim[0],
-                              self.xyz_samples[:, 0] < self.brain_atlas.bc.xlim[1])
-        ylim = np.bitwise_and(self.xyz_samples[:, 1] < self.brain_atlas.bc.ylim[0],
-                              self.xyz_samples[:, 1] > self.brain_atlas.bc.ylim[1])
+        xlim = np.bitwise_and(self.xyz_samples[:, 0] > 0,
+                              self.xyz_samples[:, 0] < self.brain_atlas.image.shape[1])
+        ylim = np.bitwise_and(self.xyz_samples[:, 1] < self.brain_atlas.image.shape[0],
+                              self.xyz_samples[:, 1] > 0)
         rem = np.bitwise_and(xlim, ylim)
         self.xyz_samples = self.xyz_samples[rem]
-        print('Samples', self.xyz_samples)
+
         self.region, self.region_label, self.region_colour, self.region_id\
             = self.get_histology_regions(self.xyz_samples, self.sampling_trk, self.brain_atlas)
 
