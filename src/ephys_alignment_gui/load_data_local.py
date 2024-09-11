@@ -210,6 +210,7 @@ class LoadDataLocal:
 
         # This is a hack and will be fixed in the future!
         xyz_picks /= self.brain_atlas.spacing
+        xyz_picks = xyz_picks / 1e6
         print(xyz_picks)
         return xyz_picks
 
