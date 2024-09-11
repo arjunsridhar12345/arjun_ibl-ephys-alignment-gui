@@ -1164,7 +1164,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self.reload_folder_line.setText(str(folder_path))
         self._update_ephys_alignments(folder_path)
 
-    def on_histology_folder_selected(self):
+    def on_folder_selected(self):
         """
         Triggered in offline mode when folder button is clicked
         """
@@ -1178,6 +1178,26 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         else:
             return False
 
+    def on_histology_folder_selected(self):
+        """
+        Triggered in offline mode when folder button is clicked
+        """
+        self.data_status = False
+        folder_path = Path(QtWidgets.QFileDialog.getExistingDirectory(None, "Select Histology Directory"))
+
+        if folder_path:
+            # self.histology_folder_line.setText(str(folder_path))
+            self.loaddata.histology_path = folder_path
+            if self.histology_exists:
+                self.slice_data, self.fp_slice_data = self.loaddata.get_slice_images(self.ephysalign.xyz_samples)
+            try:
+                self.data_button_pressed()
+            except TypeError:
+                pass
+            return True
+        else:
+            return False
+        
     def on_output_folder_selected(self):
         """
         Triggered in offline mode when folder button is clicked
