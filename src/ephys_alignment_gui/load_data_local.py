@@ -209,11 +209,7 @@ class LoadDataLocal:
         xyz_picks = np.array(user_picks["xyz_picks"])
 
         # This is a hack and will be fixed in the future!
-        xyz_picks[:, 0] = -(xyz_picks[:, 0] - self.brain_atlas.offset[1]) 
-        xyz_picks[:, 1] = xyz_picks[:, 1] - self.brain_atlas.offset[0]
-        xyz_picks[:, 2] = -(xyz_picks[:, 2] - self.brain_atlas.offset[2])
-        xyz_picks = (xyz_picks * 1000) / self.brain_atlas.spacing
-        xyz_picks[:, 0] =  xyz_picks[:, 0] + self.brain_atlas.image.shape[1] 
+        xyz_picks /= self.brain_atlas.spacing
         print(xyz_picks)
         return xyz_picks
 
@@ -225,10 +221,10 @@ class LoadDataLocal:
             :, self.brain_atlas.xyz2dims
         ]
         """
-        ccf_slice = np.rot90(self.brain_atlas.image[xyz_indices[:, 1], :, xyz_indices[:, 2]], k=3)
+        ccf_slice = np.rot90(self.brain_atlas.image[xyz_indices[:, 0], :, xyz_indices[:, 2]], k=3)
         #ccf_slice = np.swapaxes(ccf_slice, 0, 1)
         print('Shape', ccf_slice.shape)
-        label_slice = label_slice = np.rot90(self.brain_atlas.label[xyz_indices[:, 1], :, xyz_indices[:, 2]], k=3)
+        label_slice = label_slice = np.rot90(self.brain_atlas.label[xyz_indices[:, 0], :, xyz_indices[:, 2]], k=3)
         
         
         #label_slice = np.swapaxes(label_slice, 0, 1)
