@@ -235,6 +235,8 @@ class EphysAlignment:
 
         #region_ids = brain_atlas.get_labels(xyz_coords, mapping=mapping)
         xyz_indices = np.round(xyz_coords).astype(np.int64)
+        xyz_indices = xyz_indices[(xyz_indices[:, 0] < brain_atlas.image.shape[1]) & (xyz_indices[:, 1] < brain_atlas.image.shape[0])
+                                  & (xyz_indices[:, 2] < brain_atlas.image.shape[2])]
         region_ids = []
         for coord in xyz_indices:
             region_ids.append(brain_atlas.label[coord[1], coord[0], coord[2]])
