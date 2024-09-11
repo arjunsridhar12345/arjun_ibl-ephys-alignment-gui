@@ -221,18 +221,17 @@ class LoadDataLocal:
             :, self.brain_atlas.xyz2dims
         ]
         """
-        ccf_slice = self.brain_atlas.image[xyz_indices[:, 0], xyz_indices[:, 1], xyz_indices[:, 2]]
-        #ccf_slice = np.swapaxes(ccf_slice, 0, 1)
+        ccf_slice = self.brain_atlas.image[xyz_indices[:, 0], :, xyz_indices[:, 2]]
+        ccf_slice = np.swapaxes(ccf_slice, 0, 1)
         print('Shape', ccf_slice.shape)
         label_slice = self.brain_atlas._label2rgb(self.brain_atlas.label[xyz_indices[:, 0], :, xyz_indices[:, 2]])
         
-        
-        #label_slice = np.swapaxes(label_slice, 0, 1)
+        label_slice = np.swapaxes(label_slice, 0, 1)
 
         width = [0, self.brain_atlas.image.shape[0]]
         height = [
             0,
-            self.brain_atlas.image.shape[1]
+            self.brain_atlas.image.shape[2]
         ]
 
         slice_data = {
