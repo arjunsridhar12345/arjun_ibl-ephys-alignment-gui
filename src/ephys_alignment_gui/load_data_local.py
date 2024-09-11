@@ -217,7 +217,7 @@ class LoadDataLocal:
     def get_slice_images(self, xyz_channels):
         # Load the CCF images
         xyz_indices = np.round(xyz_channels).astype(np.int64)
-        xyz_indices = xyz_indices[(xyz_indices[:, 0] < self.brain_atlas.image.shape[1]) & (xyz_indices[:, 1] < self.brain_atlas.image.shape[0])
+        xyz_indices = xyz_indices[(xyz_indices[:, 0] < self.brain_atlas.image.shape[0]) & (xyz_indices[:, 1] < self.brain_atlas.image.shape[1])
                                   & (xyz_indices[:, 2] < self.brain_atlas.image.shape[2])]
         
         ccf_slice = self.brain_atlas.image[xyz_indices[:, 0], :, xyz_indices[:, 2]]
