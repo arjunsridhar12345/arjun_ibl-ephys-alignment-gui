@@ -237,7 +237,7 @@ class EphysAlignment:
         xyz_indices = np.round(xyz_coords).astype(np.int64)
         region_ids = []
         for coord in xyz_indices:
-            region_ids.append(brain_atlas[coord[1], coord[0], coord[2]])
+            region_ids.append(brain_atlas.label[coord[1], coord[0], coord[2]])
 
         region_info = brain_atlas.regions.get(region_ids)
         boundaries = np.where(np.diff(region_info.id))[0]
