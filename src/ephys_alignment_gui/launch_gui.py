@@ -1164,7 +1164,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self.reload_folder_line.setText(str(folder_path))
         self._update_ephys_alignments(folder_path)
 
-    def on_folder_selected(self):
+    def on_histology_folder_selected(self):
         """
         Triggered in offline mode when folder button is clicked
         """
