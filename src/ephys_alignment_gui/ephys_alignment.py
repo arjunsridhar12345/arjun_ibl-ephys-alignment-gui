@@ -264,6 +264,7 @@ class EphysAlignment:
             region_id[bound, :] = _region_id
             region_label[bound, :] = (_region_mean, _region_label)
 
+        print('Region label', region_label)
         return region, region_label, region_colour, region_id
 
     @staticmethod
