@@ -267,8 +267,8 @@ class LoadDataLocal:
                     hist_atlas = CustomAtlas(
                         atlas_image_file=self.atlas_image_path, atlas_labels_file=self.atlas_labels_path
                     )
-                    hist_slice = hist_atlas.image[xyz_indices[:, 1], :, xyz_indices[:, 2]]
-                    hist_slice = np.swapaxes(hist_slice, 0, 1)
+                    hist_slice = hist_atlas.image[xyz_indices[:, 0], :, xyz_indices[:, 2]].T
+                    #hist_slice = np.swapaxes(hist_slice, 0, 1)
                     slice_data[image.split(".nrrd")[0]] = hist_slice
 
         return slice_data, None
