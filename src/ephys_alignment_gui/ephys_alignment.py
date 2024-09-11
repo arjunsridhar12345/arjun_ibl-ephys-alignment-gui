@@ -47,7 +47,7 @@ class EphysAlignment:
                               self.xyz_samples[:, 1] > 0)
         rem = np.bitwise_and(xlim, ylim)
         self.xyz_samples = self.xyz_samples[rem]
-
+        print('Samples', self.xyz_samples)
         self.region, self.region_label, self.region_colour, self.region_id\
             = self.get_histology_regions(self.xyz_samples, self.sampling_trk, self.brain_atlas)
 
