@@ -229,10 +229,10 @@ class LoadDataLocal:
         
         #label_slice = np.swapaxes(label_slice, 0, 1)
 
-        width = [0, self.brain_atlas.image.shape[0]]
+        width = [0, self.brain_atlas.image.shape[2]]
         height = [
             0,
-            self.brain_atlas.image.shape[2]
+            self.brain_atlas.image.shape[0]
         ]
 
         slice_data = {
