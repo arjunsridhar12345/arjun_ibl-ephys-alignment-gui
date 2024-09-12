@@ -216,25 +216,23 @@ class LoadDataLocal:
 
     def get_slice_images(self, xyz_channels):
         # Load the CCF images
-        xyz_indices = np.round(xyz_channels).astype(np.int64)
-        xyz_indices = xyz_indices[(xyz_indices[:, 0] < self.brain_atlas.image.shape[0]) & (xyz_indices[:, 1] < self.brain_atlas.image.shape[1])
-                                  & (xyz_indices[:, 2] < self.brain_atlas.image.shape[2])]
-        
-        ccf_slice = self.brain_atlas.image[xyz_indices[:, 0], :, xyz_indices[:, 2]]
-        ccf_slice = np.rot90(np.swapaxes(ccf_slice, 0, 1), k=3)
+        index = self.brain_atlas.bc.xyz2i(xyz_channels)[
+            :, self.brain_atlas.xyz2dims
+        ]
+        ccf_slice = self.brain_atlas.image[index[:, 0], :, index[:, 2]]
+        ccf_slice = np.swapaxes(ccf_slice, 0, 1)
 
         label_slice = self.brain_atlas._label2rgb(
-            self.brain_atlas.label[xyz_indices[:, 0], :, xyz_indices[:, 2]]
+            self.brain_atlas.label[index[:, 0], :, index[:, 2]]
         )
         label_slice = np.swapaxes(label_slice, 0, 1)
 
-        width = [0, ccf_slice.shape[0]]
+        width = [self.brain_atlas.bc.i2x(0), self.brain_atlas.bc.i2x(456)]
         height = [
-            0,
-            ccf_slice.shape[1],
+            self.brain_atlas.bc.i2z(index[0, 2]),
+            self.brain_atlas.bc.i2z(index[-1, 2]),
         ]
 
-        print(ccf_slice.shape)
         slice_data = {
             "ccf": ccf_slice,
             "label": label_slice,
