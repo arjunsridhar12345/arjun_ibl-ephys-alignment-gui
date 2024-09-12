@@ -240,8 +240,8 @@ class LoadDataLocal:
             "label": label_slice,
             "scale": np.array(
                 [
-                    (width[-1] - width[0]) / ccf_slice.shape[0] * 50,
-                    (height[-1] - height[0]) / ccf_slice.shape[1] * 50,
+                    (width[-1] - width[0]) / ccf_slice.shape[0],
+                    (height[-1] - height[0]) / ccf_slice.shape[1],
                 ]
             ),
             "offset": np.array([width[0], height[0]]),
