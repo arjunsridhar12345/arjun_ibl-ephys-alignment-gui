@@ -226,7 +226,6 @@ class LoadDataLocal:
         return xyz_picks
 
     def get_slice_images(self, xyz_channels):
-        print('Slice xyz channels', xyz_channels)
         # Load the CCF images
         """
         index = self.brain_atlas.bc.xyz2i(xyz_channels)[
