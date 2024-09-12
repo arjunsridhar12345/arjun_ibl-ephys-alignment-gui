@@ -91,6 +91,7 @@ class EphysAlignment:
         # Compute distance to first electrode from bottom coordinate
         tip_distance = _cumulative_distance(xyz_track)[1] + TIP_SIZE_UM / self.brain_atlas.spacing / 1e6
         track_length = _cumulative_distance(xyz_track)[-1]
+        print('Track length', track_length)
         track_extent = np.array([0, track_length]) - tip_distance
         print('Track extent', track_extent)
         return xyz_track, track_extent
