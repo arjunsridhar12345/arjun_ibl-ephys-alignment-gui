@@ -1189,7 +1189,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             # self.histology_folder_line.setText(str(folder_path))
             self.loaddata.histology_path = folder_path
             if self.histology_exists:
-                self.slice_data, self.fp_slice_data = self.loaddata.get_slice_images(self.ephysalign.xyz_samples)
+                self.slice_data, self.fp_slice_data = self.loaddata.get_slice_images(self.ephysalign.xyz_track)
             try:
                 self.data_button_pressed()
             except TypeError:
@@ -1297,7 +1297,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             else:
                 self.img_raw_data = {}
             if self.histology_exists:
-                self.slice_data, self.fp_slice_data = self.loaddata.get_slice_images(self.ephysalign.xyz_samples)
+                self.slice_data, self.fp_slice_data = self.loaddata.get_slice_images(self.ephysalign.xyz_track)
             else:
                 # probably need to return an empty array of things
                 self.slice_data = {}
