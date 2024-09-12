@@ -239,7 +239,7 @@ class EphysAlignment:
 
         #region_ids = brain_atlas.get_labels(xyz_coords, mapping=mapping)
         region_ids = []
-        xyz_coords = np.round(xyz_coords * 1e6).astype(np.int64)
+        xyz_coords = np.round(xyz_coords).astype(np.int64)
         for coord in xyz_coords:
             region_ids.append(brain_atlas.label[coord[0], coord[1], coord[2]])
 
