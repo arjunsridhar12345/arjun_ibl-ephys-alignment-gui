@@ -12,7 +12,7 @@ from one import alf
 
 import iblatlas.atlas as atlas
 
-from .custom_atlas import CustomAllenAtlas
+from .custom_atlas import CustomAtlas
 
 
 # temporarily add this in for neuropixel course
@@ -123,7 +123,7 @@ class LoadDataLocal:
     def get_data(self):
 
         # self.brain_atlas = atlas.AllenAtlas(hist_path=self.atlas_path)
-        self.brain_atlas = CustomAllenAtlas(
+        self.brain_atlas = CustomAtlas(
            template_path=self.atlas_path, label_path=self.atlas_path
         )
 
@@ -262,7 +262,7 @@ class LoadDataLocal:
 
                 if hist_path:
                     # hist_atlas = atlas.AllenAtlas(hist_path=hist_path)
-                    hist_atlas = CustomAllenAtlas(
+                    hist_atlas = CustomAtlas(
                         template_path=hist_path, label_path=self.atlas_path
                     )
                     hist_slice = hist_atlas.image[index[:, 0], :, index[:, 2]]
