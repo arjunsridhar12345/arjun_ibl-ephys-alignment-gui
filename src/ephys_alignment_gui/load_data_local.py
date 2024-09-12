@@ -234,6 +234,7 @@ class LoadDataLocal:
             self.brain_atlas.image.shape[2],
         ]
 
+        print(ccf_slice.shape)
         slice_data = {
             "ccf": ccf_slice,
             "label": label_slice,
