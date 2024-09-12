@@ -71,13 +71,15 @@ class EphysAlignment:
         # may be located above the surface of the brain
         entry = (traj_entry.eval_z(self.brain_atlas.bc.zlim))[0, :]
         print('Entry', entry)
+        """
         if speedy:
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
         else:
             exit = atlas.Insertion.get_brain_exit(traj_exit, self.brain_atlas)
             # The exit is just below the bottom surfacce of the brain
             exit[2] = exit[2] - 200 / 1e6
-
+        """
+        exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
         # Catch cases where the exit
         if any(np.isnan(exit)):
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
@@ -232,7 +234,12 @@ class EphysAlignment:
         if not brain_atlas:
             brain_atlas = atlas.AllenAtlas(25)
 
-        region_ids = brain_atlas.get_labels(xyz_coords, mapping=mapping)
+        #region_ids = brain_atlas.get_labels(xyz_coords, mapping=mapping)
+        region_ids = []
+        xyz_coords = np.round(xyz_coords * 1e6).astype(np.int64)
+        for coord in xyz_coords:
+            region_ids.append(brain_atlas.label[coord[0], coord[1], coord[2]])
+
         region_info = brain_atlas.regions.get(region_ids)
         boundaries = np.where(np.diff(region_info.id))[0]
         region = np.empty((boundaries.size + 1, 2))
