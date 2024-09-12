@@ -1189,7 +1189,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             # self.histology_folder_line.setText(str(folder_path))
             self.loaddata.histology_path = folder_path
             if self.histology_exists:
-                self.slice_data, self.fp_slice_data = self.loaddata.get_slice_images(self.ephysalign.xyz_samples)
+                self.slice_data, self.fp_slice_data = self.loaddata.get_slice_images(self.ephysalign.xyz_track)
             try:
                 self.data_button_pressed()
             except TypeError:
@@ -1268,7 +1268,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
                                                  brain_atlas=self.loaddata.brain_atlas)
 
             self.region_fp, self.region_label_fp, self.region_colour_fp, _ \
-                = EphysAlignment.get_histology_regions(self.ephysalign.xyz_samples, self.ephysalign.sampling_trk,
+                = EphysAlignment.get_histology_regions(self.ephysalign.xyz_track, self.ephysalign.sampling_trk,
                                                        self.loaddata.brain_atlas)
 
             self.features[self.idx], self.track[self.idx], self.xyz_track \
@@ -1297,7 +1297,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             else:
                 self.img_raw_data = {}
             if self.histology_exists:
-                self.slice_data, self.fp_slice_data = self.loaddata.get_slice_images(self.ephysalign.xyz_samples)
+                self.slice_data, self.fp_slice_data = self.loaddata.get_slice_images(self.ephysalign.xyz_track)
             else:
                 # probably need to return an empty array of things
                 self.slice_data = {}
@@ -1342,7 +1342,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         if not self.histology_exists:
             return
 
-        nearby_bounds = self.ephysalign.get_nearest_boundary(self.ephysalign.xyz_samples,
+        nearby_bounds = self.ephysalign.get_nearest_boundary(self.ephysalign.xyz_track,
                                                              self.allen, steps=6,
                                                              brain_atlas=self.loaddata.brain_atlas)
         [self.hist_nearby_x, self.hist_nearby_y,
