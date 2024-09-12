@@ -3,6 +3,7 @@ import numpy as np
 from datetime import datetime
 
 from pathlib import Path
+import os
 import glob
 import json
 
@@ -11,7 +12,8 @@ from one import alf
 
 import iblatlas.atlas as atlas
 
-from .custom_atlas import CustomAllenAtlas,CustomAtlas
+from .custom_atlas import CustomAllenAtlas
+
 
 # temporarily add this in for neuropixel course
 # until figured out fix to problem on win32
@@ -19,7 +21,7 @@ import ssl
 
 ssl._create_default_https_context = ssl._create_unverified_context
 logger = logging.getLogger("ibllib")
-DATA_PATH = Path('/root/capsule/data')
+
 
 class LoadDataLocal:
     def __init__(self):
@@ -34,6 +36,7 @@ class LoadDataLocal:
         self.shank_idx = 0
         self.n_shanks = 1
         self.output_directory = None
+        self.previous_directory = None
 
     def get_info(self, folder_path):
         """
@@ -44,7 +47,18 @@ class LoadDataLocal:
         prev_aligns = self.get_previous_alignments()
         return prev_aligns, shank_list
 
-    def get_previous_alignments(self, shank_idx=0):
+
+    def get_previous_info(self, folder_path):
+        """
+        Read in the local json file to see if any previous alignments exist
+        """
+        shank_list = self.get_nshanks()
+        prev_aligns = self.get_previous_alignments(folder_path=folder_path)
+        return prev_aligns, shank_list
+
+    def get_previous_alignments(self, shank_idx=0,folder_path = None):
+        if folder_path is None:
+            folder_path = self.folder_path
 
         self.shank_idx = shank_idx
         # If previous alignment json file exists, read in previous alignments
@@ -109,20 +123,8 @@ class LoadDataLocal:
     def get_data(self):
 
         # self.brain_atlas = atlas.AllenAtlas(hist_path=self.atlas_path)
-        # self.brain_atlas = CustomAllenAtlas(
-        #    template_path=self.atlas_path, label_path=self.atlas_path
-        # )
-        self.atlas_image_path = tuple(DATA_PATH.glob(f'*/*/image_space_histology/ccf_in_*.nrrd'))
-        if not self.atlas_image_path:
-            raise FileNotFoundError('Could not find path to atlas image in data asset attached. Looking for folder image space histology')
-        
-        self.atlas_labels_path = tuple(DATA_PATH.glob(f'*/*/image_space_histology/labels_in_*.nrrd'))
-        if not self.atlas_labels_path:
-            raise FileNotFoundError('Could not find path to atlas labels in data asset attached. Looking for folder image space histology')
-
-        self.brain_atlas = CustomAtlas(
-           atlas_image_file=self.atlas_image_path[0].as_posix(),#ccf_in_713506.nrrd',
-           atlas_labels_file=self.atlas_labels_path[0].as_posix(),
+        self.brain_atlas = CustomAllenAtlas(
+           template_path=self.atlas_path, label_path=self.atlas_path
         )
 
         chn_x = np.unique(self.chn_coords_all[:, 0])
@@ -205,16 +207,13 @@ class LoadDataLocal:
         assert len(xyz_file) == 1
         with open(xyz_file[0], "r") as f:
             user_picks = json.load(f)
-    
-        xyz_picks = np.array(user_picks["xyz_picks"])
 
-        # This is a hack and will be fixed in the future!
-        xyz_picks /= self.brain_atlas.spacing
-    
-        print(xyz_picks)
+        xyz_picks = np.array(user_picks["xyz_picks"]) / self.brain_atlas.spacing
+        xyz_picks = xyz_picks / 1e6
         return xyz_picks
 
     def get_slice_images(self, xyz_channels):
+
         # Load the CCF images
         index = self.brain_atlas.bc.xyz2i(xyz_channels)[
             :, self.brain_atlas.xyz2dims
@@ -227,13 +226,11 @@ class LoadDataLocal:
         )
         label_slice = np.swapaxes(label_slice, 0, 1)
 
-        width = [self.brain_atlas.bc.i2x(0), self.brain_atlas.bc.i2x(self.brain_atlas.image.shape[0])]
+        width = [self.brain_atlas.bc.i2x(0), self.brain_atlas.bc.i2x(456)]
         height = [
             self.brain_atlas.bc.i2z(index[0, 2]),
             self.brain_atlas.bc.i2z(index[-1, 2]),
         ]
-
-        print(ccf_slice.shape, self.brain_atlas.bc.i2x(self.brain_atlas.image.shape[0]))
 
         slice_data = {
             "ccf": ccf_slice,
@@ -265,8 +262,8 @@ class LoadDataLocal:
 
                 if hist_path:
                     # hist_atlas = atlas.AllenAtlas(hist_path=hist_path)
-                    hist_atlas = CustomAtlas(
-                        atlas_image_file=self.atlas_image_path, atlas_labels_file=self.atlas_labels_path
+                    hist_atlas = CustomAllenAtlas(
+                        template_path=hist_path, label_path=self.atlas_path
                     )
                     hist_slice = hist_atlas.image[index[:, 0], :, index[:, 2]]
                     hist_slice = np.swapaxes(hist_slice, 0, 1)
@@ -318,7 +315,8 @@ class LoadDataLocal:
             if self.n_shanks == 1
             else f"channel_locations_shank{self.shank_idx + 1}.json"
         )
-
+        
+        os.makedirs(self.output_directory, exist_ok=True)
         with open(self.output_directory.joinpath(chan_loc_filename), "w") as f:
             json.dump(channel_dict, f, indent=2, separators=(",", ": "))
         original_json = self.alignments

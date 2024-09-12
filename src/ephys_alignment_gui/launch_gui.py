@@ -512,10 +512,10 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
                                    pen=self.rpen_dot)
             self.fig_slice.addItem(self.traj_line)
             slice_name = self.slice_options_group.checkedAction().text()
-            self.fig_slice.setXRange(min=np.min(self.xyz_channels[:, 0]) - 200,
-                                     max=np.max(self.xyz_channels[:, 0]) + 200)
-            self.fig_slice.setYRange(min=np.min(self.xyz_channels[:, 2]) - 500,
-                                     max=np.max(self.xyz_channels[:, 2]) + 500)
+            self.fig_slice.setXRange(min=np.min(self.xyz_channels[:, 0]) - 200 / 1e6,
+                                     max=np.max(self.xyz_channels[:, 0]) + 200 / 1e6)
+            self.fig_slice.setYRange(min=np.min(self.xyz_channels[:, 2]) - 500 / 1e6,
+                                     max=np.max(self.xyz_channels[:, 2]) + 500 / 1e6)
             self.fig_slice.resize(50, self.slice_height)
             exporter = pg.exporters.ImageExporter(self.fig_slice)
             exporter.export(
@@ -616,11 +616,11 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         # lines can't be moved outside interpolation bounds
         # Add offset of 1um to keep within bounds of interpolation
         offset = 1
-        self.tip_pos.setBounds((self.track[self.idx][0] + offset,
-                                self.track[self.idx][-1] -
+        self.tip_pos.setBounds((self.track[self.idx][0] * 1e6 + offset,
+                                self.track[self.idx][-1] * 1e6 -
                                 (self.probe_top + offset)))
-        self.top_pos.setBounds((self.track[self.idx][0] + (self.probe_top + offset),
-                                self.track[self.idx][-1] - offset))
+        self.top_pos.setBounds((self.track[self.idx][0] * 1e6 + (self.probe_top + offset),
+                                self.track[self.idx][-1] * 1e6 - offset))
         self.tip_pos.sigPositionChanged.connect(self.tip_line_moved)
         self.top_pos.sigPositionChanged.connect(self.top_line_moved)
 
@@ -707,7 +707,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
                                            self.hist_nearby_col)):
             colour = QtGui.QColor(c)
             plot = pg.PlotCurveItem()
-            plot.setData(x=x, y=y, fillLevel=10, fillOutline=True)
+            plot.setData(x=x, y=y * 1e6, fillLevel=10, fillOutline=True)
             plot.setBrush(colour)
             plot.setPen(colour)
             fig.addItem(plot)
@@ -717,7 +717,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             colour = QtGui.QColor(c)
             colour.setAlpha(70)
             plot = pg.PlotCurveItem()
-            plot.setData(x=x, y=y, fillLevel=10, fillOutline=True)
+            plot.setData(x=x, y=y * 1e6, fillLevel=10, fillOutline=True)
             plot.setBrush(colour)
             plot.setPen(colour)
             fig.addItem(plot)
@@ -740,7 +740,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         if not self.histology_exists:
             return
 
-        self.track[self.idx] = (self.track[self.idx_prev] + self.tip_pos.value())
+        self.track[self.idx] = (self.track[self.idx_prev] + self.tip_pos.value() / 1e6)
         self.features[self.idx] = (self.features[self.idx_prev])
 
         self.get_scaled_histology()
@@ -755,9 +755,9 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             return
 
         # Track --> histology plot
-        line_track = np.array([line[0].pos().y() for line in self.lines_tracks])
+        line_track = np.array([line[0].pos().y() for line in self.lines_tracks]) / 1e6
         # Feature --> ephys data plots
-        line_feature = np.array([line[0].pos().y() for line in self.lines_features])
+        line_feature = np.array([line[0].pos().y() for line in self.lines_features]) / 1e6
         depths_track = np.sort(np.r_[self.track[self.idx_prev][[0, -1]], line_track])
 
         self.track[self.idx] = self.ephysalign.feature2track(depths_track,
@@ -854,15 +854,15 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         if not self.histology_exists:
             return
 
-        self.fit_plot.setData(x=self.features[self.idx],
-                              y=self.track[self.idx])
-        self.fit_scatter.setData(x=self.features[self.idx],
-                                 y=self.track[self.idx])
+        self.fit_plot.setData(x=self.features[self.idx] * 1e6,
+                              y=self.track[self.idx] * 1e6)
+        self.fit_scatter.setData(x=self.features[self.idx] * 1e6,
+                                 y=self.track[self.idx] * 1e6)
 
-        depth_lin = self.ephysalign.feature2track_lin(self.depth, self.features[self.idx],
+        depth_lin = self.ephysalign.feature2track_lin(self.depth / 1e6, self.features[self.idx],
                                                       self.track[self.idx])
         if np.any(depth_lin):
-            self.fit_plot_lin.setData(x=self.depth, y=depth_lin)
+            self.fit_plot_lin.setData(x=self.depth, y=depth_lin * 1e6)
         else:
             self.fit_plot_lin.setData()
 
@@ -1189,7 +1189,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             # self.histology_folder_line.setText(str(folder_path))
             self.loaddata.histology_path = folder_path
             if self.histology_exists:
-                self.slice_data, self.fp_slice_data = self.loaddata.get_slice_images(self.ephysalign.xyz_track)
+                self.slice_data, self.fp_slice_data = self.loaddata.get_slice_images(self.ephysalign.xyz_samples)
             try:
                 self.data_button_pressed()
             except TypeError:
@@ -1197,7 +1197,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             return True
         else:
             return False
-        
+
     def on_output_folder_selected(self):
         """
         Triggered in offline mode when folder button is clicked
@@ -1210,7 +1210,16 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             return True
         else:
             return False
+        
+    # def on_load_existing_button_pressed(self):
+    #     if self.loaddata.output_directory is not None:
+    #         folder_path = Path(QtWidgets.QFileDialog.getExistingDirectory(None, "Select Annotation Directory"),self.loaddata.output_directory)
+    #     else:
+    #         folder_path = Path(QtWidgets.QFileDialog.getExistingDirectory(None, "Select Annotation Directory"))
+    #     self.prev_alignments, shank_options = self.loaddata.get_previous_info(folder_path)
+    #     self.populate_lists(shank_options, self.shank_list, self.shank_combobox)
 
+        
     def on_shank_selected(self, idx):
         """
         Triggered in offline mode for selecting shank when using NP2.0
@@ -1297,7 +1306,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             else:
                 self.img_raw_data = {}
             if self.histology_exists:
-                self.slice_data, self.fp_slice_data = self.loaddata.get_slice_images(self.ephysalign.xyz_track)
+                self.slice_data, self.fp_slice_data = self.loaddata.get_slice_images(self.ephysalign.xyz_samples)
             else:
                 # probably need to return an empty array of things
                 self.slice_data = {}
@@ -1317,7 +1326,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
 
         # Initialise ephys plots
         self.plot_image(self.img_fr_data)
-        self.plot_probe(self.probe_rms_APdata)
+        self.plot_probe(self.probe_rms_LFPdata)
         self.plot_line(self.line_fr_data)
 
         # Initialise histology plots
@@ -1327,7 +1336,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self.toggle_labels_button_pressed()
         self.plot_scale_factor()
         if np.any(self.feature_prev):
-            self.create_lines(self.feature_prev[1:-1])
+            self.create_lines(self.feature_prev[1:-1] * 1e6)
         # Initialise slice and fit images
         self.plot_fit()
         self.plot_slice(self.slice_data, 'ccf')
@@ -1342,7 +1351,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         if not self.histology_exists:
             return
 
-        nearby_bounds = self.ephysalign.get_nearest_boundary(self.ephysalign.xyz_track,
+        nearby_bounds = self.ephysalign.get_nearest_boundary(self.ephysalign.xyz_samples,
                                                              self.allen, steps=6,
                                                              brain_atlas=self.loaddata.brain_atlas)
         [self.hist_nearby_x, self.hist_nearby_y,
@@ -1394,7 +1403,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self.line_init.setChecked(True)
         self.probe_init.setChecked(True)
         self.plot_image(self.img_fr_data)
-        self.plot_probe(self.probe_rms_APdata)
+        self.plot_probe(self.probe_rms_LFPdata)
         self.plot_line(self.line_fr_data)
 
     def fit_button_pressed(self):
@@ -1484,8 +1493,8 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         if not self.histology_exists:
             return
 
-        if self.track[self.idx][-1] - 50 >= np.max(self.chn_depths):
-            self.track[self.idx] -= 50 
+        if self.track[self.idx][-1] - 50 / 1e6 >= np.max(self.chn_depths) / 1e6:
+            self.track[self.idx] -= 50 / 1e6
             self.offset_button_pressed()
 
 
@@ -1497,8 +1506,8 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         if not self.histology_exists:
             return
 
-        if self.track[self.idx][0] + 50  <= np.min(self.chn_depths):
-            self.track[self.idx] += 50 
+        if self.track[self.idx][0] + 50 / 1e6 <= np.min(self.chn_depths) / 1e6:
+            self.track[self.idx] += 50 / 1e6
             self.offset_button_pressed()
 
     def toggle_labels_button_pressed(self):
@@ -1714,7 +1723,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self.plot_histology(self.fig_hist)
         self.plot_scale_factor()
         if np.any(self.feature_prev):
-            self.create_lines(self.feature_prev[1:-1])
+            self.create_lines(self.feature_prev[1:-1] * 1e6)
         self.plot_fit()
         self.plot_channels()
         self.fig_hist.setYRange(min=self.probe_tip - self.probe_extra,
