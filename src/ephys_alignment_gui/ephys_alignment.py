@@ -30,7 +30,7 @@ class EphysAlignment:
             self.track_init = track_prev
             self.feature_init = feature_prev
         else:
-            start_lims = 60
+            start_lims = 6000
             self.track_init = np.array([-1 * start_lims, start_lims])
             self.feature_init = np.array([-1 * start_lims, start_lims])
 
@@ -40,6 +40,7 @@ class EphysAlignment:
         self.xyz_samples = histology.interpolate_along_track(self.xyz_track,
                                                              self.sampling_trk -
                                                              self.sampling_trk[0])
+        """
         # ensure none of the track is outside the y or x lim of atlas
         xlim = np.bitwise_and(self.xyz_samples[:, 0] > 0,
                               self.xyz_samples[:, 0] < self.brain_atlas.image.shape[1])
@@ -47,6 +48,7 @@ class EphysAlignment:
                               self.xyz_samples[:, 2] > 0)
         rem = np.bitwise_and(xlim, ylim)
         self.xyz_samples = self.xyz_samples[rem]
+        """
         print('Samples', self.xyz_samples)
         self.region, self.region_label, self.region_colour, self.region_id\
             = self.get_histology_regions(self.xyz_samples, self.sampling_trk, self.brain_atlas)
