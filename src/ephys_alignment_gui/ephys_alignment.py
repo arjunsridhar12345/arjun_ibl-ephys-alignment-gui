@@ -64,24 +64,34 @@ class EphysAlignment:
         brain and top of atlas) offset by distance to probe tip
         :type track_extent: np.array((2))
         """
+
+        """
         # Use the first and last quarter of xyz_picks to estimate the trajectory beyond xyz_picks
-        n_picks = np.max([10, round(xyz_picks.shape[0] / 10)])
+        n_picks = np.max([4, round(xyz_picks.shape[0] / 4)])
         traj_entry = atlas.Trajectory.fit(xyz_picks[:n_picks, :])
         traj_exit = atlas.Trajectory.fit(xyz_picks[-1 * n_picks:, :])
 
         # Force the entry to be on the upper z lim of the atlas to account for cases where channels
         # may be located above the surface of the brain
-        print('BC zlim', self.brain_atlas.bc.zlim)
+        
         entry = (traj_entry.eval_z(self.brain_atlas.bc.zlim))[0, :]
-        """
-        if speedy:
-            exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
+        #if speedy:
+        exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
+        
         else:
-            exit = atlas.Insertion.get_brain_exit(traj_exit, self.brain_atlas)
+            print("Brain atlas resolution", self.brain_atlas.res_um)
+            self.brain_atlas.compute_surface()
+            dist = traj_exit.mindist(self.brain_atlas.srf_xyz)
+            print("Brain atlas surface", self.brain_atlas.srf_xyz)
+            print("Trajectory distance", dist)
+            dist_sort = np.argsort(dist)
+            print("Min distance", dist[dist_sort])
+
+            exit = self._get_surface_intersection(traj_exit, self.brain_atlas)
             # The exit is just below the bottom surfacce of the brain
             exit[2] = exit[2] - 200 / 1e6
-        """
-        exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
+        
+
         # Catch cases where the exit
         if any(np.isnan(exit)):
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
@@ -90,11 +100,25 @@ class EphysAlignment:
         xyz_track = xyz_track[np.argsort(xyz_track[:, 2]), :]
 
         # Compute distance to first electrode from bottom coordinate
-        tip_distance = _cumulative_distance(xyz_track)[1] + TIP_SIZE_UM / self.brain_atlas.spacing
+        """
+
+        xyz_svd = atlas.Trajectory.fit(xyz_picks)
+        xyz_track = xyz_svd.vector * np.mgrid[-200:200:1][:,np.newaxis]
+        xyz_track += xyz_svd.point
+        
+        if xyz_track[-1,2] - xyz_track[0,2] < 0:
+            xyz_track = np.flipud(xyz_track)
+
+        xyz_track = xyz_track[(xyz_track[:, 0] < self.brain_atlas.image.shape[1]) & (xyz_track[:, 1] < self.brain_atlas.image.shape[0])
+                              & (xyz_track[:, 2] < self.brain_atlas.image.shape[2])]
+
+        xyz_track = xyz_track[(xyz_track[:, 2] > 0)] 
+        print("track", xyz_track)
+        
+        tip_distance = _cumulative_distance(xyz_track)[1] + (TIP_SIZE_UM / self.brain_atlas.spacing)
         track_length = _cumulative_distance(xyz_track)[-1]
         track_extent = np.array([0, track_length]) - tip_distance
-        print('Track', xyz_track)
-        print('Extent', track_extent)
+        
         return xyz_track, track_extent
 
     def get_track_and_feature(self):
