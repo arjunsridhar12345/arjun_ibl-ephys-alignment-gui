@@ -223,6 +223,7 @@ class LoadDataLocal:
 
         xyz_picks = np.array(user_picks["xyz_picks"]) / self.brain_atlas.spacing
         xyz_picks = xyz_picks / 1e6
+        print('xyz_picks', xyz_picks)
         return xyz_picks
 
     def get_slice_images(self, xyz_channels):
