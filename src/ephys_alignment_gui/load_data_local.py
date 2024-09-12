@@ -228,9 +228,12 @@ class LoadDataLocal:
     def get_slice_images(self, xyz_channels):
         print('Slice xyz channels', xyz_channels)
         # Load the CCF images
+        """
         index = self.brain_atlas.bc.xyz2i(xyz_channels)[
             :, self.brain_atlas.xyz2dims
         ]
+        """
+        index = np.round(xyz_channels).astype(np.int64)
         ccf_slice = self.brain_atlas.image[index[:, 0], :, index[:, 2]]
         ccf_slice = np.swapaxes(ccf_slice, 0, 1)
 
