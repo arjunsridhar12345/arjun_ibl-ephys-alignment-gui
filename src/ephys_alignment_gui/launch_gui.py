@@ -512,10 +512,10 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
                                    pen=self.rpen_dot)
             self.fig_slice.addItem(self.traj_line)
             slice_name = self.slice_options_group.checkedAction().text()
-            self.fig_slice.setXRange(min=np.min(self.xyz_channels[:, 0]) - 200 / 1e6,
-                                     max=np.max(self.xyz_channels[:, 0]) + 200 / 1e6)
-            self.fig_slice.setYRange(min=np.min(self.xyz_channels[:, 2]) - 500 / 1e6,
-                                     max=np.max(self.xyz_channels[:, 2]) + 500 / 1e6)
+            self.fig_slice.setXRange(min=np.min(self.xyz_channels[:, 0]) - 200,
+                                     max=np.max(self.xyz_channels[:, 0]) + 200)
+            self.fig_slice.setYRange(min=np.min(self.xyz_channels[:, 2]) - 500,
+                                     max=np.max(self.xyz_channels[:, 2]) + 500)
             self.fig_slice.resize(50, self.slice_height)
             exporter = pg.exporters.ImageExporter(self.fig_slice)
             exporter.export(
