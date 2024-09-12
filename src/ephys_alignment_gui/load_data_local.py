@@ -228,7 +228,7 @@ class LoadDataLocal:
         )
         label_slice = np.swapaxes(label_slice, 0, 1)
 
-        width = [0, self.brain_atlas.image.shape[1]]
+        width = [0, self.brain_atlas.image.shape[0]]
         height = [
             0,
             self.brain_atlas.image.shape[2],
@@ -236,8 +236,8 @@ class LoadDataLocal:
 
         print(ccf_slice.shape)
         slice_data = {
-            "ccf": ccf_slice,
-            "label": label_slice,
+            "ccf": ccf_slice.T,
+            "label": label_slice.T,
             "scale": np.array(
                 [
                     (width[-1] - width[0]) / ccf_slice.shape[0],
