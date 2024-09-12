@@ -87,14 +87,14 @@ class EphysAlignment:
         xyz_track = np.r_[exit[np.newaxis, :], xyz_picks, entry[np.newaxis, :]]
         # Sort so that most ventral coordinate is first
         xyz_track = xyz_track[np.argsort(xyz_track[:, 2]), :]
-
+        print('exit', exit)
         # Compute distance to first electrode from bottom coordinate
         tip_distance = _cumulative_distance(xyz_track)[1] + TIP_SIZE_UM / self.brain_atlas.spacing / 1e6
         track_length = _cumulative_distance(xyz_track)[-1]
         print('Track length', track_length)
         track_extent = np.array([0, track_length]) - tip_distance
         print('Track extent', track_extent)
-        return xyz_track, track_extent
+        return xyz_track, track_extent, temp
 
     def get_track_and_feature(self):
         """
