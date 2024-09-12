@@ -94,7 +94,7 @@ class EphysAlignment:
         print('Track length', track_length)
         track_extent = np.array([0, track_length]) - tip_distance
         print('Track extent', track_extent)
-        return xyz_track, track_extent, temp
+        return xyz_track, track_extent
 
     def get_track_and_feature(self):
         """
