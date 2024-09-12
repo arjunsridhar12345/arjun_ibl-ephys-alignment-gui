@@ -227,7 +227,7 @@ class LoadDataLocal:
         )
         label_slice = np.swapaxes(label_slice, 0, 1)
 
-        width = [self.brain_atlas.bc.i2x(0), self.brain_atlas.bc.i2x(456)]
+        width = [self.brain_atlas.bc.i2x(0), self.brain_atlas.bc.i2x(self.brain_atlas.image.shape[0])]
         height = [
             self.brain_atlas.bc.i2z(index[0, 2]),
             self.brain_atlas.bc.i2z(index[-1, 2]),
@@ -266,7 +266,7 @@ class LoadDataLocal:
                     hist_atlas = CustomAtlas(
                         atlas_image_file=self.atlas_image_path, atlas_labels_file=self.atlas_labels_path
                     )
-                    hist_slice = hist_atlas.image[xyz_indices[:, 0], :, xyz_indices[:, 2]]
+                    hist_slice = hist_atlas.image[index[:, 0], :, index[:, 2]]
                     hist_slice = np.swapaxes(hist_slice, 0, 1)
                     slice_data[image.split(".nrrd")[0]] = hist_slice
 
