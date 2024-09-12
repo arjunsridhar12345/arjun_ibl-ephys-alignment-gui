@@ -451,7 +451,6 @@ class EphysAlignment:
         # nb using scipy here so we can change to cubic spline if needed
         channel_depths_track = self.feature2track(depths, feature, track) - self.track_extent[0]
         xyz_channels = histology.interpolate_along_track(self.xyz_track, channel_depths_track)
-        print('xyz channels', xyz_channels)
         return xyz_channels
 
     def get_brain_locations(self, xyz_channels):
