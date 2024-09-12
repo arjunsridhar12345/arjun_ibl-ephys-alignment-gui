@@ -115,6 +115,7 @@ class EphysAlignment:
         xyz_track = xyz_track[(xyz_track[:, 2] > 0)] 
         print("track", xyz_track)
         
+        xyz_track = xyz_track[np.argsort(xyz_track[:, 2]), :]
         tip_distance = _cumulative_distance(xyz_track)[1] + (TIP_SIZE_UM / self.brain_atlas.spacing)
         track_length = _cumulative_distance(xyz_track)[-1]
         track_extent = np.array([0, track_length]) - tip_distance
