@@ -25,7 +25,6 @@ class EphysAlignment:
         self.chn_depths = chn_depths
 
         self.xyz_track, self.track_extent = self.get_insertion_track(xyz_picks, speedy=speedy)
-        self.xyz_track = np.flipud(self.xyz_track)
 
         if np.any(track_prev):
             self.track_init = track_prev
@@ -45,8 +44,8 @@ class EphysAlignment:
         # ensure none of the track is outside the y or x lim of atlas
         xlim = np.bitwise_and(self.xyz_samples[:, 0] > 0,
                               self.xyz_samples[:, 0] < self.brain_atlas.image.shape[0])
-        ylim = np.bitwise_and(self.xyz_samples[:, 1] < self.brain_atlas.image.shape[1],
-                              self.xyz_samples[:, 1] > 0)
+        ylim = np.bitwise_and(self.xyz_samples[:, 2] < self.brain_atlas.image.shape[2],
+                              self.xyz_samples[:, 2] > 0)
         rem = np.bitwise_and(xlim, ylim)
         self.xyz_samples = self.xyz_samples[rem]
         print('Samples', self.xyz_samples)
