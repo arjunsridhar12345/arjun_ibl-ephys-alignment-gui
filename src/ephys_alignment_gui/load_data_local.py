@@ -243,7 +243,7 @@ class LoadDataLocal:
 
         width = [0, ccf_slice.shape[0]]
         height = [
-            ccf_slice.shape[2],
+            ccf_slice.shape[1],
             0,
         ]
 
