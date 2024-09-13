@@ -579,8 +579,8 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             return
         fig.clear()
         self.hist_regions = np.empty((0, 1))
-        self.hist_data['region'] *= 10
-        self.hist_data['axis_label'][:, 0] *= 10
+        self.hist_data['region'] *= 20
+        self.hist_data['axis_label'][:, 0] *= 20
         axis = fig.getAxis(ax)
         axis.setTicks([self.hist_data['axis_label']])
         axis.setZValue(10)
