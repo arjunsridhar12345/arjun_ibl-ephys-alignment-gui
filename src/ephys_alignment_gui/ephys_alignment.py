@@ -25,6 +25,7 @@ class EphysAlignment:
         self.chn_depths = chn_depths
 
         self.xyz_track, self.track_extent = self.get_insertion_track(xyz_picks, speedy=speedy)
+        self.xyz_track = np.flipud(self.xyz_track)
 
         if np.any(track_prev):
             self.track_init = track_prev
