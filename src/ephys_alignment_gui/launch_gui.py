@@ -515,7 +515,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             self.fig_slice.setXRange(min=np.min(self.xyz_channels[:, 0]) - 200,
                                      max=np.max(self.xyz_channels[:, 0]) + 200)
             self.fig_slice.setYRange(min=np.min(self.xyz_channels[:, 2]) - 500,
-                                     max=np.max(self.xyz_channels[:, 2]) + 500)
+                                     max=np.max(self.xyz_channels[:, 2]) + 1000)
             self.fig_slice.resize(50, self.slice_height)
             exporter = pg.exporters.ImageExporter(self.fig_slice)
             exporter.export(
