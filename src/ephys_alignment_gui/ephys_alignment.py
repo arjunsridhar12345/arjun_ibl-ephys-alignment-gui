@@ -216,7 +216,7 @@ class EphysAlignment:
         region = self.track2feature(region, feature, track) 
         region_label[:, 0] = (self.track2feature(np.float64(region_label[:, 0]), feature,
                               track))
-        region_label = region_label + self.start_lims
+        region = region + self.start_lims
         return region, region_label
 
     @staticmethod
