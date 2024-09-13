@@ -581,7 +581,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self.hist_regions = np.empty((0, 1))
         axis = fig.getAxis(ax)
         axis.setTicks([self.hist_data['axis_label']])
-        axis.setZValue(10)
+        axis.setZValue(100)
         self.set_axis(self.fig_hist, 'bottom', pen='w', label='blank')
 
         print(self.hist_data)
@@ -924,7 +924,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self.channel_status = True
         self.xyz_channels = self.ephysalign.get_channel_locations(self.features[self.idx],
                                                                   self.track[self.idx])
-        print('Channels', len(self.xyz_channels))
+        
         if not self.slice_chns:
             self.slice_lines = []
             self.slice_chns = pg.ScatterPlotItem()
