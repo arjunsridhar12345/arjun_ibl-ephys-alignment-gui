@@ -697,9 +697,6 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         if not self.histology_exists:
             return
         
-        self.hist_data['region'] *= 15
-        self.hist_data['axis_label'][:, 0] *= 15
-        
         fig.clear()
         self.hist_ref_regions = np.empty((0, 1))
         axis = fig.getAxis(ax)
