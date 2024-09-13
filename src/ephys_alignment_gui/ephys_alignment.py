@@ -31,7 +31,7 @@ class EphysAlignment:
             self.track_init = track_prev
             self.feature_init = feature_prev
         else:
-            start_lims = 60000
+            start_lims = 6000
             self.track_init = np.array([-1 * start_lims, start_lims])
             self.feature_init = np.array([-1 * start_lims, start_lims])
 
@@ -216,6 +216,7 @@ class EphysAlignment:
         region = self.track2feature(region, feature, track) 
         region_label[:, 0] = (self.track2feature(np.float64(region_label[:, 0]), feature,
                               track))
+        print('Region label', region_label)
         return region, region_label
 
     @staticmethod
