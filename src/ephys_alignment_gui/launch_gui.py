@@ -514,9 +514,9 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             slice_name = self.slice_options_group.checkedAction().text()
             self.fig_slice.setXRange(min=np.min(self.xyz_channels[:, 0]) - 200,
                                      max=np.max(self.xyz_channels[:, 0]) + 200)
-            self.fig_slice.setYRange(min=np.min(self.xyz_channels[:, 2]) - 1500,
+            self.fig_slice.setYRange(min=np.min(self.xyz_channels[:, 2]) - 500,
                                      max=np.max(self.xyz_channels[:, 2]) + 500)
-            self.fig_slice.resize(50, self.slice_height)
+            #self.fig_slice.resize(50, self.slice_height)
             exporter = pg.exporters.ImageExporter(self.fig_slice)
             exporter.export(
                 str(image_path_overview.joinpath(sess_info + 'slice_zoom_' + slice_name + '.png')))
