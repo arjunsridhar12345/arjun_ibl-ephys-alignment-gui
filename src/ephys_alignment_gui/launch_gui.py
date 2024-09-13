@@ -920,7 +920,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self.channel_status = True
         self.xyz_channels = self.ephysalign.get_channel_locations(self.features[self.idx],
                                                                   self.track[self.idx])
-        print('Channels', self.xyz_channels)
+        print('Channels', len(self.xyz_channels))
         if not self.slice_chns:
             self.slice_lines = []
             self.slice_chns = pg.ScatterPlotItem()
