@@ -31,7 +31,7 @@ class EphysAlignment:
             self.track_init = track_prev
             self.feature_init = feature_prev
         else:
-            start_lims = 6000
+            start_lims = 6000 / 1e6
             self.track_init = np.array([-1 * start_lims, start_lims])
             self.feature_init = np.array([-1 * start_lims, start_lims])
 
@@ -211,14 +211,12 @@ class EphysAlignment:
                               interpolation
         :type region_label: np.array((n_bound)) of tuples (coordinate - float, label - str)
         """
-        print('Feature', feature)
         region = np.copy(region) if region is not None else np.copy(self.region)
         region_label = np.copy(region_label) if region_label is not None else np.copy(self.region_label)
         region = self.track2feature(region, feature, track) 
         region_label[:, 0] = (self.track2feature(np.float64(region_label[:, 0]), feature,
                               track))
 
-        region *= 25
         return region, region_label
 
     @staticmethod
