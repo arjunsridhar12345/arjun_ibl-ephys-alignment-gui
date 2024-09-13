@@ -25,6 +25,7 @@ class EphysAlignment:
         self.chn_depths = chn_depths
 
         self.xyz_track, self.track_extent = self.get_insertion_track(xyz_picks, speedy=speedy)
+        self.xyz_track = np.flipud(self.xyz_track)
 
         if np.any(track_prev):
             self.track_init = track_prev
@@ -240,7 +241,7 @@ class EphysAlignment:
         #region_ids = brain_atlas.get_labels(xyz_coords, mapping=mapping)
         region_ids = []
         xyz_coords = np.round(xyz_coords).astype(np.int64)
-        for coord in xyz_coords[::-1]:
+        for coord in xyz_coords:
             region_ids.append(brain_atlas.label[coord[0], coord[1], coord[2]])
 
         region_info = brain_atlas.regions.get(region_ids)
