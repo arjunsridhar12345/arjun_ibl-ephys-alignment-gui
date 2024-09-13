@@ -579,17 +579,16 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             return
         fig.clear()
         self.hist_regions = np.empty((0, 1))
+        self.hist_data['region'] *= 10
+        self.hist_data['axis_label'][:, 0] *= 10
         axis = fig.getAxis(ax)
         axis.setTicks([self.hist_data['axis_label']])
-        axis.setZValue(100)
+        axis.setZValue(10)
         self.set_axis(self.fig_hist, 'bottom', pen='w', label='blank')
 
         print(self.hist_data)
         # Plot each histology region
         for ir, reg in enumerate(self.hist_data['region']):
-            reg[0] = reg[0] * 10
-            reg[1] = reg[1] * 10
-
             colour = QtGui.QColor(*self.hist_data['colour'][ir])
             region = pg.LinearRegionItem(values=(reg[0], reg[1]),
                                          orientation=pg.LinearRegionItem.Horizontal,
