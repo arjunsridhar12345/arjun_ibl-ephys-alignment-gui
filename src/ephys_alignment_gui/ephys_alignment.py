@@ -482,7 +482,7 @@ class EphysAlignment:
             depths = np.array([line, line + 10])
             xyz = self.get_channel_locations(feature, track, depths)
 
-            extent = 500
+            extent = 500e-6
             vector = np.diff(xyz, axis=0)[0]
             point = xyz[0, :]
             vector_perp = np.array([1, 0, -1 * vector[0] / vector[2]])
