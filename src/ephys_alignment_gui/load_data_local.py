@@ -245,8 +245,8 @@ class LoadDataLocal:
 
         width = [0, self.brain_atlas.image.shape[0]]
         height = [
-            self.brain_atlas.image.shape[2],
             0,
+            self.brain_atlas.image.shape[2],
         ]
 
         slice_data = {
