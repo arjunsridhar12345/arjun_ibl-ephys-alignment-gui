@@ -910,7 +910,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
 
         print('Slice xyz track', self.xyz_track)
         self.traj_line.setData(x=self.xyz_track[:, 0] * 1e6 / self.loaddata.brain_atlas.spacing, 
-                               y=self.xyz_track[:, 2] * 1e6 / self.loaddata.brain_atlas.spacing, pen=self.kpen_solid)
+                               y=self.xyz_track[1:-1, 2] * 1e6 / self.loaddata.brain_atlas.spacing, pen=self.kpen_solid)
         self.fig_slice.addItem(self.traj_line)
         self.plot_channels()
 
