@@ -249,6 +249,7 @@ class LoadDataLocal:
             index[-1, 2],
         ]
 
+        print('Ccf slice', ccf_slice.shape)
         slice_data = {
             "ccf": ccf_slice,
             "label": label_slice,
