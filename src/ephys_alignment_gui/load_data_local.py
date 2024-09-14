@@ -232,7 +232,9 @@ class LoadDataLocal:
             :, self.brain_atlas.xyz2dims
         ]
         """
-        index = np.round(xyz_channels).astype(np.int64)
+        index = np.round(xyz_channels * 1e6 / self.brain_atlas.spacing).astype(np.int64)
+        index = index[(index[:, 0] < self.brain_atlas.image.shape[0]) & (index[:, 1] < self.brain_atlas.image.shape[1])
+                                  & (index[:, 2] < self.brain_atlas.image.shape[2])]
         ccf_slice = self.brain_atlas.image[index[:, 0], :, index[:, 2]]
         ccf_slice = np.swapaxes(ccf_slice, 0, 1)
 
