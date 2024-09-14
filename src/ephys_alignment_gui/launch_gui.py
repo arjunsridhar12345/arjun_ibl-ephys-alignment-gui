@@ -1150,56 +1150,34 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             self.data_plot = image
             self.xrange = data['xrange']
 
+
     """
     Interaction functions
     """
+    def _update_ephys_alignments(self, folder_path: Path):
+        self.prev_alignments, shank_options = self.loaddata.get_info(folder_path)
+        self.populate_lists(shank_options, self.shank_list, self.shank_combobox)
+        self.on_shank_selected(0)
+        self.data_button_pressed()
 
-    def on_input_folder_selected(self):
+    def load_existing_alignments(self):
+        folder_path = Path(QtWidgets.QFileDialog.getExistingDirectory(None, "Load Existing Alignments"), directory=RESULTS_PATH.as_posix())
+        self.reload_folder_line.setText(str(folder_path))
+        self._update_ephys_alignments(folder_path)
+
+    def on_folder_selected(self):
         """
         Triggered in offline mode when folder button is clicked
         """
         self.data_status = False
-        if Path('/data/').is_dir():
-            # Default For code ocean.
-            we_are_in_code_ocean = True
-            folder_path = Path(QtWidgets.QFileDialog.getExistingDirectory(None, "Select Input Directory",'/data/'))
-        else:
-            # If not code ocean, will default to current directory
-            we_are_in_code_ocean = False
-            folder_path = Path(QtWidgets.QFileDialog.getExistingDirectory(None, "Select Input Directory"))
-
-        # Set the output default based on the selected folder path
-        if we_are_in_code_ocean:
-            out_folder = Path('/results/').joinpath(folder_path.parent.stem)
-        else:
-            out_folder = folder_path.parent/'out'
-
-        # Create the output folder if it doesn't exist
-        os.makedirs(out_folder, exist_ok=True)
-        # Set the output directory based on input name.
-        self.output_directory = out_folder/folder_path.stem
-        self.loaddata.output_directory = self.output_directory
-        self.output_folder_line.setText(str(self.output_directory))
+        folder_path = Path(QtWidgets.QFileDialog.getExistingDirectory(None, "Select Input Directory"))
 
         if folder_path:
             self.input_folder_line.setText(str(folder_path))
-            self.prev_alignments, shank_options = self.loaddata.get_info(folder_path)
-            self.populate_lists(shank_options, self.shank_list, self.shank_combobox)
-            self.on_shank_selected(0)
-
-            # IF a histology folder matching a specific pattern exists, set the
-            # histology path
-            hist_folder = folder_path.parent.joinpath('histology')
-            if hist_folder.is_dir():
-                self.loaddata.histology_path = hist_folder
-            else:
-                print('Histology folder not found. Please select.')
-            self.data_button_pressed()
-
+            self._update_ephys_alignments(folder_path)
             return True
         else:
             return False
-
 
     def on_histology_folder_selected(self):
         """
