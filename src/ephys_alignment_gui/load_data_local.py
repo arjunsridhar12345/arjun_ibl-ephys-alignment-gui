@@ -245,8 +245,8 @@ class LoadDataLocal:
 
         width = [0, self.brain_atlas.image.shape[0]]
         height = [
-            index[0, 1],
-            index[-1, 1],
+            index[0, 2],
+            index[-1, 2],
         ]
 
         print('Ccf slice', ccf_slice.shape)
@@ -255,8 +255,8 @@ class LoadDataLocal:
             "label": label_slice,
             "scale": np.array(
                 [
-                     ccf_slice.shape[0] / (width[-1] - width[0]),
-                     ccf_slice.shape[1] / (height[-1] - height[0]),
+                    (width[-1] - width[0]) / ccf_slice.shape[0],
+                    (height[-1] - height[0]) / ccf_slice.shape[1],
                 ]
             ),
             "offset": np.array([width[0], height[0]]),
