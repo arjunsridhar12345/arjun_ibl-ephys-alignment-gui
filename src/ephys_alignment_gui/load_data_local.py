@@ -236,6 +236,7 @@ class LoadDataLocal:
         index = index[(index[:, 0] < self.brain_atlas.image.shape[0]) & (index[:, 1] < self.brain_atlas.image.shape[1])
                                   & (index[:, 2] < self.brain_atlas.image.shape[2])]
         ccf_slice = np.flipud(self.brain_atlas.image.sum(axis=1))
+        ccf_slice = ccf_slice[index[:, 0], index[:, 2]]
         #ccf_slice = np.swapaxes(ccf_slice, 0, 1)
 
         label_slice = self.brain_atlas._label2rgb(
