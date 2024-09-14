@@ -25,8 +25,6 @@ class EphysAlignment:
         self.chn_depths = chn_depths
 
         self.xyz_track, self.track_extent = self.get_insertion_track(xyz_picks, speedy=speedy)
-        self.xyz_track = np.flipud(self.xyz_track)
-        self.track_extent = np.flipud(self.track_extent)
 
         if np.any(track_prev):
             self.track_init = track_prev
@@ -71,7 +69,7 @@ class EphysAlignment:
 
         # Force the entry to be on the upper z lim of the atlas to account for cases where channels
         # may be located above the surface of the brain
-        entry = (traj_entry.eval_z(0))[0, :]
+        entry = (traj_entry.eval_z(self.brain_atlas.image.shape[2]))[0, :]
         """
         if speedy:
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
@@ -80,7 +78,7 @@ class EphysAlignment:
             # The exit is just below the bottom surfacce of the brain
             exit[2] = exit[2] - 200 / 1e6
         """
-        exit = (traj_exit.eval_z(self.brain_atlas.image.shape[2]))[0, :]
+        exit = (traj_exit.eval_z(0))[0, :]
         # Catch cases where the exit
         if any(np.isnan(exit)):
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
