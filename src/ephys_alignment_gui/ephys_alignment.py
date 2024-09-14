@@ -41,10 +41,10 @@ class EphysAlignment:
                                                              self.sampling_trk -
                                                              self.sampling_trk[0])
         # ensure none of the track is outside the y or x lim of atlas
-        xlim = np.bitwise_and(self.xyz_samples[:, 0] > self.brain_atlas.bc.xlim[0],
-                              self.xyz_samples[:, 0] < self.brain_atlas.bc.xlim[1])
-        ylim = np.bitwise_and(self.xyz_samples[:, 1] < self.brain_atlas.bc.ylim[0],
-                              self.xyz_samples[:, 1] > self.brain_atlas.bc.ylim[1])
+        xlim = np.bitwise_and((self.xyz_samples[:, 0] * 1e6 / self.brain_atlas.spacing) > 0,
+                              (self.xyz_samples[:, 0] * 1e6 / self.brain_atlas.spacing) < self.brain_atlas.image.shape[0])
+        ylim = np.bitwise_and((self.xyz_samples[:, 2] * 1e6 / self.brain_atlas.spacing) > 0,
+                              (self.xyz_samples[:, 2] * 1e6 / self.brain_atlas.spacing) < self.brain_atlas.image.shape[2])
         rem = np.bitwise_and(xlim, ylim)
         self.xyz_samples = self.xyz_samples[rem]
 
@@ -235,7 +235,7 @@ class EphysAlignment:
 
         #region_ids = brain_atlas.get_labels(xyz_coords, mapping=mapping)
         region_ids = []
-        xyz_indices = np.round((xyz_coords * 1e6) / brain_atlas.spacing).astype(np.int64)
+        xyz_indices = np.round(xyz_coords * 1e6 / brain_atlas.spacing).astype(np.int64)
         print('xyz indices', xyz_indices)
         for coord in xyz_indices:
             region_ids.append(brain_atlas.label[coord[0], coord[1], coord[2]])
