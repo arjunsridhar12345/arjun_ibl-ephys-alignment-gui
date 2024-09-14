@@ -25,7 +25,6 @@ class EphysAlignment:
         self.chn_depths = chn_depths
 
         self.xyz_track, self.track_extent = self.get_insertion_track(xyz_picks, speedy=speedy)
-        self.xyz_track = np.flipud(self.xyz_track)
 
         if np.any(track_prev):
             self.track_init = track_prev
@@ -36,20 +35,19 @@ class EphysAlignment:
             self.feature_init = np.array([-1 * start_lims, start_lims])
 
         self.sampling_trk = np.arange(self.track_extent[0],
-                                      self.track_extent[-1] - 10, 10)
+                                      self.track_extent[-1] - 10 * 1e-6, 10 * 1e-6)
         
-
         self.xyz_samples = histology.interpolate_along_track(self.xyz_track,
                                                              self.sampling_trk -
                                                              self.sampling_trk[0])
         # ensure none of the track is outside the y or x lim of atlas
-        xlim = np.bitwise_and(self.xyz_samples[:, 0] > 0,
-                              self.xyz_samples[:, 0] < self.brain_atlas.image.shape[0])
-        ylim = np.bitwise_and(self.xyz_samples[:, 2] < self.brain_atlas.image.shape[2],
-                              self.xyz_samples[:, 2] > 0)
+        xlim = np.bitwise_and(self.xyz_samples[:, 0] > self.brain_atlas.bc.xlim[0],
+                              self.xyz_samples[:, 0] < self.brain_atlas.bc.xlim[1])
+        ylim = np.bitwise_and(self.xyz_samples[:, 1] < self.brain_atlas.bc.ylim[0],
+                              self.xyz_samples[:, 1] > self.brain_atlas.bc.ylim[1])
         rem = np.bitwise_and(xlim, ylim)
         self.xyz_samples = self.xyz_samples[rem]
-        print('Samples', self.xyz_samples)
+
         self.region, self.region_label, self.region_colour, self.region_id\
             = self.get_histology_regions(self.xyz_samples, self.sampling_trk, self.brain_atlas)
 
@@ -72,7 +70,6 @@ class EphysAlignment:
         # Force the entry to be on the upper z lim of the atlas to account for cases where channels
         # may be located above the surface of the brain
         entry = (traj_entry.eval_z(0))[0, :]
-        print('Entry', entry)
         """
         if speedy:
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
@@ -81,20 +78,18 @@ class EphysAlignment:
             # The exit is just below the bottom surfacce of the brain
             exit[2] = exit[2] - 200 / 1e6
         """
-        exit = (traj_exit.eval_z(225))[0, :]
+        exit = (traj_exit.eval_z(self.brain_atlas.image.shape[2]))[0, :]
         # Catch cases where the exit
         if any(np.isnan(exit)):
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
         xyz_track = np.r_[exit[np.newaxis, :], xyz_picks, entry[np.newaxis, :]]
         # Sort so that most ventral coordinate is first
         xyz_track = xyz_track[np.argsort(xyz_track[:, 2]), :]
-        print('exit', exit)
+
         # Compute distance to first electrode from bottom coordinate
-        tip_distance = _cumulative_distance(xyz_track)[1] + TIP_SIZE_UM / self.brain_atlas.spacing 
+        tip_distance = _cumulative_distance(xyz_track)[1] + TIP_SIZE_UM / 1e6
         track_length = _cumulative_distance(xyz_track)[-1]
-        print('Track length', track_length)
         track_extent = np.array([0, track_length]) - tip_distance
-        print('Track extent', track_extent)
         return xyz_track, track_extent
 
     def get_track_and_feature(self):
@@ -213,10 +208,9 @@ class EphysAlignment:
         """
         region = np.copy(region) if region is not None else np.copy(self.region)
         region_label = np.copy(region_label) if region_label is not None else np.copy(self.region_label)
-        region = self.track2feature(region, feature, track) 
+        region = self.track2feature(region, feature, track) * 1e6
         region_label[:, 0] = (self.track2feature(np.float64(region_label[:, 0]), feature,
-                              track))
-
+                              track) * 1e6)
         return region, region_label
 
     @staticmethod
@@ -241,8 +235,8 @@ class EphysAlignment:
 
         #region_ids = brain_atlas.get_labels(xyz_coords, mapping=mapping)
         region_ids = []
-        xyz_coords = np.round(xyz_coords).astype(np.int64)
-        for coord in xyz_coords:
+        xyz_indices = np.round(xyz_coords * 1e6 / brain_atlas.spacing)
+        for coord in xyz_indices:
             region_ids.append(brain_atlas.label[coord[0], coord[1], coord[2]])
 
         region_info = brain_atlas.regions.get(region_ids)
@@ -310,9 +304,9 @@ class EphysAlignment:
 
         for iP, point in enumerate(xyz_coords):
             d = np.dot(vector, point)
-            x_vals = np.r_[np.linspace(point[0] - extent, point[0] + extent, steps),
+            x_vals = np.r_[np.linspace(point[0] - extent / 1e6, point[0] + extent / 1e6, steps),
                            point[0]]
-            y_vals = np.r_[np.linspace(point[1] - extent, point[1] + extent, steps),
+            y_vals = np.r_[np.linspace(point[1] - extent / 1e6, point[1] + extent / 1e6, steps),
                            point[1]]
 
             X, Y = np.meshgrid(x_vals, y_vals)
@@ -333,10 +327,10 @@ class EphysAlignment:
                                                                    brain_id_sorted[0])[0][0]])
             bound_idx = np.where(brain_id_sorted != brain_id_sorted[0])[0]
             if np.any(bound_idx):
-                nearest_bound['dist'][iP] = dist[dist_sorted[bound_idx[0]]]
+                nearest_bound['dist'][iP] = dist[dist_sorted[bound_idx[0]]] * 1e6
                 # nearest_bound['adj_id'][iP] = brain_id_sorted[bound_idx[0]]
             else:
-                nearest_bound['dist'][iP] = np.max(dist)
+                nearest_bound['dist'][iP] = np.max(dist) * 1e6
                 # nearest_bound['adj_id'][iP] = brain_id_sorted[0]
 
             if parent:
@@ -352,10 +346,10 @@ class EphysAlignment:
 
                 parent_idx = np.where(brain_parent != brain_parent[0])[0]
                 if np.any(parent_idx):
-                    nearest_bound['parent_dist'][iP] = dist[dist_sorted[parent_idx[0]]]
+                    nearest_bound['parent_dist'][iP] = dist[dist_sorted[parent_idx[0]]] * 1e6
                     # nearest_bound['parent_adj_id'][iP] = brain_parent[parent_idx[0]]
                 else:
-                    nearest_bound['parent_dist'][iP] = np.max(dist)
+                    nearest_bound['parent_dist'][iP] = np.max(dist) * 1e6
                     # nearest_bound['parent_adj_id'][iP] = brain_parent[0]
 
         return nearest_bound
@@ -415,7 +409,7 @@ class EphysAlignment:
 
         region_orig = region_orig if region_orig is not None else self.region
         scale = []
-        for iR, (reg, reg_orig) in enumerate(zip(region, region_orig)):
+        for iR, (reg, reg_orig) in enumerate(zip(region, region_orig * 1e6)):
             scale = np.r_[scale, (reg[1] - reg[0]) / (reg_orig[1] - reg_orig[0])]
         boundaries = np.where(np.diff(np.around(scale, 3)))[0]
         if boundaries.size == 0:
@@ -449,7 +443,7 @@ class EphysAlignment:
         if depths is not provided, defaults to channels local coordinates depths
         """
         if depths is None:
-            depths = self.chn_depths
+            depths = self.chn_depths / 1e6
         # nb using scipy here so we can change to cubic spline if needed
         channel_depths_track = self.feature2track(depths, feature, track) - self.track_extent[0]
         xyz_channels = histology.interpolate_along_track(self.xyz_track, channel_depths_track)
@@ -479,7 +473,7 @@ class EphysAlignment:
 
         slice_lines = []
         for line in feature[1:-1]:
-            depths = np.array([line, line + 10])
+            depths = np.array([line, line + 10 / 1e6])
             xyz = self.get_channel_locations(feature, track, depths)
 
             extent = 500e-6

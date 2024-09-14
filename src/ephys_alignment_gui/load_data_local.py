@@ -221,7 +221,7 @@ class LoadDataLocal:
         with open(xyz_file[0], "r") as f:
             user_picks = json.load(f)
 
-        xyz_picks = np.array(user_picks["xyz_picks"]) / self.brain_atlas.spacing
+        xyz_picks = np.array(user_picks["xyz_picks"]) / 1e6
         print('xyz_picks', xyz_picks)
         return xyz_picks
 
