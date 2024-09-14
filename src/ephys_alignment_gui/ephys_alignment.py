@@ -452,6 +452,7 @@ class EphysAlignment:
         channel_depths_track = self.feature2track(depths, feature, track) - self.track_extent[0]
         xyz_channels = histology.interpolate_along_track(self.xyz_track, channel_depths_track)
         xyz_channels = xyz_channels * 1e6 / self.brain_atlas.spacing
+        xyz_channels[:, 0] = self.brain_atlas.image.shape[0] - xyz_channels[:, 0]
         return xyz_channels
 
     def get_brain_locations(self, xyz_channels):
