@@ -87,7 +87,7 @@ class EphysAlignment:
         # Sort so that most ventral coordinate is first
         xyz_track = xyz_track[np.argsort(xyz_track[:, 2]), :]
         xyz_track = xyz_track / 1e6
-        
+
         # Compute distance to first electrode from bottom coordinate
         tip_distance = _cumulative_distance(xyz_track)[1] + TIP_SIZE_UM / 1e6
         track_length = _cumulative_distance(xyz_track)[-1]
@@ -237,7 +237,7 @@ class EphysAlignment:
 
         #region_ids = brain_atlas.get_labels(xyz_coords, mapping=mapping)
         region_ids = []
-        xyz_indices = np.round(xyz_coords * 1e6 / brain_atlas.spacing).astype(np.int64)
+        xyz_indices = np.round(xyz_coords * 1e6).astype(np.int64)
         xyz_indices = xyz_indices[(xyz_indices[:, 0] < brain_atlas.image.shape[0]) & (xyz_indices[:, 1] < brain_atlas.image.shape[1])
                                   & (xyz_indices[:, 2] < brain_atlas.image.shape[2])]
  
@@ -452,7 +452,7 @@ class EphysAlignment:
         # nb using scipy here so we can change to cubic spline if needed
         channel_depths_track = self.feature2track(depths, feature, track) - self.track_extent[0]
         xyz_channels = histology.interpolate_along_track(self.xyz_track, channel_depths_track)
-        xyz_channels = xyz_channels * 1e6 / self.brain_atlas.spacing
+        xyz_channels = xyz_channels * 1e6
         xyz_channels[:, 0] = self.brain_atlas.image.shape[0] - xyz_channels[:, 0]
         return xyz_channels
 
