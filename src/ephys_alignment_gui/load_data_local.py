@@ -221,7 +221,7 @@ class LoadDataLocal:
         with open(xyz_file[0], "r") as f:
             user_picks = json.load(f)
 
-        xyz_picks = np.array(user_picks["xyz_picks"]) / self.brain_atlas.spacing
+        xyz_picks = np.array(user_picks["xyz_picks"]) / 1e6
         print('xyz_picks', xyz_picks)
         return xyz_picks
 
@@ -232,7 +232,7 @@ class LoadDataLocal:
             :, self.brain_atlas.xyz2dims
         ]
         """
-        index = np.round(xyz_channels * 1e6).astype(np.int64)
+        index = np.round(xyz_channels * 1e6 / self.brain_atlas.spacing).astype(np.int64)
         index = index[(index[:, 0] < self.brain_atlas.image.shape[0]) & (index[:, 1] < self.brain_atlas.image.shape[1])
                                   & (index[:, 2] < self.brain_atlas.image.shape[2])]
         ccf_slice = np.flipud(self.brain_atlas.image.sum(axis=1))
