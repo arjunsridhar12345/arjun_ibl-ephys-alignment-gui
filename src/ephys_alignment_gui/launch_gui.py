@@ -907,13 +907,9 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
 
         self.fig_slice.addItem(img)
         self.traj_line = pg.PlotCurveItem()
-
-        
-        self.xyz_track[1:len(self.xyz_track), 2] = self.xyz_track[1:len(self.xyz_track), 2] * 1e6 / self.loaddata.brain_atlas.spacing
-        self.xyz_track[:, 0] = self.xyz_track[:, 0] * 1e6 / self.loaddata.brain_atlas.spacing
         
         print('Slice xyz track', self.xyz_track)
-        self.traj_line.setData(x=self.xyz_track[:, 0] * 1e6 / self.loaddata.brain_atlas.spacing, 
+        self.traj_line.setData(x=self.xyz_track[:, 0], 
                                y=self.xyz_track[:, 2], pen=self.kpen_solid)
         self.fig_slice.addItem(self.traj_line)
         self.plot_channels()

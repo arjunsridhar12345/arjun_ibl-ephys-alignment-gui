@@ -79,7 +79,7 @@ class EphysAlignment:
             # The exit is just below the bottom surfacce of the brain
             exit[2] = exit[2] - 200 / 1e6
         """
-        exit = (traj_exit.eval_z(self.brain_atlas.image.shape[2]))[0, :]
+        exit = (traj_exit.eval_z(self.brain_atlas.image.shape[2] / 1e6))[0, :]
         # Catch cases where the exit
         if any(np.isnan(exit)):
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
