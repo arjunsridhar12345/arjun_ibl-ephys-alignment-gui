@@ -266,7 +266,7 @@ class CustomAtlas(BrainAtlas):
         # Reads the 
         IMG = sitk.ReadImage(self.atlas_image_file)
         # Convert sitk to the (ap, ml, dv) np array needed by BrainAtlas
-        IMG2 = sitk.DICOMOrient(IMG,self.read_string) 
+        #IMG2 = sitk.DICOMOrient(IMG,self.read_string) 
         self.image = sitk.GetArrayFromImage(IMG).T
         print('Shape', self.image.shape)
         self.offset = IMG.GetOrigin()
@@ -276,5 +276,5 @@ class CustomAtlas(BrainAtlas):
     def read_atlas_labels(self):
         IMG = sitk.ReadImage(self.atlas_labels_file)
         # Convert sitk to the (ap, ml, dv) np array needed by BrainAtlas
-        IMG2 = sitk.DICOMOrient(IMG,self.read_string)
+        #IMG2 = sitk.DICOMOrient(IMG,self.read_string)
         self.label = sitk.GetArrayFromImage(IMG).astype(np.int32).T
