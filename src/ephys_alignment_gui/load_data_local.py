@@ -236,14 +236,14 @@ class LoadDataLocal:
         index = index[(index[:, 0] < self.brain_atlas.image.shape[0]) & (index[:, 1] < self.brain_atlas.image.shape[1])
                                   & (index[:, 2] < self.brain_atlas.image.shape[2])]
         ccf_slice = self.brain_atlas.image[index[:, 0], :, index[:, 2]]
-        ccf_slice = np.swapaxes(ccf_slice, 0, 1)
+        #ccf_slice = np.swapaxes(ccf_slice, 0, 1)
 
         label_slice = self.brain_atlas._label2rgb(
             self.brain_atlas.label[index[:, 0], :, index[:, 2]]
         )
-        label_slice = np.swapaxes(label_slice, 0, 1)
+        #label_slice = np.swapaxes(label_slice, 0, 1)
 
-        width = [0, self.brain_atlas.image.shape[0]]
+        width = [0, self.brain_atlas.image.shape[1]]
         height = [
             index[0, 2],
             index[-1, 2],
