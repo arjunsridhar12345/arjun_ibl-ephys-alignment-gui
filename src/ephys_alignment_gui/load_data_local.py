@@ -256,7 +256,7 @@ class LoadDataLocal:
             "scale": np.array(
                 [
                     (width[-1] - width[0]) / ccf_slice.shape[0],
-                    (height[-1] - height[0]) / ccf_slice.shape[1],
+                    (height[-1] - height[0]) / ccf_slice.shape[1] * 3,
                 ]
             ),
             "offset": np.array([width[0], height[0]]),
