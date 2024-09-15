@@ -449,7 +449,6 @@ class EphysAlignment:
             depths = self.chn_depths / 1e6
         # nb using scipy here so we can change to cubic spline if needed
         channel_depths_track = self.feature2track(depths, feature, track) - self.track_extent[0]
-        xyz_track = np.flipud(self.xyz_track)
         xyz_channels = histology.interpolate_along_track(xyz_track, channel_depths_track)
         xyz_channels = xyz_channels * 1e6 / self.brain_atlas.spacing
         return xyz_channels
