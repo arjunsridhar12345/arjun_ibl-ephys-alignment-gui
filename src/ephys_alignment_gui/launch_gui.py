@@ -923,12 +923,11 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self.channel_status = True
         self.xyz_channels = self.ephysalign.get_channel_locations(self.features[self.idx],
                                                                   self.track[self.idx])
-        self.xyz_channels[:, 0] = self.loaddata.brain_atlas.image.shape[0] - self.xyz_channels[:, 0]
-        print('xyz channels', self.xyz_channels)
+
         if not self.slice_chns:
             self.slice_lines = []
             self.slice_chns = pg.ScatterPlotItem()
-            self.slice_chns.setData(x=self.xyz_channels[:, 0], y=self.xyz_channels[:, 2], pen='r',
+            self.slice_chns.setData(x=self.loaddata.brain_atlas.image.shape[0] - self.xyz_channels[:, 0], y=self.xyz_channels[:, 2], pen='r',
                                     brush='r')
             self.fig_slice.addItem(self.slice_chns)
             track_lines = self.ephysalign.get_perp_vector(self.features[self.idx],
@@ -952,7 +951,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
                 line.setData(x=ref_line[:, 0], y=ref_line[:, 2], pen=self.kpen_dot)
                 self.fig_slice.addItem(line)
                 self.slice_lines.append(line)
-            self.slice_chns.setData(x=self.xyz_channels[:, 0], y=self.xyz_channels[:, 2], pen='r',
+            self.slice_chns.setData(x=self.loaddata.brain_atlas.image.shape[0] - self.xyz_channels[:, 0], y=self.xyz_channels[:, 2], pen='r',
                                     brush='r')
 
     def plot_scatter(self, data):
