@@ -78,11 +78,12 @@ class EphysAlignment:
             exit = atlas.Insertion.get_brain_exit(traj_exit, self.brain_atlas)
             # The exit is just below the bottom surfacce of the brain
             exit[2] = exit[2] - 200 / 1e6
-        """
+        
         #exit = (traj_exit.eval_z(225))[0, :]
         # Catch cases where the exit
         if any(np.isnan(exit)):
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
+        """
         xyz_track = np.r_[traj_exit[np.newaxis, :], xyz_picks, traj_entry[np.newaxis, :]]
         # Sort so that most ventral coordinate is first
         xyz_track = xyz_track[np.argsort(xyz_track[:, 2]), :]
