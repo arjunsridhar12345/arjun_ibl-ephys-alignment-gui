@@ -25,6 +25,7 @@ class EphysAlignment:
         self.chn_depths = chn_depths
 
         self.xyz_track, self.track_extent = self.get_insertion_track(xyz_picks, speedy=speedy)
+        self.xyz_track = np.flipud(self.xyz_track)
 
         if np.any(track_prev):
             self.track_init = track_prev
@@ -47,7 +48,6 @@ class EphysAlignment:
                               (self.xyz_samples[:, 2] * 1e6 / self.brain_atlas.spacing) < self.brain_atlas.image.shape[2])
         rem = np.bitwise_and(xlim, ylim)
         self.xyz_samples = self.xyz_samples[rem]
-        self.xyz_samples = np.flipud(self.xyz_samples)
         self.region, self.region_label, self.region_colour, self.region_id\
             = self.get_histology_regions(self.xyz_samples, self.sampling_trk, self.brain_atlas)
 
