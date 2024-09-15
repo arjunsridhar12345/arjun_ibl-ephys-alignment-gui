@@ -324,7 +324,7 @@ class LoadDataLocal:
         
         for coord in index:
             region_ids.append(self.brain_atlas.label[coord[0], coord[1], coord[2]])
-
+        
         brain_regions = self.brain_atlas.regions.get(
             region_ids
         )
@@ -377,6 +377,7 @@ class LoadDataLocal:
         :type channel_dict: dictionary of dictionaries
         """
         channel_dict = {}
+        print('Brain regions', brain_regions)
         for i in np.arange(brain_regions.id.size):
             channel = {
                 "x": np.float64(brain_regions.xyz[i, 0]),
