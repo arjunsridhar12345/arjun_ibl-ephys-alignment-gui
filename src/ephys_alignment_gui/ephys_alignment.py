@@ -69,7 +69,7 @@ class EphysAlignment:
 
         # Force the entry to be on the upper z lim of the atlas to account for cases where channels
         # may be located above the surface of the brain
-        entry = (traj_entry.eval_z(self.brain_atlas.image.shape[2]))[0, :]
+        entry = (traj_entry.eval_z(0))[0, :]
         """
         if speedy:
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
@@ -78,7 +78,7 @@ class EphysAlignment:
             # The exit is just below the bottom surfacce of the brain
             exit[2] = exit[2] - 200 / 1e6
         """
-        exit = (traj_exit.eval_z(0))[0, :]
+        exit = (traj_exit.eval_z(self.brain_atlas.image.shape[2]))[0, :]
         # Catch cases where the exit
         if any(np.isnan(exit)):
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
@@ -236,6 +236,7 @@ class EphysAlignment:
         #region_ids = brain_atlas.get_labels(xyz_coords, mapping=mapping)
         region_ids = []
         xyz_indices = np.round(xyz_coords * 1e6 / brain_atlas.spacing).astype(np.int64)
+        xyz_indices = np.flipud(xyz_indices)
         xyz_indices = xyz_indices[(xyz_indices[:, 0] < brain_atlas.image.shape[0]) & (xyz_indices[:, 1] < brain_atlas.image.shape[1])
                                   & (xyz_indices[:, 2] < brain_atlas.image.shape[2])]
  
