@@ -1165,6 +1165,10 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             self.populate_lists(shank_options, self.shank_list, self.shank_combobox)
 
         self.on_shank_selected(0)
+
+        if shank_options is None:
+            self.data_status = True
+            
         self.data_button_pressed(self.input_path)
         print('Feature prev', self.feature_prev)
 
