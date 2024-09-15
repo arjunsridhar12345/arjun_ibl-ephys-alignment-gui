@@ -1169,7 +1169,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
     def load_existing_alignments(self):
         folder_path = Path(QtWidgets.QFileDialog.getExistingDirectory(None, "Load Existing Alignments"))
         self.reload_folder_line.setText(str(folder_path))
-        self._update_ephys_alignments(folder_path)
+        self._update_ephys_alignments(folder_path, skip_shanks=True)
 
     def on_folder_selected(self):
         """
