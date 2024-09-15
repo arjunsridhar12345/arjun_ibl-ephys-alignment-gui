@@ -954,8 +954,6 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
                 self.slice_lines.append(line)
             self.slice_chns.setData(x=self.xyz_channels[:, 0], y=self.xyz_channels[:, 2], pen='r',
                                     brush='r')
-        
-        self.xyz_channels[:, 0] = self.xyz_channels[:, 0] + self.loaddata.brain_atlas.image.shape[0] 
 
     def plot_scatter(self, data):
         """
