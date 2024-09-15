@@ -50,6 +50,7 @@ class EphysAlignment:
 
         self.region, self.region_label, self.region_colour, self.region_id\
             = self.get_histology_regions(self.xyz_samples, self.sampling_trk, self.brain_atlas)
+        print(self.region_label)
 
     def get_insertion_track(self, xyz_picks, speedy=False):
         """
@@ -70,7 +71,6 @@ class EphysAlignment:
         # Force the entry to be on the upper z lim of the atlas to account for cases where channels
         # may be located above the surface of the brain
         entry = (traj_entry.eval_z(0))[0, :]
- 
         """
         if speedy:
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
@@ -80,11 +80,10 @@ class EphysAlignment:
             exit[2] = exit[2] - 200 / 1e6
         """
         exit = (traj_exit.eval_z(self.brain_atlas.image.shape[2]))[0, :]
-  
         # Catch cases where the exit
         if any(np.isnan(exit)):
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
-        xyz_track = np.r_[entry[np.newaxis, :], xyz_picks, exit[np.newaxis, :]]
+        xyz_track = np.r_[exit[np.newaxis, :], xyz_picks, entry[np.newaxis, :]]
         # Sort so that most ventral coordinate is first
         xyz_track = xyz_track[np.argsort(xyz_track[:, 2]), :]
 
@@ -240,7 +239,7 @@ class EphysAlignment:
         xyz_indices = np.round(xyz_coords * 1e6 / brain_atlas.spacing).astype(np.int64)
         xyz_indices = xyz_indices[(xyz_indices[:, 0] < brain_atlas.image.shape[0]) & (xyz_indices[:, 1] < brain_atlas.image.shape[1])
                                   & (xyz_indices[:, 2] < brain_atlas.image.shape[2])]
-
+        
         print('Xyz indices', xyz_indices)
         for coord in xyz_indices:
             region_ids.append(brain_atlas.label[coord[0], coord[1], coord[2]])
