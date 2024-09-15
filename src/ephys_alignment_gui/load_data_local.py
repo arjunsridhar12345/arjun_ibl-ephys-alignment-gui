@@ -313,9 +313,15 @@ class LoadDataLocal:
         return description, region_lookup
 
     def upload_data(self, feature, track, xyz_channels):
+        region_ids = []
+        index = np.round(xyz_channels).astype(np.int64)
+        index = index[(index[:, 0] < self.brain_atlas.image.shape[0]) & (index[:, 1] < self.brain_atlas.image.shape[1])
+                                  & (index[:, 2] < self.brain_atlas.image.shape[2])]
+        for coord in index:
+            region_ids.append(self.brain_atlas.label[coord[0], coord[1], coord[2]])
 
         brain_regions = self.brain_atlas.regions.get(
-            self.brain_atlas.get_labels(xyz_channels)
+            region_ids
         )
         brain_regions["xyz"] = xyz_channels
         brain_regions["lateral"] = self.chn_coords[:, 0]
@@ -367,9 +373,9 @@ class LoadDataLocal:
         channel_dict = {}
         for i in np.arange(brain_regions.id.size):
             channel = {
-                "x": np.float64(brain_regions.xyz[i, 0] * 1e6),
-                "y": np.float64(brain_regions.xyz[i, 1] * 1e6),
-                "z": np.float64(brain_regions.xyz[i, 2] * 1e6),
+                "x": np.float64(brain_regions.xyz[i, 0]),
+                "y": np.float64(brain_regions.xyz[i, 1]),
+                "z": np.float64(brain_regions.xyz[i, 2]),
                 "axial": np.float64(brain_regions.axial[i]),
                 "lateral": np.float64(brain_regions.lateral[i]),
                 "brain_region_id": int(brain_regions.id[i]),
