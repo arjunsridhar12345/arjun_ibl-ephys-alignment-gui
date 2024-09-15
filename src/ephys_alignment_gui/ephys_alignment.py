@@ -65,8 +65,8 @@ class EphysAlignment:
         """
         # Use the first and last quarter of xyz_picks to estimate the trajectory beyond xyz_picks
         n_picks = np.max([4, round(xyz_picks.shape[0] / 4)])
-        traj_entry = atlas.Trajectory.fit(xyz_picks[:n_picks, :])
-        traj_exit = atlas.Trajectory.fit(xyz_picks[-1 * n_picks:, :])
+        traj_entry = atlas.Trajectory.fit(xyz_picks[-1 * n_picks:, :])
+        traj_exit = atlas.Trajectory.fit(xyz_picks[:n_picks, :])
 
         # Force the entry to be on the upper z lim of the atlas to account for cases where channels
         # may be located above the surface of the brain
