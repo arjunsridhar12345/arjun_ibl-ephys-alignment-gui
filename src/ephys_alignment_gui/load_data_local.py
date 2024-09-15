@@ -241,8 +241,9 @@ class LoadDataLocal:
         ccf_slice = self.brain_atlas.image.sum(axis=1)
         #ccf_slice = np.swapaxes(ccf_slice, 0, 1)
 
-        label_slice = self.brain_atlas.label[index[:, 0], :, index[:, 2]]
-        
+        label_slice = self.brain_atlas._label2rgb(
+            self.brain_atlas.label[index[:, 0], :, index[:, 2]]
+        )
         #label_slice = np.swapaxes(label_slice, 0, 1)
 
         width = [0, self.brain_atlas.image.shape[0]]
@@ -376,7 +377,7 @@ class LoadDataLocal:
         :type channel_dict: dictionary of dictionaries
         """
         channel_dict = {}
-        print('Brain regions', brain_regions)
+  
         for i in np.arange(brain_regions.id.size):
             channel = {
                 "x": np.float64(brain_regions.xyz[i, 0]),
