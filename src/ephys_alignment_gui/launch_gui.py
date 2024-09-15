@@ -923,6 +923,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self.channel_status = True
         self.xyz_channels = self.ephysalign.get_channel_locations(self.features[self.idx],
                                                                   self.track[self.idx])
+        self.xyz_channels[:, 0] = self.loaddata.brain_atlas.image.shape[0] - self.xyz_channels[:, 0]
         print('xyz channels', self.xyz_channels)
         if not self.slice_chns:
             self.slice_lines = []
