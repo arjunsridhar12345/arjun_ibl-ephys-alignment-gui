@@ -65,8 +65,8 @@ class EphysAlignment:
         """
         # Use the first and last quarter of xyz_picks to estimate the trajectory beyond xyz_picks
         n_picks = np.max([4, round(xyz_picks.shape[0] / 4)])
-        traj_entry = atlas.Trajectory.fit(xyz_picks[-1 * n_picks:, :])
-        traj_exit = atlas.Trajectory.fit(xyz_picks[:n_picks, :])
+        traj_entry = atlas.Trajectory.fit(xyz_picks[:n_picks, :])
+        traj_exit = atlas.Trajectory.fit(xyz_picks[-1 * n_picks:, :])
 
         # Force the entry to be on the upper z lim of the atlas to account for cases where channels
         # may be located above the surface of the brain
@@ -85,6 +85,7 @@ class EphysAlignment:
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
         xyz_track = np.r_[exit[np.newaxis, :], xyz_picks, entry[np.newaxis, :]]
         # Sort so that most ventral coordinate is first
+        print(np.argsort(xyz_track[:, 2]))
         xyz_track = xyz_track[np.argsort(xyz_track[:, 2]), :]
 
         # Compute distance to first electrode from bottom coordinate
