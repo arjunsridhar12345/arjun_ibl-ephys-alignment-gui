@@ -47,7 +47,7 @@ class EphysAlignment:
                               (self.xyz_samples[:, 2] * 1e6 / self.brain_atlas.spacing) < self.brain_atlas.image.shape[2])
         rem = np.bitwise_and(xlim, ylim)
         self.xyz_samples = self.xyz_samples[rem]
-        
+
         self.region, self.region_label, self.region_colour, self.region_id\
             = self.get_histology_regions(self.xyz_samples, self.sampling_trk, self.brain_atlas)
 
@@ -238,7 +238,7 @@ class EphysAlignment:
         xyz_indices = np.round(xyz_coords * 1e6 / brain_atlas.spacing).astype(np.int64)
         xyz_indices = xyz_indices[(xyz_indices[:, 0] < brain_atlas.image.shape[0]) & (xyz_indices[:, 1] < brain_atlas.image.shape[1])
                                   & (xyz_indices[:, 2] < brain_atlas.image.shape[2])]
- 
+        
         for coord in xyz_indices:
             region_ids.append(brain_atlas.label[coord[0], coord[1], coord[2]])
 
@@ -450,7 +450,6 @@ class EphysAlignment:
         # nb using scipy here so we can change to cubic spline if needed
         channel_depths_track = self.feature2track(depths, feature, track) - self.track_extent[0]
 
-        xyz_track = np.copy(self.xyz_track)
         xyz_channels = histology.interpolate_along_track(self.xyz_track, channel_depths_track)
         xyz_channels = xyz_channels * 1e6 / self.brain_atlas.spacing
         return xyz_channels
