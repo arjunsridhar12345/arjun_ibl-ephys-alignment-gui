@@ -210,7 +210,7 @@ class LoadDataLocal:
 
         return self.allen
 
-    def get_xyzpicks(self):
+    def get_xyzpicks(self, folder_path: Path):
         # Read in local xyz_picks file
         # This file must exist, otherwise we don't know where probe was
         xyz_file_name = (
@@ -218,7 +218,7 @@ class LoadDataLocal:
             if self.n_shanks == 1
             else f"*xyz_picks_shank{self.shank_idx + 1}.json"
         )
-        xyz_file = sorted(self.folder_path.glob(xyz_file_name))
+        xyz_file = sorted(folder_path.glob(xyz_file_name))
 
         assert len(xyz_file) == 1
         with open(xyz_file[0], "r") as f:

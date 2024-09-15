@@ -1163,9 +1163,9 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self.prev_alignments, shank_options = self.loaddata.get_info(folder_path, skip_shanks=skip_shanks)
         if shank_options is not None:
             self.populate_lists(shank_options, self.shank_list, self.shank_combobox)
-            
+
         self.on_shank_selected(0)
-        self.data_button_pressed()
+        self.data_button_pressed(self.input_path)
         print('Feature prev', self.feature_prev)
 
     def load_existing_alignments(self):
@@ -1179,7 +1179,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         """
         self.data_status = False
         folder_path = Path(QtWidgets.QFileDialog.getExistingDirectory(None, "Select Input Directory"))
-
+        self.input_path = folder_path
         if folder_path:
             self.input_folder_line.setText(str(folder_path))
             self._update_ephys_alignments(folder_path)
@@ -1243,7 +1243,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
     def on_alignment_selected(self, idx):
         self.feature_prev, self.track_prev = self.loaddata.get_starting_alignment(idx)
 
-    def data_button_pressed(self):
+    def data_button_pressed(self, folder_path: Path):
         """
         Triggered when Get Data button pressed, uses subject and session info to find eid and
         downloads and computes data needed for GUI display
@@ -1276,7 +1276,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
 
         # Only get histology specific stuff if the histology tracing exists
         if self.histology_exists:
-            self.xyz_picks = self.loaddata.get_xyzpicks()
+            self.xyz_picks = self.loaddata.get_xyzpicks(folder_path)
 
             if np.any(self.feature_prev):
                 self.ephysalign = EphysAlignment(self.xyz_picks, self.chn_depths,
