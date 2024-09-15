@@ -1163,6 +1163,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self.prev_alignments, shank_options = self.loaddata.get_info(folder_path)
         self.populate_lists(shank_options, self.shank_list, self.shank_combobox)
         self.on_shank_selected(0)
+        print('Feature prev', self.feature_prev)
         self.data_button_pressed()
 
     def load_existing_alignments(self):
