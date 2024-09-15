@@ -70,7 +70,7 @@ class EphysAlignment:
 
         # Force the entry to be on the upper z lim of the atlas to account for cases where channels
         # may be located above the surface of the brain
-        #entry = (traj_entry.eval_z(0))[0, :]
+        entry = (traj_entry.eval_z(0))[0, :]
         """
         if speedy:
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
@@ -78,15 +78,14 @@ class EphysAlignment:
             exit = atlas.Insertion.get_brain_exit(traj_exit, self.brain_atlas)
             # The exit is just below the bottom surfacce of the brain
             exit[2] = exit[2] - 200 / 1e6
-        
-        #exit = (traj_exit.eval_z(225))[0, :]
+        """
+        exit = (traj_exit.eval_z(self.brain_atlas.image.shape[2]))[0, :]
         # Catch cases where the exit
         if any(np.isnan(exit)):
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
-        """
-        xyz_track = np.r_[traj_exit.vector[np.newaxis, :], xyz_picks, traj_entry.vector[np.newaxis, :]]
+        xyz_track = np.r_[exit[np.newaxis, :], xyz_picks, entry[np.newaxis, :]]
         # Sort so that most ventral coordinate is first
-        xyz_track = xyz_track[np.argsort(xyz_track[:, 2]), :]
+        xyz_track = xyz_track[np.argsort(xyz_track[:, 2])[::-1], :]
 
         # Compute distance to first electrode from bottom coordinate
         tip_distance = _cumulative_distance(xyz_track)[1] + TIP_SIZE_UM / 1e6
