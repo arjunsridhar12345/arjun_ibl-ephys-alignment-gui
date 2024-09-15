@@ -239,12 +239,10 @@ class EphysAlignment:
         xyz_indices = np.round(xyz_coords * 1e6 / brain_atlas.spacing).astype(np.int64)
         xyz_indices = xyz_indices[(xyz_indices[:, 0] < brain_atlas.image.shape[0]) & (xyz_indices[:, 1] < brain_atlas.image.shape[1])
                                   & (xyz_indices[:, 2] < brain_atlas.image.shape[2])]
-        
-        print('Xyz indices', xyz_indices)
         for coord in xyz_indices:
             region_ids.append(brain_atlas.label[coord[0], coord[1], coord[2]])
 
-        region_info = brain_atlas.regions.get(region_ids)
+        region_info = brain_atlas.regions.get(region_ids.reverse())
         boundaries = np.where(np.diff(region_info.id))[0]
         region = np.empty((boundaries.size + 1, 2))
         region_label = np.empty((boundaries.size + 1, 2), dtype=object)
