@@ -47,7 +47,7 @@ class EphysAlignment:
                               (self.xyz_samples[:, 2] * 1e6 / self.brain_atlas.spacing) < self.brain_atlas.image.shape[2])
         rem = np.bitwise_and(xlim, ylim)
         self.xyz_samples = self.xyz_samples[rem]
-
+        self.xyz_samples = np.flipud(self.xyz_samples)
         self.region, self.region_label, self.region_colour, self.region_id\
             = self.get_histology_regions(self.xyz_samples, self.sampling_trk, self.brain_atlas)
 
@@ -236,7 +236,6 @@ class EphysAlignment:
         #region_ids = brain_atlas.get_labels(xyz_coords, mapping=mapping)
         region_ids = []
         xyz_indices = np.round(xyz_coords * 1e6 / brain_atlas.spacing).astype(np.int64)
-        xyz_indices = np.flipud(xyz_indices)
         xyz_indices = xyz_indices[(xyz_indices[:, 0] < brain_atlas.image.shape[0]) & (xyz_indices[:, 1] < brain_atlas.image.shape[1])
                                   & (xyz_indices[:, 2] < brain_atlas.image.shape[2])]
  
