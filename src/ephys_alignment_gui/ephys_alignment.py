@@ -84,7 +84,7 @@ class EphysAlignment:
         if any(np.isnan(exit)):
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
         """
-        xyz_track = np.r_[traj_exit[np.newaxis, :], xyz_picks, traj_entry[np.newaxis, :]]
+        xyz_track = np.r_[traj_exit.vector[np.newaxis, :], xyz_picks, traj_entry.vector[np.newaxis, :]]
         # Sort so that most ventral coordinate is first
         xyz_track = xyz_track[np.argsort(xyz_track[:, 2]), :]
 
