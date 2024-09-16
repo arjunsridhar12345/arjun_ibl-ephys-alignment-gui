@@ -86,8 +86,8 @@ class EphysAlignment:
         xyz_track = np.r_[exit[np.newaxis, :], xyz_picks, entry[np.newaxis, :]]
         indices = np.argsort(xyz_track[:, 2])
         xyz_track_indices = indices[1:-1][::-1]
-        xyz_track_indices = np.insert(xyz_track_indices, 0, indices[0])
         xyz_track_indices = np.insert(xyz_track_indices, -1, indices[-1])
+        xyz_track_indices = np.insert(xyz_track_indices, 0, indices[0])
         # Sort so that most dorsal coordinate is first
         xyz_track = xyz_track[xyz_track_indices, :]
 
