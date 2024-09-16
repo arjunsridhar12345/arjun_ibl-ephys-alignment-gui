@@ -84,6 +84,8 @@ class EphysAlignment:
         if any(np.isnan(exit)):
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
 
+        print('Traj entry', traj_entry.vector)
+        print('Traj exit', traj_exit.vector)
         print('Entry', entry)
         print('Exit', exit)
         print('Zlim exit', (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :])
