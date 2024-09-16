@@ -86,6 +86,7 @@ class EphysAlignment:
         if any(np.isnan(exit)):
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
         xyz_track = np.r_[exit[np.newaxis, :], xyz_picks, entry[np.newaxis, :]]
+        print('xyz track before sorting', xyz_track)
         indices = np.argsort(xyz_track[:, 2])
         xyz_track_indices = indices[1:-1][::-1]
         # Sort so that most dorsal coordinate is first
