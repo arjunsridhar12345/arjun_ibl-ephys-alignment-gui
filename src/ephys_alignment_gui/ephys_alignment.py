@@ -270,7 +270,7 @@ class EphysAlignment:
             region[bound, :] = _region
             region_colour[boundaries.size - bound, :] = _region_colour
             region_id[bound, :] = _region_id
-            region_label[bound, :] = (_region_mean, _region_label)
+            region_label[boundaries.size - bound, :] = (_region_mean, _region_label)
 
         return region, region_label, region_colour, region_id
 
