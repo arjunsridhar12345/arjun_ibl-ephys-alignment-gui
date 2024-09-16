@@ -86,7 +86,7 @@ class EphysAlignment:
         # Catch cases where the exit
         if any(np.isnan(exit)):
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
-        xyz_track = np.r_[entry[np.newaxis, :], xyz_picks, exit[np.newaxis, :]]
+        xyz_track = np.r_[exit[np.newaxis, :], xyz_picks, entry[np.newaxis, :]]
 
         # Compute distance to first electrode from bottom coordinate
         tip_distance = _cumulative_distance(xyz_track)[1] + TIP_SIZE_UM / 1e6
