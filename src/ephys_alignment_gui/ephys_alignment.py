@@ -52,7 +52,7 @@ class EphysAlignment:
             = self.get_histology_regions(self.xyz_samples, self.sampling_trk, self.brain_atlas)
         self.region_label[:, 1] = self.region_label[:, 1][::-1]
         print('Region', self.region)
-        print('Color', self.region_colour)
+        print('Color', self.region_colour[::-1])
         print('Region Id', self.region_id)
 
     def get_insertion_track(self, xyz_picks, speedy=False):
