@@ -80,14 +80,14 @@ class EphysAlignment:
             exit[2] = exit[2] - 200 / 1e6
         """
         exit = (traj_exit.eval_z(self.brain_atlas.image.shape[2]))[0, :]
+        print('Entry', entry)
+        print('Exit', exit)
         # Catch cases where the exit
         if any(np.isnan(exit)):
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
         xyz_track = np.r_[exit[np.newaxis, :], xyz_picks, entry[np.newaxis, :]]
         indices = np.argsort(xyz_track[:, 2])
         xyz_track_indices = indices[1:-1][::-1]
-        xyz_track_indices = np.insert(xyz_track_indices, -1, indices[-1])
-        xyz_track_indices = np.insert(xyz_track_indices, 0, indices[0])
         # Sort so that most dorsal coordinate is first
         xyz_track = xyz_track[xyz_track_indices, :]
 
