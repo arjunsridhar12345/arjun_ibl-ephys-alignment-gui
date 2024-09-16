@@ -255,7 +255,7 @@ class EphysAlignment:
         region_label = np.empty((boundaries.size + 1, 2), dtype=object)
         region_id = np.empty((boundaries.size + 1, 1), dtype=int)
         region_colour = np.empty((boundaries.size + 1, 3), dtype=int)
-        for bound in np.arange(boundaries.size + 1)[::-1]:
+        for bound in np.arange(boundaries.size + 1):
             if bound == 0:
                 _region = np.array([0, boundaries[bound]])
             elif bound == boundaries.size:
@@ -268,7 +268,7 @@ class EphysAlignment:
             _region = depth_coords[_region]
             _region_mean = np.mean(_region)
             region[bound, :] = _region
-            region_colour[bound, :] = _region_colour
+            region_colour[boundaries.size - bound, :] = _region_colour
             region_id[bound, :] = _region_id
             region_label[bound, :] = (_region_mean, _region_label)
 
