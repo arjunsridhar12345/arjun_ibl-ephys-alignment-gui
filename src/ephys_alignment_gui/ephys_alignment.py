@@ -50,6 +50,7 @@ class EphysAlignment:
 
         self.region, self.region_label, self.region_colour, self.region_id\
             = self.get_histology_regions(self.xyz_samples, self.sampling_trk, self.brain_atlas)
+        print('label', self.region_label)
         self.region_label = [[self.region_label[i][0], self.region_label[len(self.region_label) - i - 1][1]] for i in range(len(self.region_label))]
         print(self.region_label)
 
