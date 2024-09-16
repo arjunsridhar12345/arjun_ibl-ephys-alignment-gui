@@ -259,9 +259,9 @@ class EphysAlignment:
             if bound == 0:
                 _region = np.array([0, boundaries[boundaries.size - bound - 1]])
             elif bound == boundaries.size:
-                _region = np.array([boundaries[boundaries.size - bound - 1 - 1], region_info.id.size - 1])
+                _region = np.array([boundaries[boundaries.size - bound - 1], region_info.id.size - 1])
             else:
-                _region = np.array([boundaries[boundaries.size - bound - 1 - 1], boundaries[bound]])
+                _region = np.array([boundaries[boundaries.size - bound - 1], boundaries[bound]])
             _region_colour = region_info.rgb[_region[1]]
             _region_label = region_info.acronym[_region[1]]
             _region_id = region_info.id[_region[1]]
