@@ -82,7 +82,6 @@ class EphysAlignment:
         exit = (traj_exit.eval_z(self.brain_atlas.image.shape[2]))[0, :]
         print('Entry', entry)
         print('Exit', exit)
-        xyz_picks = xyz_picks[::-1]
         # Catch cases where the exit
         if any(np.isnan(exit)):
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
