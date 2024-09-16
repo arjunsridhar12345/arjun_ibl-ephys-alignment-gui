@@ -86,7 +86,8 @@ class EphysAlignment:
 
         print('Entry', entry)
         print('Exit', exit)
-        print('Zlim', (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :])
+        print('Zlim exit', (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :])
+        print('Zlim entry', (traj_exit.eval_z(self.brain_atlas.bc.zlim))[0, :])
         xyz_track = np.r_[exit[np.newaxis, :], xyz_picks, entry[np.newaxis, :]]
         indices = np.argsort(xyz_track[:, 2])
         # Sort so that most dorsal coordinate is first
