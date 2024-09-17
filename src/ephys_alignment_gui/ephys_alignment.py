@@ -267,9 +267,9 @@ class EphysAlignment:
             _region_id = region_info.id[_region[1]]
             _region = depth_coords[_region]
             _region_mean = np.mean(_region)
-            region[boundaries.size - bound, :] = _region
-            region_colour[boundaries.size - bound, :] = _region_colour
-            region_id[boundaries.size - bound, :] = _region_id
+            region[bound, :] = _region
+            region_colour[bound, :] = _region_colour
+            region_id[bound, :] = _region_id
             region_label[boundaries.size - bound, :] = (_region_mean, _region_label)
 
         return region, region_label, region_colour, region_id
@@ -397,7 +397,7 @@ class EphysAlignment:
             x = np.r_[0, x, 0]
             all_y.append(y)
             all_x.append(x)
-            col = region_colours[len(bound) - bound[iB]]
+            col = region_colours[bound[iB]]
             if not isinstance(col, str):
                 col = '#FFFFFF'
             else:
