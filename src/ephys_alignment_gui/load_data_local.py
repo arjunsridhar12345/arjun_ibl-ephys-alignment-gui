@@ -254,7 +254,7 @@ class LoadDataLocal:
 
         print('Ccf slice', ccf_slice.shape)
         slice_data = {
-            "ccf": ccf_slice,
+            "ccf": np.flipud(ccf_slice),
             "label": label_slice,
             "scale": np.array(
                 [
