@@ -50,10 +50,6 @@ class EphysAlignment:
 
         self.region, self.region_label, self.region_colour, self.region_id\
             = self.get_histology_regions(self.xyz_samples, self.sampling_trk, self.brain_atlas)
-        self.region = self.region[::-1]
-        self.region_label = self.region_label[::-1]
-        self.region_colour = self.region_colour[::-1]
-        self.region_id = self.region_id[::-1]
 
     def get_insertion_track(self, xyz_picks, speedy=False):
         """
@@ -272,10 +268,10 @@ class EphysAlignment:
             _region_id = region_info.id[_region[1]]
             _region = depth_coords[_region]
             _region_mean = np.mean(_region)
-            region[bound, :] = _region
-            region_colour[bound, :] = _region_colour
+            region[bound, :] = -_region
+            region_colour[boundaries.size - bound, :] = _region_colour
             region_id[bound, :] = _region_id
-            region_label[bound, :] = (_region_mean, _region_label)
+            region_label[bound, :] = (-_region_mean, _region_label)
 
         return region, region_label, region_colour, region_id
 
