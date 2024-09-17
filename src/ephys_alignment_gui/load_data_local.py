@@ -322,7 +322,7 @@ class LoadDataLocal:
         index = index[(index[:, 0] < self.brain_atlas.image.shape[0]) & (index[:, 1] < self.brain_atlas.image.shape[1])
                                   & (index[:, 2] < self.brain_atlas.image.shape[2])]
         
-        for coord in index
+        for coord in index:
             region_ids.append(self.brain_atlas.label[coord[0], coord[1], coord[2]])
         
         brain_regions = self.brain_atlas.regions.get(
