@@ -223,6 +223,7 @@ class EphysAlignment:
         region = self.track2feature(region, feature, track) * 1e6
         region_label[:, 0] = (self.track2feature(np.float64(region_label[:, 0]), feature,
                               track) * 1e6)
+        print('Scaled region', region_label)
         return region, region_label
 
     @staticmethod
