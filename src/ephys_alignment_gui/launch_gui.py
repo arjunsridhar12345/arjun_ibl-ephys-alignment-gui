@@ -1291,7 +1291,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
                                                  brain_atlas=self.loaddata.brain_atlas)
 
             self.region_fp, self.region_label_fp, self.region_colour_fp, _ \
-                = EphysAlignment.get_histology_regions(self.ephysalign.xyz_samples, self.ephysalign.sampling_trk,
+                = self.ephysalign.get_histology_regions(self.ephysalign.xyz_samples, self.ephysalign.sampling_trk,
                                                        self.loaddata.brain_atlas)
 
             self.features[self.idx], self.track[self.idx], self.xyz_track \
