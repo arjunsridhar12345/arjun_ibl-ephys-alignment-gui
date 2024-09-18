@@ -48,8 +48,10 @@ class EphysAlignment:
         rem = np.bitwise_and(xlim, ylim)
         self.xyz_samples = self.xyz_samples[rem]
 
+        """
         self.region, self.region_label, self.region_colour, self.region_id\
             = self.get_histology_regions(self.xyz_samples, self.sampling_trk, self.brain_atlas)
+        """
 
     def get_insertion_track(self, xyz_picks, speedy=False):
         """
