@@ -251,8 +251,7 @@ class EphysAlignment:
             region_ids.append(brain_atlas.label[coord[0], coord[1], coord[2]])
 
         region_info = brain_atlas.regions.get(region_ids)
-        boundaries = np.where(np.diff(region_info.id))[0]
-        print(boundaries)
+        boundaries = np.where(np.diff(region_info.id))[0][::-1]
         region = np.empty((boundaries.size + 1, 2))
         region_label = np.empty((boundaries.size + 1, 2), dtype=object)
         region_id = np.empty((boundaries.size + 1, 1), dtype=int)
@@ -270,7 +269,7 @@ class EphysAlignment:
             _region = depth_coords[_region]
             _region_mean = np.mean(_region)
             region[bound, :] = _region
-            region_colour[boundaries.size - bound, :] = _region_colour
+            region_colour[bound, :] = _region_colour
             region_id[bound, :] = _region_id
             region_label[bound, :] = (_region_mean, _region_label)
 
