@@ -90,10 +90,11 @@ class EphysAlignment:
         print('Zlim exit', (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :])
         print('Zlim entry', (traj_exit.eval_z(self.brain_atlas.bc.zlim))[0, :])
         xyz_track = np.r_[exit[np.newaxis, :], xyz_picks, entry[np.newaxis, :]]
+        print('track', xyz_track)
         indices = np.argsort(xyz_track[:, 2])
-        # Sort so that most dorsal coordinate is first
+        # Sort so that most ventral coordinate is first
         xyz_track = xyz_track[indices, :]
-
+        print('track', xyz_track)
         # Compute distance to first electrode from bottom coordinate
         tip_distance = _cumulative_distance(xyz_track)[1] + TIP_SIZE_UM / 1e6
         track_length = _cumulative_distance(xyz_track)[-1]
