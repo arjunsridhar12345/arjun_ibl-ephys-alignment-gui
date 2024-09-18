@@ -219,7 +219,7 @@ class EphysAlignment:
         region = self.track2feature(region, feature, track) * 1e6
         region_label[:, 0] = (self.track2feature(np.float64(region_label[:, 0]), feature,
                               track) * 1e6)
-        print('Scaled region', region_label)
+
         return region, region_label
 
     @staticmethod
@@ -252,6 +252,7 @@ class EphysAlignment:
 
         region_info = brain_atlas.regions.get(region_ids)
         boundaries = np.where(np.diff(region_info.id))[0]
+        print(boundaries)
         region = np.empty((boundaries.size + 1, 2))
         region_label = np.empty((boundaries.size + 1, 2), dtype=object)
         region_id = np.empty((boundaries.size + 1, 1), dtype=int)
@@ -268,10 +269,10 @@ class EphysAlignment:
             _region_id = region_info.id[_region[1]]
             _region = depth_coords[_region]
             _region_mean = np.mean(_region)
-            region[bound, :] = -_region
+            region[bound, :] = _region
             region_colour[boundaries.size - bound, :] = _region_colour
             region_id[bound, :] = _region_id
-            region_label[bound, :] = (-_region_mean, _region_label)
+            region_label[bound, :] = (_region_mean, _region_label)
 
         return region, region_label, region_colour, region_id
 
