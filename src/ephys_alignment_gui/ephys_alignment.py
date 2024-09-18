@@ -225,7 +225,7 @@ class EphysAlignment:
         return region, region_label
 
     @staticmethod
-    def get_histology_regions(xyz_coords, depth_coords, brain_atlas=None, mapping=None):
+    def get_histology_regions(self, xyz_coords, depth_coords, brain_atlas=None, mapping=None):
         """
         Find all brain regions and their boundaries along the depth of probe or track
         :param xyz_coords: 3D coordinates of points along probe or track
@@ -277,7 +277,7 @@ class EphysAlignment:
             region_label[bound, :] = (_region_mean, _region_label)
 
         self.region = region
-        self,region_label = region_label
+        self.region_label = region_label
         self.region_colour = region_colour
         self.region_id = region_id
         return region, region_label, region_colour, region_id
