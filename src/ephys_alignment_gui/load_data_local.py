@@ -225,7 +225,7 @@ class LoadDataLocal:
             user_picks = json.load(f)
 
         xyz_picks = np.array(user_picks["xyz_picks"]) / 1e6
-        xyz_picks = xyz_picks[np.argsort(xyz_picks[:, 2]), :]
+        
         print('xyz_picks', xyz_picks)
         return xyz_picks
 
