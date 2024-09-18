@@ -48,10 +48,8 @@ class EphysAlignment:
         rem = np.bitwise_and(xlim, ylim)
         self.xyz_samples = self.xyz_samples[rem]
 
-        """
         self.region, self.region_label, self.region_colour, self.region_id\
             = self.get_histology_regions(self.xyz_samples, self.sampling_trk, self.brain_atlas)
-        """
 
     def get_insertion_track(self, xyz_picks, speedy=False):
         """
@@ -224,7 +222,8 @@ class EphysAlignment:
 
         return region, region_label
 
-    def get_histology_regions(self, xyz_coords, depth_coords, brain_atlas=None, mapping=None):
+    @staticmethod
+    def get_histology_regions(xyz_coords, depth_coords, brain_atlas=None, mapping=None):
         """
         Find all brain regions and their boundaries along the depth of probe or track
         :param xyz_coords: 3D coordinates of points along probe or track
@@ -253,7 +252,7 @@ class EphysAlignment:
 
         region_info = brain_atlas.regions.get(region_ids)
         boundaries = np.where(np.diff(region_info.id))[0]
-
+  
         region = np.empty((boundaries.size + 1, 2))
         region_label = np.empty((boundaries.size + 1, 2), dtype=object)
         region_id = np.empty((boundaries.size + 1, 1), dtype=int)
@@ -275,10 +274,6 @@ class EphysAlignment:
             region_id[bound, :] = _region_id
             region_label[bound, :] = (_region_mean, _region_label)
 
-        self.region = region
-        self.region_label = region_label
-        self.region_colour = region_colour
-        self.region_id = region_id
         return region, region_label, region_colour, region_id
 
     @staticmethod
