@@ -91,7 +91,7 @@ class EphysAlignment:
         print('Zlim entry', (traj_exit.eval_z(self.brain_atlas.bc.zlim))[0, :])
         xyz_track = np.r_[entry[np.newaxis, :], xyz_picks, exit[np.newaxis, :]]
         print('track', xyz_track)
-        indices = np.argsort(xyz_track[:, 2])
+        indices = np.argsort(xyz_track[:, 2])[::-1]
         # Sort so that most ventral coordinate is first
         xyz_track = xyz_track[indices, :]
         print('track', xyz_track)
@@ -260,11 +260,11 @@ class EphysAlignment:
         region_colour = np.empty((boundaries.size + 1, 3), dtype=int)
         for bound in np.arange(boundaries.size + 1):
             if bound == 0:
-                _region = np.array([0, boundaries[bound]])
+                _region = np.array([0, boundaries[boundaries.size - bound]])
             elif bound == boundaries.size:
-                _region = np.array([boundaries[bound - 1], region_info.id.size - 1])
+                _region = np.array([boundaries[boundaries.size - bound - 1], region_info.id.size - 1])
             else:
-                _region = np.array([boundaries.size - boundaries[bound - 1], boundaries.size - boundaries[bound]])
+                _region = np.array([boundaries[boundaries.size - bound - 1], boundaries[boundaries.size - bound]])
             _region_colour = region_info.rgb[_region[1]]
             _region_label = region_info.acronym[_region[1]]
             _region_id = region_info.id[_region[1]]
