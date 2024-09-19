@@ -225,7 +225,7 @@ class LoadDataLocal:
             user_picks = json.load(f)
 
         xyz_picks = np.array(user_picks["xyz_picks"]) / 1e6
-        
+
         print('xyz_picks', xyz_picks)
         return xyz_picks
 
@@ -255,7 +255,7 @@ class LoadDataLocal:
 
         print('Ccf slice', ccf_slice.shape)
         slice_data = {
-            "ccf": np.fliplr(ccf_slice),
+            "ccf": ccf_slice,
             "label": label_slice,
             "scale": np.array(
                 [
