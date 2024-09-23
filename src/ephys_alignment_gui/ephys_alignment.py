@@ -35,7 +35,7 @@ class EphysAlignment:
             self.feature_init = np.array([-1 * start_lims, start_lims])
 
         self.sampling_trk = np.arange(self.track_extent[-1] - 10 * 1e-6, self.track_extent[0], 10 * 1e-6)
-        print(self.sampling_trk)
+        print(self.track_extent[-1] - 10 * 1e-6, self.track_extent[0])
         
         self.xyz_samples = histology.interpolate_along_track(self.xyz_track,
                                                              self.sampling_trk -
