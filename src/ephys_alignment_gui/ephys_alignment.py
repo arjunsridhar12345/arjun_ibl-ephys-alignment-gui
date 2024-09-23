@@ -40,7 +40,7 @@ class EphysAlignment:
         print('Sampling track', self.sampling_trk)
         self.xyz_samples = histology.interpolate_along_track(self.xyz_track,
                                                              self.sampling_trk -
-                                                             self.sampling_trk[1])
+                                                             self.sampling_trk[0])
         # ensure none of the track is outside the y or x lim of atlas
         xlim = np.bitwise_and((self.xyz_samples[:, 0] * 1e6 / self.brain_atlas.spacing) > 0,
                               (self.xyz_samples[:, 0] * 1e6 / self.brain_atlas.spacing) < self.brain_atlas.image.shape[0])
@@ -97,8 +97,8 @@ class EphysAlignment:
         xyz_track = xyz_track[indices, :]
         print('track', xyz_track)
         # Compute distance to first electrode from bottom coordinate
-        tip_distance = _cumulative_distance(xyz_track)[1] + TIP_SIZE_UM / 1e6
-        track_length = _cumulative_distance(xyz_track)[-1]
+        tip_distance = _cumulative_distance(xyz_track)[-1] + TIP_SIZE_UM / 1e6
+        track_length = _cumulative_distance(xyz_track)[1]
         track_extent = np.array([0, track_length]) - tip_distance
         return xyz_track, track_extent
 
