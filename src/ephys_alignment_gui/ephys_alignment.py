@@ -258,6 +258,7 @@ class EphysAlignment:
         region_label = np.empty((boundaries.size + 1, 2), dtype=object)
         region_id = np.empty((boundaries.size + 1, 1), dtype=int)
         region_colour = np.empty((boundaries.size + 1, 3), dtype=int)
+        print('Region boundaries', boundaries)
         for bound in np.arange(boundaries.size + 1):
             if bound == 0:
                 _region = np.array([0, boundaries[bound]])
