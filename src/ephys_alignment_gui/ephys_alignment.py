@@ -34,7 +34,7 @@ class EphysAlignment:
             self.track_init = np.array([-1 * start_lims, start_lims])
             self.feature_init = np.array([-1 * start_lims, start_lims])
 
-        self.sampling_trk = np.arange(self.track_extent[0] - 10 * 1e-6, self.track_extent[-1] - 10 * 1e-6, 10 * 1e-6)
+        self.sampling_trk = np.arange(self.track_extent[-1] - 10 * 1e-6, self.track_extent[0], 10 * 1e-6)
         
         self.xyz_samples = histology.interpolate_along_track(self.xyz_track,
                                                              self.sampling_trk -
@@ -257,7 +257,7 @@ class EphysAlignment:
         region_label = np.empty((boundaries.size + 1, 2), dtype=object)
         region_id = np.empty((boundaries.size + 1, 1), dtype=int)
         region_colour = np.empty((boundaries.size + 1, 3), dtype=int)
-        print('Depth coords', depth_coords)
+
         for bound in np.arange(boundaries.size + 1):
             if bound == 0:
                 _region = np.array([0, boundaries[bound]])
@@ -268,7 +268,7 @@ class EphysAlignment:
             _region_colour = region_info.rgb[_region[1]]
             _region_label = region_info.acronym[_region[1]]
             _region_id = region_info.id[_region[1]]
-            _region = depth_coords[_region]
+            _region = depth_coords[_region] / 1e6
             _region_mean = np.mean(_region)
             region[bound, :] = _region
             region_colour[bound, :] = _region_colour
