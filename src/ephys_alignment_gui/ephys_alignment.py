@@ -266,6 +266,7 @@ class EphysAlignment:
                 _region = np.array([boundaries[bound - 1], region_info.id.size - 1])
             else:
                 _region = np.array([boundaries[bound - 1], boundaries[bound]])
+            _region = np.fliplr(_region)
             _region_colour = region_info.rgb[_region[1]]
             _region_label = region_info.acronym[_region[1]]
             _region_id = region_info.id[_region[1]]
