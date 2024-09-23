@@ -37,7 +37,6 @@ class EphysAlignment:
         self.sampling_trk = np.arange(self.track_extent[0],
                                       self.track_extent[-1] - 10 * 1e-6, 10 * 1e-6)
         
-        print('Sampling track', self.sampling_trk)
         self.xyz_samples = histology.interpolate_along_track(self.xyz_track,
                                                              self.sampling_trk -
                                                              self.sampling_trk[0])
@@ -92,7 +91,7 @@ class EphysAlignment:
         print('Zlim entry', (traj_exit.eval_z(self.brain_atlas.bc.zlim))[0, :])
         xyz_track = np.r_[exit[np.newaxis, :], xyz_picks, entry[np.newaxis, :]]
         print('track', xyz_track)
-        indices = np.argsort(xyz_track[:, 2])[::-1]
+        indices = np.argsort(xyz_track[:, 2])
         # Sort so that most ventral coordinate is first
         xyz_track = xyz_track[indices, :]
         print('track', xyz_track)
@@ -249,7 +248,6 @@ class EphysAlignment:
         xyz_indices = np.round(xyz_coords * 1e6 / brain_atlas.spacing).astype(np.int64)
         xyz_indices = xyz_indices[(xyz_indices[:, 0] < brain_atlas.image.shape[0]) & (xyz_indices[:, 1] < brain_atlas.image.shape[1])
                                   & (xyz_indices[:, 2] < brain_atlas.image.shape[2])]
-
         for coord in xyz_indices:
             region_ids.append(brain_atlas.label[coord[0], coord[1], coord[2]])
 
@@ -263,12 +261,12 @@ class EphysAlignment:
         
         for bound in np.arange(boundaries.size + 1):
             if bound == 0:
-                _region = np.array([boundaries[bound], 0])
+                _region = np.array([0, boundaries[bound]])
             elif bound == boundaries.size:
-                _region = np.array([region_info.id.size - 1, boundaries[bound - 1]])
+                _region = np.array([boundaries[bound - 1], region_info.id.size - 1])
             else:
-                _region = np.array([boundaries[bound], boundaries[bound - 1]])
-            
+                _region = np.array([boundaries[bound - 1], boundaries[bound]])
+                
             _region_colour = region_info.rgb[_region[1]]
             _region_label = region_info.acronym[_region[1]]
             _region_id = region_info.id[_region[1]]
