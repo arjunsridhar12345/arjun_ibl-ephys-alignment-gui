@@ -922,6 +922,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self.channel_status = True
         self.xyz_channels = self.ephysalign.get_channel_locations(self.features[self.idx],
                                                                   self.track[self.idx])
+        self.xyz_channels = self.xyz_channels[::-1]
 
         if not self.slice_chns:
             self.slice_lines = []
