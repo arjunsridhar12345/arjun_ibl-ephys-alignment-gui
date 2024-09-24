@@ -92,7 +92,7 @@ class EphysAlignment:
         print('Zlim entry', (traj_exit.eval_z(self.brain_atlas.bc.zlim))[0, :])
         xyz_track = np.r_[exit[np.newaxis, :], xyz_picks, entry[np.newaxis, :]]
         print('track', xyz_track)
-        indices = np.argsort(xyz_track[:, 2])
+        indices = np.argsort(xyz_track[:, 2])[::-1]
         # Sort so that most ventral coordinate is first
         xyz_track = xyz_track[indices, :]
         print('track', xyz_track)
@@ -463,7 +463,7 @@ class EphysAlignment:
             depths = self.chn_depths / 1e6
         # nb using scipy here so we can change to cubic spline if needed
         channel_depths_track = self.feature2track(depths, feature, track) - self.track_extent[0]
-        channel_depths_track = np.flipud(channel_depths_track)
+        
         xyz_channels = histology.interpolate_along_track(self.xyz_track, channel_depths_track)
         xyz_channels = xyz_channels * 1e6 / self.brain_atlas.spacing
         print('xyz channels length', len(xyz_channels))
