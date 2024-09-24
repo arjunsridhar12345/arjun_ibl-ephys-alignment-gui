@@ -31,8 +31,8 @@ class EphysAlignment:
             self.feature_init = feature_prev
         else:
             start_lims = 6000 / 1e6
-            self.track_init = np.array([-1 * start_lims, start_lims])
-            self.feature_init = np.array([-1 * start_lims, start_lims])
+            self.track_init = np.array([start_lims, -1 * start_lims])
+            self.feature_init = np.array([start_lims, -1 * start_lims])
 
         self.sampling_trk = np.arange(self.track_extent[0],
                                       self.track_extent[-1] - 10 * 1e-6, 10 * 1e-6)
