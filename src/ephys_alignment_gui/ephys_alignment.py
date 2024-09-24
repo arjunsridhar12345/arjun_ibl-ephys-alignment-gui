@@ -41,6 +41,7 @@ class EphysAlignment:
         self.xyz_samples = histology.interpolate_along_track(self.xyz_track,
                                                              self.sampling_trk -
                                                              self.sampling_trk[0])
+        print('Xyz samples', self.xyz_samples)
         # ensure none of the track is outside the y or x lim of atlas
         xlim = np.bitwise_and((self.xyz_samples[:, 0] * 1e6 / self.brain_atlas.spacing) > 0,
                               (self.xyz_samples[:, 0] * 1e6 / self.brain_atlas.spacing) < self.brain_atlas.image.shape[0])
@@ -48,7 +49,7 @@ class EphysAlignment:
                               (self.xyz_samples[:, 2] * 1e6 / self.brain_atlas.spacing) < self.brain_atlas.image.shape[2])
         rem = np.bitwise_and(xlim, ylim)
         self.xyz_samples = self.xyz_samples[rem]
-
+        
         self.region, self.region_label, self.region_colour, self.region_id\
             = self.get_histology_regions(self.xyz_samples, self.sampling_trk, self.brain_atlas)
 
