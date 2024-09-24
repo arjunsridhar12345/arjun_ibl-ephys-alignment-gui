@@ -36,6 +36,7 @@ class EphysAlignment:
 
         self.sampling_trk = np.arange(self.track_extent[0],
                                       self.track_extent[-1] - 10 * 1e-6, 10 * 1e-6)
+        self.sampling_trk = self.sampling_trk[::-1]
         
         self.xyz_samples = histology.interpolate_along_track(self.xyz_track,
                                                              self.sampling_trk -
@@ -91,7 +92,7 @@ class EphysAlignment:
         print('Zlim entry', (traj_exit.eval_z(self.brain_atlas.bc.zlim))[0, :])
         xyz_track = np.r_[exit[np.newaxis, :], xyz_picks, entry[np.newaxis, :]]
         print('track', xyz_track)
-        indices = np.argsort(xyz_track[:, 2])
+        indices = np.argsort(xyz_track[:, 2])[::-1]
         # Sort so that most ventral coordinate is first
         xyz_track = xyz_track[indices, :]
         print('track', xyz_track)
@@ -266,7 +267,7 @@ class EphysAlignment:
                 _region = np.array([boundaries[bound - 1], region_info.id.size - 1])
             else:
                 _region = np.array([boundaries[bound - 1], boundaries[bound]])
-                
+
             _region_colour = region_info.rgb[_region[1]]
             _region_label = region_info.acronym[_region[1]]
             _region_id = region_info.id[_region[1]]
