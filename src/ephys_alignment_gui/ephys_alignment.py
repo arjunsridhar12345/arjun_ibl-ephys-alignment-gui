@@ -40,7 +40,7 @@ class EphysAlignment:
         
         self.xyz_samples = histology.interpolate_along_track(self.xyz_track,
                                                              self.sampling_trk -
-                                                             self.sampling_trk[1])
+                                                             self.sampling_trk[0])
         print('Xyz samples', self.xyz_samples)
         # ensure none of the track is outside the y or x lim of atlas
         xlim = np.bitwise_and((self.xyz_samples[:, 0] * 1e6 / self.brain_atlas.spacing) > 0,
@@ -101,6 +101,7 @@ class EphysAlignment:
         tip_distance = _cumulative_distance(xyz_track)[1] + TIP_SIZE_UM / 1e6
         track_length = _cumulative_distance(xyz_track)[-1]
         track_extent = np.array([0, track_length]) - tip_distance
+        print('Extent', track_extent)
         return xyz_track, track_extent
 
     def get_track_and_feature(self):
