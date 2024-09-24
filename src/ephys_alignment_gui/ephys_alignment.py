@@ -79,9 +79,7 @@ class EphysAlignment:
             # The exit is just below the bottom surfacce of the brain
             exit[2] = exit[2] - 200 / 1e6
         """
-        #exit = (traj_exit.eval_z(traj_exit.vector))[0, :]
-        exit = xyz_picks[np.argmax(xyz_picks[:, 2])]
-        exit[2] = exit[2] + 20e-6
+        exit = (traj_exit.eval_z(traj_exit.))[0, :]
         # Catch cases where the exit
         if any(np.isnan(exit)):
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
@@ -465,6 +463,7 @@ class EphysAlignment:
             depths = self.chn_depths / 1e6
         # nb using scipy here so we can change to cubic spline if needed
         channel_depths_track = self.feature2track(depths, feature, track) - self.track_extent[0]
+        
         xyz_channels = histology.interpolate_along_track(self.xyz_track, channel_depths_track)
         xyz_channels = xyz_channels * 1e6 / self.brain_atlas.spacing
         print('xyz channels length', len(xyz_channels))
