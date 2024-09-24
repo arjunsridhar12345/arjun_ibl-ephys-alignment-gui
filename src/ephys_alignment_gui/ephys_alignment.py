@@ -36,7 +36,6 @@ class EphysAlignment:
 
         self.sampling_trk = np.arange(self.track_extent[0],
                                       self.track_extent[-1] - 10 * 1e-6, 10 * 1e-6)
-        self.sampling_trk = self.sampling_trk
         
         self.xyz_samples = histology.interpolate_along_track(self.xyz_track,
                                                              self.sampling_trk -
@@ -80,7 +79,7 @@ class EphysAlignment:
             # The exit is just below the bottom surfacce of the brain
             exit[2] = exit[2] - 200 / 1e6
         """
-        exit = (traj_exit.eval_z(self.brain_atlas.image.shape[2]))[0, :] / 1e6
+        exit = (traj_exit.eval_z(traj_exit.point))[0, :]
         # Catch cases where the exit
         if any(np.isnan(exit)):
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
