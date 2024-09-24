@@ -81,7 +81,7 @@ class EphysAlignment:
         """
         #exit = (traj_exit.eval_z(traj_exit.vector))[0, :]
         exit = xyz_picks[np.argmax(xyz_picks[:, 2])]
-        exit[:, 2] = exit[:, 2] + 20e-6
+        exit[2] = exit[2] + 20e-6
         # Catch cases where the exit
         if any(np.isnan(exit)):
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
