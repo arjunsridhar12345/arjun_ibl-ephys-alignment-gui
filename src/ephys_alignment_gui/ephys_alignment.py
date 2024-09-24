@@ -34,7 +34,7 @@ class EphysAlignment:
             self.track_init = np.array([-1 * start_lims, start_lims])
             self.feature_init = np.array([-1 * start_lims, start_lims])
 
-        self.sampling_trk = np.arange(self.track_extent[0],
+        self.sampling_trk = np.arange(self.track_extent[0] * 1e-6,
                                       self.track_extent[-1] - 10 * 1e-6, 10 * 1e-6)
         self.sampling_trk = self.sampling_trk[::-1]
         
