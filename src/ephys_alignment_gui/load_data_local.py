@@ -247,8 +247,11 @@ class LoadDataLocal:
 
         #ccf_slice = np.swapaxes(ccf_slice, 0, 1)
 
+        label_indices = self.brain_atlas.label[:, index[:, 1], index[:, 2]]
+        label_indices[label_indices > 2654] = 0
+
         label_slice = self.brain_atlas._label2rgb(
-            self.brain_atlas.label[index[:, 0], :, index[:, 2]]
+            label_indices
         )
         #label_slice = np.swapaxes(label_slice, 0, 1)
 
