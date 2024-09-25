@@ -248,7 +248,17 @@ class LoadDataLocal:
         #ccf_slice = np.swapaxes(ccf_slice, 0, 1)
 
         label_indices = self.brain_atlas.label[:, index[:, 1], index[:, 2]]
-        label_indices[label_indices > 2654] = 0
+        #label_indices[label_indices > 2654] = 0
+
+        structure_tree = self.get_allen_csv()
+        structure_tree['row_id'] = structure_tree.index.values
+        unique_labels = np.unique(label_indices)
+        new_labels = structure_tree.set_index('id').loc[unique_labels]['row_id']
+
+        mapping = {old:new for old, new in zip(unique_labels, new_labels)}
+        vectorized_map = np.vectorize(mapping.get)
+
+        label_indices = vectorized_map(label_indices)
 
         label_slice = self.brain_atlas._label2rgb(
             label_indices
