@@ -248,8 +248,8 @@ class LoadDataLocal:
         #ccf_slice = np.swapaxes(ccf_slice, 0, 1)
 
         label_indices = self.brain_atlas.label[:, index[:, 1], index[:, 2]]
-        #label_indices[label_indices > 2654] = 0
 
+        #IBL function requires the label ids to the the row indices of the structure tree rather than the atlas id
         structure_tree = self.get_allen_csv()
         structure_tree['row_id'] = structure_tree.index.values
         unique_labels = np.unique(label_indices)
