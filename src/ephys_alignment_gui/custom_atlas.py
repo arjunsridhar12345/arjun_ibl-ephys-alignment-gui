@@ -239,6 +239,7 @@ class CustomAtlas(BrainAtlas):
             dxyz = np.array(self.read_atlas_image()) * 1000
             print('Atlas scaling', dxyz)
             self.res_um = dxyz[0] 
+            dxyz = self.res_um * 1e-6 * np.array([1, 1, 1]) * scaling
             print('Resolution', self.res_um)
         else:
             _  = self.read_atlas_image()
@@ -252,8 +253,8 @@ class CustomAtlas(BrainAtlas):
         self.label = self.label.astype(np.uint16)
 
         
-        xyz2dims = np.array([1, 0, 2])  # this is the c-contiguous ordering
-        dims2xyz = np.array([1, 0, 2])
+        xyz2dims = np.array([0, 1, 2])  # this is the c-contiguous ordering
+        dims2xyz = np.array([0, 1, 2])
         if bregma is None:
             bregma = [0,0,0]
         elif isinstance(bregma,str) and (bregma.lower() == 'allen'):
