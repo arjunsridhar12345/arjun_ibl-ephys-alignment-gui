@@ -138,6 +138,8 @@ class LoadDataLocal:
         if not self.atlas_labels_path:
             raise FileNotFoundError('Could not find path to atlas labels in data asset attached. Looking for folder image space histology')
 
+        self.histology_path = self.atlas_image_path[0].parent
+
         self.brain_atlas = CustomAtlas(
            atlas_image_file=self.atlas_image_path[0].as_posix(),#ccf_in_713506.nrrd',
            atlas_labels_file=self.atlas_labels_path[0].as_posix(),
@@ -289,7 +291,7 @@ class LoadDataLocal:
             histology_images = [
                 ii.name
                 for ii in list(Path(self.histology_path).iterdir())
-                if ".nrrd" in ii.name
+                if ".nii.gz" in ii.name
             ]
             for image in histology_images:
                 path_to_image = glob.glob(
@@ -303,11 +305,11 @@ class LoadDataLocal:
                 if hist_path:
                     # hist_atlas = atlas.AllenAtlas(hist_path=hist_path)
                     hist_atlas = CustomAtlas(
-                        template_path=hist_path, label_path=self.atlas_path
+                        template_path=hist_path, label_path=self.atlas_labels_path
                     )
-                    hist_slice = hist_atlas.image[index[:, 0], :, index[:, 2]]
-                    hist_slice = np.swapaxes(hist_slice, 0, 1)
-                    slice_data[image.split(".nrrd")[0]] = hist_slice
+                    hist_slice = hist_atlas.image[:, index[:, 1], index[:, 2]]
+                    #hist_slice = np.swapaxes(hist_slice, 0, 1)
+                    slice_data[image.split(".nii.gz")[0]] = hist_slice
 
         return slice_data, None
 
