@@ -259,7 +259,7 @@ class CustomAtlas(BrainAtlas):
             bregma = [0,0,0]
         elif isinstance(bregma,str) and (bregma.lower() == 'allen'):
             bregma = (ALLEN_CCF_LANDMARKS_MLAPDV_UM['bregma'] / self.res_um)
-        super().__init__(self.image, self.label, dxyz, regions, dims2xyz=dims2xyz, xyz2dims=xyz2dims)
+        super().__init__(self.image, self.label, dxyz, regions, iorigin=list(self.offset), dims2xyz=dims2xyz, xyz2dims=xyz2dims)
         self.label[~np.isin(self.label,regions.id)]=997
 
     
@@ -270,7 +270,7 @@ class CustomAtlas(BrainAtlas):
         #IMG2 = sitk.DICOMOrient(IMG,self.read_string) 
         self.image = np.flip(sitk.GetArrayFromImage(IMG).T, axis=(0, 2))
         print('Shape', self.image.shape)
-        self.offset = IMG.GetOrigin()
+        self.offset = np.array(IMG.GetOrigin()) * self.spacing / 1e6
         self.spacing = IMG.GetSpacing()[0] * 1000
         return IMG.GetSpacing()
         
