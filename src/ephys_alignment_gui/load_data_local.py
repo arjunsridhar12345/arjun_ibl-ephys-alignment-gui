@@ -283,7 +283,7 @@ class LoadDataLocal:
                     (height[-1] - height[0]) / ccf_slice.shape[1],
                 ]
             ),
-            "offset": np.array([width[0], height[0] - 100]),
+            "offset": np.array([width[0], height[0]]),
         }
 
         # Load local slice images
