@@ -270,7 +270,7 @@ class LoadDataLocal:
         width = [0, self.brain_atlas.image.shape[0]]
         height = [
             index[0, 2],
-            ccf_slice.shape[1],
+            index[-1, 2],
         ]
 
         print('Ccf slice', ccf_slice.shape)
