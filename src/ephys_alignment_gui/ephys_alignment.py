@@ -64,7 +64,7 @@ class EphysAlignment:
         :type track_extent: np.array((2))
         """
         # Use the first and last quarter of xyz_picks to estimate the trajectory beyond xyz_picks
-        n_picks = np.max([2, round(xyz_picks.shape[0] / 2)])
+        n_picks = np.max([4, round(xyz_picks.shape[0] / 4)])
         traj_entry = atlas.Trajectory.fit(xyz_picks[:n_picks, :])
         traj_exit = atlas.Trajectory.fit(xyz_picks[-1 * n_picks:, :])
 
@@ -77,7 +77,7 @@ class EphysAlignment:
         else:
             exit = atlas.Insertion.get_brain_exit(traj_exit, self.brain_atlas)
             # The exit is just below the bottom surfacce of the brain
-            exit[2] = exit[2] - 200 / 1e6
+            #exit[2] = exit[2] - 200 / 1e6
         
         # Catch cases where the exit
         if any(np.isnan(exit)):
