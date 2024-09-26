@@ -267,7 +267,7 @@ class LoadDataLocal:
         )
         #label_slice = np.swapaxes(label_slice, 0, 1)
 
-        width = [0, ccf_slice.shape[1]]
+        width = [0, self.brain_atlas.image.shape[0]]
         height = [
             index[0, 2],
             index[-1, 2],
@@ -283,7 +283,7 @@ class LoadDataLocal:
                     (height[-1] - height[0]) / ccf_slice.shape[1],
                 ]
             ),
-            "offset": np.array([width[0], height[0]]),
+            "offset": np.array([width[0], height[0] - 100]),
         }
 
         # Load local slice images
