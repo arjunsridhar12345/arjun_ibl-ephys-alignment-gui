@@ -77,7 +77,7 @@ class EphysAlignment:
         else:
             exit = atlas.Insertion.get_brain_exit(traj_exit, self.brain_atlas)
             # The exit is just below the bottom surfacce of the brain
-            #exit[2] = exit[2] - 200 / 1e6
+            exit[2] = exit[2] - 200 / 1e6
         
         # Catch cases where the exit
         if any(np.isnan(exit)):
