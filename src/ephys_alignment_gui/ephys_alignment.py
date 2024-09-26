@@ -64,7 +64,7 @@ class EphysAlignment:
         :type track_extent: np.array((2))
         """
         # Use the first and last quarter of xyz_picks to estimate the trajectory beyond xyz_picks
-        n_picks = np.max([4, round(xyz_picks.shape[0] / 4)])
+        n_picks = np.max([2, round(xyz_picks.shape[0] / 2)])
         traj_entry = atlas.Trajectory.fit(xyz_picks[:n_picks, :])
         traj_exit = atlas.Trajectory.fit(xyz_picks[-1 * n_picks:, :])
 
