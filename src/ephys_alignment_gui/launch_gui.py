@@ -1180,12 +1180,12 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         Triggered in offline mode when folder button is clicked
         """
         self.data_status = False
-        folder_path = Path(QtWidgets.QFileDialog.getExistingDirectory(None, "Select Input Directory"))
+        #folder_path = Path(QtWidgets.QFileDialog.getExistingDirectory(None, "Select Input Directory"))
         self.input_path = folder_path
         if Path('/data/').is_dir():
             # Default For code ocean.
             we_are_in_code_ocean = True
-            Path(QtWidgets.QFileDialog.getExistingDirectory('/data/', "Select Input Directory"))
+            folder_path = Path(QtWidgets.QFileDialog.getExistingDirectory(None, "Select Input Directory", directory='/data/'))
         else:
             # If not code ocean, will default to current directory
             we_are_in_code_ocean = False
@@ -1203,7 +1203,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self.output_directory = out_folder/folder_path.stem
         self.loaddata.output_directory = self.output_directory
         self.output_folder_line.setText(str(self.output_directory))
-        
+
         if folder_path:
             self.input_folder_line.setText(str(folder_path))
             self._update_ephys_alignments(folder_path)
