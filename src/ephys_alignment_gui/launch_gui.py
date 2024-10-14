@@ -1182,6 +1182,28 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self.data_status = False
         folder_path = Path(QtWidgets.QFileDialog.getExistingDirectory(None, "Select Input Directory"))
         self.input_path = folder_path
+        if Path('/data/').is_dir():
+            # Default For code ocean.
+            we_are_in_code_ocean = True
+            Path(QtWidgets.QFileDialog.getExistingDirectory('/data/', "Select Input Directory"))
+        else:
+            # If not code ocean, will default to current directory
+            we_are_in_code_ocean = False
+            folder_path = Path(QtWidgets.QFileDialog.getExistingDirectory(None, "Select Input Directory"))
+        # Set the output default based on the selected folder path
+        if we_are_in_code_ocean:
+            out_folder = Path('/results/').joinpath(folder_path.parent.stem)
+            
+        else:
+            out_folder = folder_path.parent/'out'
+        
+        # Create the output folder if it doesn't exist
+        os.makedirs(out_folder, exist_ok=True)
+        # Set the output directory based on input name.
+        self.output_directory = out_folder/folder_path.stem
+        self.loaddata.output_directory = self.output_directory
+        self.output_folder_line.setText(str(self.output_directory))
+        
         if folder_path:
             self.input_folder_line.setText(str(folder_path))
             self._update_ephys_alignments(folder_path)
