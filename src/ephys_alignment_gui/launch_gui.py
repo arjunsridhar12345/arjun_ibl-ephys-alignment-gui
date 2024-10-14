@@ -1181,7 +1181,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         """
         self.data_status = False
         #folder_path = Path(QtWidgets.QFileDialog.getExistingDirectory(None, "Select Input Directory"))
-        self.input_path = folder_path
+        
         if Path('/data/').is_dir():
             # Default For code ocean.
             we_are_in_code_ocean = True
@@ -1196,7 +1196,8 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             
         else:
             out_folder = folder_path.parent/'out'
-        
+            
+        self.input_path = folder_path
         # Create the output folder if it doesn't exist
         os.makedirs(out_folder, exist_ok=True)
         # Set the output directory based on input name.
