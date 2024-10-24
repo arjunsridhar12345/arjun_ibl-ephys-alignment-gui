@@ -1171,7 +1171,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         print('Feature prev', self.feature_prev)
 
     def switch_image_space(self) -> None:
-        if 'CCF' in self.switch_space_button.getText():
+        if 'CCF' in self.switch_space_button.text():
             print('hello')
 
     def load_existing_alignments(self):
