@@ -562,6 +562,7 @@ class Setup():
             self.interaction_layout3.addWidget(self.shank_combobox, stretch=1)
             self.interaction_layout3.addWidget(self.reload_folder_button, stretch=1)
             self.interaction_layout3.addWidget(self.reload_folder_line, stretch=2)
+            self.interaction_layout3.addWidget(self.switch_space_button)
 
         # # Group 3 -- Histology location
         # self.interaction_layout3 = QtWidgets.QHBoxLayout()
