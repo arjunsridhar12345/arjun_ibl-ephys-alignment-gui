@@ -506,7 +506,7 @@ class Setup():
 
             self.switch_space_button = QtWidgets.QPushButton()
             self.switch_space_button.setText('Switch Image Space to CCF')
-            #self.switch_space_button.clicked.connect(self.switch_image_space)
+            self.switch_space_button.clicked.connect(self.switch_image_space)
 
         # Button to load Histology 
         self.histology_folder_button = QtWidgets.QToolButton()
