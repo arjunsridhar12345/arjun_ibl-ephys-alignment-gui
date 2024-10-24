@@ -566,7 +566,7 @@ class Setup():
 
         # # Group 3 -- Histology location
         # self.interaction_layout3 = QtWidgets.QHBoxLayout()
-        self.interaction_layout3.addWidget(self.histology_folder_button, stretch=1)
+        #self.interaction_layout3.addWidget(self.histology_folder_button, stretch=1)
         # self.interaction_layout3.addWidget(self.histology_folder_line, stretch=2)
 
         # Pop up dialog for qc results to datajoint, only for online mode
