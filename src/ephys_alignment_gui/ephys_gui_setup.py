@@ -505,8 +505,8 @@ class Setup():
             self.reload_folder_button.clicked.connect(self.load_existing_alignments)
 
             self.switch_space_button = QtWidgets.QPushButton()
-            self.switch_space_button.setText('Switch Image Space to CCF')
-            self.switch_space_button.clicked.connect(self.switch_image_space)
+            self.switch_space_button.setText('Transform Points to CCF')
+            self.switch_space_button.clicked.connect(self.transform_to_ccf)
 
         # Button to load Histology 
         self.histology_folder_button = QtWidgets.QToolButton()

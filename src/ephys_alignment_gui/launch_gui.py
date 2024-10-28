@@ -1170,7 +1170,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self.data_button_pressed(self.input_path)
         print('Feature prev', self.feature_prev)
 
-    def switch_image_space(self) -> None:
+    def transform_to_ccf(self) -> None:
         if 'CCF' in self.switch_space_button.text():
             print('hello')
 
