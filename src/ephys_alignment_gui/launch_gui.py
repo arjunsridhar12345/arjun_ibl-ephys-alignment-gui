@@ -13,7 +13,7 @@ import numpy as np
 import numpy.typing as npt
 from random import randrange
 
-import pandas as pd
+import pandas
 import ants
 
 import ephys_alignment_gui.plot_data as pd
@@ -1773,7 +1773,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self.update_string()
 
     def _transform_to_ccf(self, image_physical_space_coordinates: npt.NDArray) -> None:
-        this_probe_df = pd.DataFrame({'x': image_physical_space_coordinates[:, 0], 
+        this_probe_df = pandas.DataFrame({'x': image_physical_space_coordinates[:, 0], 
                                       'y': image_physical_space_coordinates[:, 1], 
                                       'z': image_physical_space_coordinates[:, 2]})
         
