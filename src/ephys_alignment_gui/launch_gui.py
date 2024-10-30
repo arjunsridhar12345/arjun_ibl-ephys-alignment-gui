@@ -1845,15 +1845,15 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         for channel in self.loaddata.channel_dict:
             if channel == 'origin':
                 continue
-            
+
             channel_dict_info = self.loaddata.channel_dict[channel]
 
             channel_index = int(channel[-1])
             ccf_channel_info = ccf_coordinates_dataframe.iloc[len(ccf_coordinates_dataframe) - channel_index - 1]
             ccf_result_json[channel] = {
-                "x": ccf_channel_info['x'],
-                "y": ccf_channel_info['y'],
-                "z": ccf_channel_info['z'],
+                "x": ccf_channel_info['x'].astype(np.float64),
+                "y": ccf_channel_info['y'].astype(np.float64),
+                "z": ccf_channel_info['z'].astype(np.float64),
                 "axial": channel_dict_info['axial'],
                 "lateral": channel_dict_info['lateral'],
                 "brain_region_id": channel_dict_info['brain_region_id'],
