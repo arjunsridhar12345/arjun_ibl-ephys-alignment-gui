@@ -1848,9 +1848,9 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             channel_index = int(channel[-1])
             ccf_channel_info = ccf_coordinates_dataframe.iloc[len(ccf_coordinates_dataframe) - channel_index - 1]
             ccf_result_json[channel] = {
-                "x": ccf_channel_info['x'].values[0],
-                "y": ccf_channel_info['y'].values[0],
-                "z": ccf_channel_info['z'].values[0],
+                "x": ccf_channel_info['x'],
+                "y": ccf_channel_info['y'],
+                "z": ccf_channel_info['z'],
                 "axial": channel_dict_info['axial'],
                 "lateral": channel_dict_info['lateral'],
                 "brain_region_id": channel_dict_info['brain_region_id'],
