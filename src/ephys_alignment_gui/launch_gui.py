@@ -1777,17 +1777,17 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
                                       'y': image_physical_space_coordinates[:, 1], 
                                       'z': image_physical_space_coordinates[:, 2]})
         
-        smartspim_template_affine_transform = tuple(DATA_PATH.glob('*/*/image_atlas_alignment/*/ls_to_template_SyN_0GenericAffine.mat'))
+        smartspim_template_affine_transform = tuple(DATA_PATH.glob('*/image_atlas_alignment/*/ls_to_template_SyN_0GenericAffine.mat'))
         if not smartspim_template_affine_transform:
             # try legacy way
-            print(tuple(DATA_PATH.glob('*/*')))
-            smartspim_template_affine_transform = tuple(DATA_PATH.glob('*/*/registration/ls_to_template_SyN_0GenericAffine.mat'))
+            print(tuple(DATA_PATH.glob('*/*/registration/*')))
+            smartspim_template_affine_transform = tuple(DATA_PATH.glob('*/registration/ls_to_template_SyN_0GenericAffine.mat'))
             if not smartspim_template_affine_transform:
                 raise FileNotFoundError('No affine transform from spim to template. Check attached assets')
 
-        smartspim_template_warp_transform = tuple(DATA_PATH.glob('*/*/image_atlas_alignment/*/ls_to_template_SyN_1InverseWarp.nii.gz'))
+        smartspim_template_warp_transform = tuple(DATA_PATH.glob('*/image_atlas_alignment/*/ls_to_template_SyN_1InverseWarp.nii.gz'))
         if not smartspim_template_warp_transform:
-            smartspim_template_warp_transform = tuple(DATA_PATH.glob('*/*/registration/ls_to_template_SyN_1InverseWarp.nii.gz'))
+            smartspim_template_warp_transform = tuple(DATA_PATH.glob('*/registration/ls_to_template_SyN_1InverseWarp.nii.gz'))
             if not smartspim_template_warp_transform:
                 raise FileNotFoundError('No warp transform from spim to template. Check attached assets')
         
