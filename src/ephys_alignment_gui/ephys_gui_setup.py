@@ -504,10 +504,6 @@ class Setup():
             self.reload_folder_button.setText('Load Existing Alignment Directory')
             self.reload_folder_button.clicked.connect(self.load_existing_alignments)
 
-            self.switch_space_button = QtWidgets.QPushButton()
-            self.switch_space_button.setText('Transform Points to CCF')
-            self.switch_space_button.clicked.connect(self.transform_to_ccf)
-
         # Button to load Histology 
         self.histology_folder_button = QtWidgets.QToolButton()
         self.histology_folder_button.setText('Load Histology')
@@ -562,7 +558,6 @@ class Setup():
             self.interaction_layout3.addWidget(self.shank_combobox, stretch=1)
             self.interaction_layout3.addWidget(self.reload_folder_button, stretch=1)
             self.interaction_layout3.addWidget(self.reload_folder_line, stretch=2)
-            self.interaction_layout3.addWidget(self.switch_space_button)
 
         # # Group 3 -- Histology location
         # self.interaction_layout3 = QtWidgets.QHBoxLayout()
