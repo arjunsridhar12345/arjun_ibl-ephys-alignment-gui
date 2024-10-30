@@ -10,7 +10,11 @@ from PyQt5 import QtWidgets, QtCore, QtGui
 import pyqtgraph as pg
 
 import numpy as np
+import numpy.typing as npt
 from random import randrange
+
+import pandas as pd
+import ants
 
 import ephys_alignment_gui.plot_data as pd
 from ephys_alignment_gui.plot_elements import ColorBar
@@ -24,8 +28,10 @@ from ephys_alignment_gui.windows.features_across_region import RegionFeatureWind
 from ephys_alignment_gui.ephys_alignment import EphysAlignment
 
 import matplotlib.pyplot as mpl  # noqa  # This is needed to make qt show properly :/
+import json
 
-
+ANTS_DIMENSION = 3
+DATA_PATH = Path('/data')
 class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
 
     @staticmethod
@@ -1170,9 +1176,58 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self.data_button_pressed(self.input_path)
         print('Feature prev', self.feature_prev)
 
+    def _transform_to_ccf(self, image_physical_space_coordinates: npt.NDArray) -> None:
+        this_probe_df = pd.DataFrame({'x': image_physical_space_coordinates[:, 0], 
+                                      'y': image_physical_space_coordinates[:, 1], 
+                                      'z': image_physical_space_coordinates[:, 2]})
+        
+        smartspim_template_affine_transform = tuple(self.input_path.glob('*/image_atlas_alignment/*/ls_to_template_SyN_0GenericAffine.mat'))
+        if not smartspim_template_affine_transform:
+            raise FileNotFoundError('No affine transform from spim to template. Check attached assets')
+
+        smartspim_template_warp_transform = tuple(self.input_path.glob('*/image_atlas_alignment/*/ls_to_template_SyN_1InverseWarp.nii.gz'))
+        if not smartspim_template_warp_transform:
+            raise FileNotFoundError('No warp transform from spim to template. Check attached assets')
+        
+        probe_template = ants.apply_transforms_to_points(ANTS_DIMENSION, this_probe_df, 
+                                    [smartspim_template_affine_transform[0].as_posix(),
+                                    smartspim_template_warp_transform[0].as_posix()],
+                                    whichtoinvert=[True, False])
+
+        template_to_ccf_affine_transform = tuple(self.input_path.glob('spim_template_to_ccf/syn_0GenericAffine.mat'))
+        if not template_to_ccf_affine_transform:
+            raise FileNotFoundError('No affine transform from template to ccf. Check attached assets')
+        
+        template_to_ccf_warp_transform = tuple(self.input_path.glob('spim_template_to_ccf/syn_1InverseWarp.nii.gz'))
+        if not template_to_ccf_warp_transform:
+            raise FileNotFoundError('No warp transform from template to ccf. Check attached assets')
+        
+        probe_ccf: pd.DataFrame = ants.apply_transforms_to_points(ANTS_DIMENSION, probe_template, 
+                                            [template_to_ccf_affine_transform[0].as_posix(),
+                                            template_to_ccf_warp_transform[0].as_posix()],
+                                            whichtoinvert=[True, False])
+        
+        probe_ccf.to_csv(self.output_directory / 'ccf_channel_coordinates.csv')
+
     def transform_to_ccf(self) -> None:
-        if 'CCF' in self.switch_space_button.text():
-            print('hello')
+        self.loaddata.upload_data(self.features[self.idx], self.track[self.idx],
+                                    self.xyz_channels)
+        with open(self.output_directory / 'channel_locations.json', 'r') as f:
+            channel_results = json.load(f)
+        
+        channel_ids = [channel for channel in tuple(channel_results.keys()) if 'channel' in channel]
+        channel_coords = np.zeros((len(channel_ids), 3), dtype=int)
+        for i in range(len(channel_ids)):
+            channel_coords[i] = (self.loaddata.brain_atlas.image.shape[0] - int(np.round(channel_results[channel_ids[i]]['x'])), 
+                                int(np.round(channel_results[channel_ids[i]]['y'])), 
+                                self.loaddata.brain_atlas.image.shape[2] - int(np.round(channel_results[channel_ids[i]]['z'])))
+        
+        ants_physical_points = []
+        for point in channel_coords:
+            ants_physical_points.append(self.loaddata.brain_atlas.original_image.TransformIndexToPhysicalPoint(point.tolist()))
+
+        ants_physical_points_array = np.array(ants_physical_points)
+
 
     def load_existing_alignments(self):
         folder_path = Path(QtWidgets.QFileDialog.getExistingDirectory(None, "Load Existing Alignments"))
