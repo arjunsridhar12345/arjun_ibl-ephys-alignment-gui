@@ -1843,6 +1843,9 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         ccf_result_json = {}
 
         for channel in self.loaddata.channel_dict:
+            if channel == 'origin':
+                continue
+            
             channel_dict_info = self.loaddata.channel_dict[channel]
 
             channel_index = int(channel[-1])
