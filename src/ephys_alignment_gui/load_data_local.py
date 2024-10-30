@@ -357,6 +357,7 @@ class LoadDataLocal:
             np.unique([len(brain_regions[k]) for k in brain_regions]).size == 1
         )
         channel_dict = self.create_channel_dict(brain_regions)
+        self.channel_dict = channel_dict
         bregma = atlas.ALLEN_CCF_LANDMARKS_MLAPDV_UM["bregma"].tolist()
         origin = {"origin": {"bregma": bregma}}
         channel_dict.update(origin)

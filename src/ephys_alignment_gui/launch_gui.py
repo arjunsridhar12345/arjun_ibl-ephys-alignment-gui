@@ -1772,7 +1772,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
                                 max=self.probe_top + self.probe_extra, padding=self.pad)
         self.update_string()
 
-    def _transform_to_ccf(self, image_physical_space_coordinates: npt.NDArray) -> None:
+    def _transform_to_ccf(self, image_physical_space_coordinates: npt.NDArray) -> pandas.DataFrame:
         this_probe_df = pandas.DataFrame({'x': image_physical_space_coordinates[:, 0], 
                                       'y': image_physical_space_coordinates[:, 1], 
                                       'z': image_physical_space_coordinates[:, 2]})
@@ -1808,7 +1808,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
                                             template_to_ccf_warp_transform[0].as_posix()],
                                             whichtoinvert=[True, False])
         
-        probe_ccf.to_csv(self.output_directory / 'ccf_channel_coordinates.csv')
+        return probe_ccf
 
     def complete_button_pressed_offline(self):
         """
@@ -1839,7 +1839,27 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             ants_physical_points.append(self.loaddata.brain_atlas.original_image.TransformIndexToPhysicalPoint(point.tolist()))
 
         ants_physical_points_array = np.array(ants_physical_points)
-        self._transform_to_ccf(ants_physical_points_array)
+        ccf_coordinates_dataframe = self._transform_to_ccf(ants_physical_points_array)
+        ccf_result_json = {}
+
+        for channel in self.loaddata.channel_dict:
+            channel_dict_info = self.loaddata.channel_dict[channel]
+
+            channel_index = int(channel[-1])
+            ccf_channel_info = ccf_coordinates_dataframe.iloc[len(ccf_coordinates_dataframe - channel_index - 1)]
+            ccf_result_json[channel] = {
+                "x": ccf_channel_info['x'].values[0],
+                "y": ccf_channel_info['y'].values[0],
+                "z": ccf_channel_info['z'].values[0],
+                "axial": channel_dict_info['axial'],
+                "lateral": channel_dict_info['lateral'],
+                "brain_region_id": channel_dict_info['brain_region_id'],
+                "brain_region": channel_dict_info['brain_region']
+            }
+        
+        with open(self.output_directory / 'ccf_channel_locations.json', "w") as f:
+            json.dump(ccf_result_json, f, indent=2, separators=(",", ": "))
+
         QtWidgets.QMessageBox.information(self, 'Status', "Channels locations saved, and ccf coordinates saved")
 
 
