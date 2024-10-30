@@ -1780,6 +1780,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         smartspim_template_affine_transform = tuple(DATA_PATH.glob('*/image_atlas_alignment/*/ls_to_template_SyN_0GenericAffine.mat'))
         if not smartspim_template_affine_transform:
             # try legacy way
+            print(tuple(DATA_PATH.glob('*')))
             smartspim_template_affine_transform = tuple(DATA_PATH.glob('*/registration/ls_to_template_SyN_0GenericAffine.mat'))
             if not smartspim_template_affine_transform:
                 raise FileNotFoundError('No affine transform from spim to template. Check attached assets')
