@@ -1795,15 +1795,15 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
                                     smartspim_template_warp_transform[0].as_posix()],
                                     whichtoinvert=[True, False])
 
-        template_to_ccf_affine_transform = tuple(self.input_path.glob('spim_template_to_ccf/syn_0GenericAffine.mat'))
+        template_to_ccf_affine_transform = tuple(DATA_PATH.glob('spim_template_to_ccf/syn_0GenericAffine.mat'))
         if not template_to_ccf_affine_transform:
             raise FileNotFoundError('No affine transform from template to ccf. Check attached assets')
         
-        template_to_ccf_warp_transform = tuple(self.input_path.glob('spim_template_to_ccf/syn_1InverseWarp.nii.gz'))
+        template_to_ccf_warp_transform = tuple(DATA_PATH.glob('spim_template_to_ccf/syn_1InverseWarp.nii.gz'))
         if not template_to_ccf_warp_transform:
             raise FileNotFoundError('No warp transform from template to ccf. Check attached assets')
         
-        probe_ccf: pd.DataFrame = ants.apply_transforms_to_points(ANTS_DIMENSION, probe_template, 
+        probe_ccf: pandas.DataFrame = ants.apply_transforms_to_points(ANTS_DIMENSION, probe_template, 
                                             [template_to_ccf_affine_transform[0].as_posix(),
                                             template_to_ccf_warp_transform[0].as_posix()],
                                             whichtoinvert=[True, False])
