@@ -1199,6 +1199,11 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         # Set the output default based on the selected folder path
         if we_are_in_code_ocean:
             out_folder = Path('/results/').joinpath(folder_path.parent.stem)
+            string_folder_path = folder_path.parent.stem
+            subject_id_path = string_folder_path[string_folder_path.index('_')+1:]
+            subject_id = subject_id_path[0:subject_id_path.index('_')]
+
+            out_folder = Path('/results').joinpath(subject_id)
             print('Output folder', out_folder)
             
         else:
@@ -1851,7 +1856,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             channel_dict_info = self.loaddata.channel_dict[channel]
 
             channel_index = int(channel[channel.index('_')+1:])
-            ccf_channel_info = ccf_coordinates_dataframe.iloc[len(ccf_coordinates_dataframe) - channel_index - 1]
+            ccf_channel_info = ccf_coordinates_dataframe.iloc[channel_index]
             ccf_result_json[channel] = {
                 "x": ccf_channel_info['x'].astype(np.float64),
                 "y": ccf_channel_info['y'].astype(np.float64),
