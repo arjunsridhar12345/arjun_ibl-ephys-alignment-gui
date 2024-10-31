@@ -1848,7 +1848,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
 
             channel_dict_info = self.loaddata.channel_dict[channel]
 
-            channel_index = int(channel[-1])
+            channel_index = int(channel[channel.index('_')+1:])
             ccf_channel_info = ccf_coordinates_dataframe.iloc[len(ccf_coordinates_dataframe) - channel_index - 1]
             ccf_result_json[channel] = {
                 "x": ccf_channel_info['x'].astype(np.float64),
