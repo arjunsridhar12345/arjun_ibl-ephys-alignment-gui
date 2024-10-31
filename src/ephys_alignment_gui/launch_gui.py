@@ -1213,7 +1213,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         # Create the output folder if it doesn't exist
         os.makedirs(out_folder, exist_ok=True)
         # Set the output directory based on input name.
-        self.output_directory = out_folder/folder_path.stem
+        self.output_directory = out_folder/folder_path.parent.stem/folder_path.stem
         print('Output dir', self.output_directory)
         self.loaddata.output_directory = self.output_directory
         self.output_folder_line.setText(str(self.output_directory))
