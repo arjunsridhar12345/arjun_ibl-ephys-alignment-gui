@@ -1199,6 +1199,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         # Set the output default based on the selected folder path
         if we_are_in_code_ocean:
             out_folder = Path('/results/').joinpath(folder_path.parent.stem)
+            print('Output folder', out_folder)
             
         else:
             out_folder = folder_path.parent/'out'
