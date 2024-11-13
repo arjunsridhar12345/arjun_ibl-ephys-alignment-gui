@@ -216,9 +216,9 @@ class LoadDataLocal:
         # Read in local xyz_picks file
         # This file must exist, otherwise we don't know where probe was
         xyz_file_name = (
-            "*xyz_picks.json"
+            "*xyz_picks_image_space.json"
             if self.n_shanks == 1
-            else f"*xyz_picks_shank{self.shank_idx + 1}.json"
+            else f"*xyz_picks_shank{self.shank_idx + 1}_image_space.json"
         )
         xyz_file = sorted(folder_path.glob(xyz_file_name))
 
