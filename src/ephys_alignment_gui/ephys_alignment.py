@@ -75,7 +75,7 @@ class EphysAlignment:
         if speedy:
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[0, :]
         else:
-            exit = atlas.Insertion.get_brain_exit(traj_exit, self.brain_atlas)
+            exit = atlas.Insertion.get_brain_entry(traj_exit, self.brain_atlas)
             # The exit is just below the bottom surfacce of the brain
             exit[2] = exit[2] - 200 / 1e6
         
