@@ -70,7 +70,7 @@ class EphysAlignment:
 
         # Force the entry to be on the upper z lim of the atlas to account for cases where channels
         # may be located above the surface of the brain
-        entry = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
+        entry = atlas.Insertion.get_brain_entry(traj_exit, self.brain_atlas)
         
         if speedy:
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[0, :]
@@ -89,7 +89,7 @@ class EphysAlignment:
         print('Exit', exit)
         print('Zlim exit', (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :])
         print('Zlim entry', (traj_exit.eval_z(self.brain_atlas.bc.zlim))[0, :])
-        xyz_track = np.r_[entry[np.newaxis, :], xyz_picks, exit[np.newaxis, :]]
+        xyz_track = np.r_[exit[np.newaxis, :], xyz_picks, entry[np.newaxis, :]]
         print('track', xyz_track)
         indices = np.argsort(xyz_track[:, 2])
         # Sort so that most ventral coordinate is first
