@@ -82,13 +82,10 @@ class EphysAlignment:
         # Catch cases where the exit
         if any(np.isnan(exit)):
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
-
-        print('Traj entry', traj_entry.vector, traj_entry.point)
-        print('Traj exit', traj_exit.vector, traj_exit.point)
+        exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
         print('Entry', entry)
         print('Exit', exit)
-        print('Zlim exit', (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :])
-        print('Zlim entry', (traj_exit.eval_z(self.brain_atlas.bc.zlim))[0, :])
+
         xyz_track = np.r_[exit[np.newaxis, :], xyz_picks, entry[np.newaxis, :]]
         print('track', xyz_track)
         indices = np.argsort(xyz_track[:, 2])
