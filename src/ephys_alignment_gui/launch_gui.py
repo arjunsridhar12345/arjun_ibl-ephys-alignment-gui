@@ -71,7 +71,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         Initialise variables
         """
         # Line styles and fonts
-        self.kpen_dot = pg.mkPen(color='k', style=QtCore.Qt.DotLine, width=2)
+        self.kpen_dot = pg.mkPen(color='k', style=QtCore.Qt.DotLine, width=10)
         self.rpen_dot = pg.mkPen(color='r', style=QtCore.Qt.DotLine, width=2)
         self.kpen_solid = pg.mkPen(color='k', style=QtCore.Qt.SolidLine, width=2)
         self.bpen_solid = pg.mkPen(color='b', style=QtCore.Qt.SolidLine, width=3)
