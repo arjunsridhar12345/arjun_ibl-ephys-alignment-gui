@@ -938,9 +938,10 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             track_lines = self.ephysalign.get_perp_vector(self.features[self.idx],
                                                           self.track[self.idx])
 
+            print('Reference lines', track_lines)
             for ref_line in track_lines:
                 line = pg.PlotCurveItem()
-                line.setData(x=ref_line[:, 0], y=ref_line[:, 2], pen=self.kpen_dot, size=5)
+                line.setData(x=ref_line[:, 0], y=ref_line[:, 2], pen=self.kpen_dot)
                 self.fig_slice.addItem(line)
                 self.slice_lines.append(line)
 
@@ -951,9 +952,10 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             track_lines = self.ephysalign.get_perp_vector(self.features[self.idx],
                                                           self.track[self.idx])
 
+            print('Reference lines', track_lines)
             for ref_line in track_lines:
                 line = pg.PlotCurveItem()
-                line.setData(x=ref_line[:, 0], y=ref_line[:, 2], pen=self.kpen_dot, size=5)
+                line.setData(x=ref_line[:, 0], y=ref_line[:, 2], pen=self.kpen_dot)
                 self.fig_slice.addItem(line)
                 self.slice_lines.append(line)
             self.slice_chns.setData(x=self.xyz_channels[:, 0], y=self.xyz_channels[:, 2], pen='r',
