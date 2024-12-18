@@ -71,7 +71,8 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         Initialise variables
         """
         # Line styles and fonts
-        self.kpen_dot = pg.mkPen(color='k', style=QtCore.Qt.DotLine, width=10)
+        self.kpen_dot = pg.mkPen(color='k', style=QtCore.Qt.DotLine, width=2)
+        self.reference_line_kpen = pg.mkPen(color='k', style=QtCore.Qt.DotLine, width=10)
         self.rpen_dot = pg.mkPen(color='r', style=QtCore.Qt.DotLine, width=2)
         self.kpen_solid = pg.mkPen(color='k', style=QtCore.Qt.SolidLine, width=2)
         self.bpen_solid = pg.mkPen(color='b', style=QtCore.Qt.SolidLine, width=3)
@@ -941,7 +942,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             print('Reference lines', track_lines)
             for ref_line in track_lines:
                 line = pg.PlotCurveItem()
-                line.setData(x=ref_line[:, 0], y=ref_line[:, 2], pen=self.kpen_dot)
+                line.setData(x=ref_line[:, 0], y=ref_line[:, 2], pen=self.reference_line_kpen)
                 self.fig_slice.addItem(line)
                 self.slice_lines.append(line)
 
@@ -955,7 +956,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             print('Reference lines', track_lines)
             for ref_line in track_lines:
                 line = pg.PlotCurveItem()
-                line.setData(x=ref_line[:, 0], y=ref_line[:, 2], pen=self.kpen_dot)
+                line.setData(x=ref_line[:, 0], y=ref_line[:, 2], pen=self.reference_line_kpen)
                 self.fig_slice.addItem(line)
                 self.slice_lines.append(line)
             self.slice_chns.setData(x=self.xyz_channels[:, 0], y=self.xyz_channels[:, 2], pen='r',
