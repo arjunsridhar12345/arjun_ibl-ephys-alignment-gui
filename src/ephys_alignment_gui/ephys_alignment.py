@@ -72,6 +72,7 @@ class EphysAlignment:
         # may be located above the surface of the brain
         entry = (traj_entry.eval_z(self.brain_atlas.bc.zlim))[0, :]
         
+        """
         if speedy:
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
         else:
@@ -82,6 +83,7 @@ class EphysAlignment:
         # Catch cases where the exit
         if any(np.isnan(exit)):
             exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
+        """
         exit = (traj_exit.eval_z(self.brain_atlas.bc.zlim))[1, :]
         print('Entry', entry)
         print('Exit', exit)
@@ -93,9 +95,9 @@ class EphysAlignment:
         xyz_track = xyz_track[indices, :]
       
         # Compute distance to first electrode from bottom coordinate
-        tip_distance = _cumulative_distance(xyz_track)[1] + TIP_SIZE_UM / 1e6
-        track_length = _cumulative_distance(xyz_track)[-1]
-        track_extent = np.array([0, track_length]) - tip_distance
+        tip_distance = _cumulative_distance(xyz_track)[-1] + TIP_SIZE_UM / 1e6
+        track_length = _cumulative_distance(xyz_track)[1]
+        track_extent = np.array([0, track_length]) + tip_distance
         print('Extent', track_extent)
         return xyz_track, track_extent
 
