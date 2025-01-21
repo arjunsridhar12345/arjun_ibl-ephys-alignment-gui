@@ -339,7 +339,7 @@ class LoadDataLocal:
     def upload_data(self, feature, track, xyz_channels):
         print('Channels', xyz_channels)
         region_ids = []
-        index = np.round(xyz_channels).astype(np.int64)
+        index = xyz_channels.astype(np.int64)
         index = index[(index[:, 0] < self.brain_atlas.image.shape[0]) & (index[:, 1] < self.brain_atlas.image.shape[1])
                                   & (index[:, 2] < self.brain_atlas.image.shape[2])]
         
