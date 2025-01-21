@@ -245,7 +245,7 @@ class EphysAlignment:
 
         #region_ids = brain_atlas.get_labels(xyz_coords, mapping=mapping)
         region_ids = []
-        xyz_indices = (xyz_coords * 1e6 / brain_atlas.spacing).astype(np.int64)
+        xyz_indices = np.round(xyz_coords * 1e6 / brain_atlas.spacing).astype(np.int64)
         xyz_indices = xyz_indices[(xyz_indices[:, 0] < brain_atlas.image.shape[0]) & (xyz_indices[:, 1] < brain_atlas.image.shape[1])
                                   & (xyz_indices[:, 2] < brain_atlas.image.shape[2])]
         for coord in xyz_indices:
@@ -463,7 +463,7 @@ class EphysAlignment:
         channel_depths_track = self.feature2track(depths, feature, track) - self.track_extent[0]
         
         xyz_channels = histology.interpolate_along_track(self.xyz_track, channel_depths_track)
-        xyz_channels = xyz_channels / self.brain_atlas.spacing * 1e6
+        xyz_channels = np.round(xyz_channels / self.brain_atlas.spacing * 1e6).astype(np.int64)
         print('xyz channels length', len(xyz_channels))
         print('xyz channels', xyz_channels)
         return xyz_channels
