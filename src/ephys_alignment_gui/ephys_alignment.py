@@ -97,7 +97,7 @@ class EphysAlignment:
         # Compute distance to first electrode from bottom coordinate
         tip_distance = _cumulative_distance(xyz_track)[1] - TIP_SIZE_UM / 1e6
         track_length = _cumulative_distance(xyz_track)[-1]
-        track_extent = np.array([0, track_length]) + tip_distance
+        track_extent = np.array([0, track_length]) - tip_distance
         print('Extent', track_extent)
         return xyz_track, track_extent
 
@@ -463,7 +463,7 @@ class EphysAlignment:
         channel_depths_track = self.feature2track(depths, feature, track) - self.track_extent[0]
         
         xyz_channels = histology.interpolate_along_track(self.xyz_track, channel_depths_track)
-        xyz_channels = xyz_channels / self.brain_atlas.spacing * 1e6
+        xyz_channels = xyz_channels * 1e6 / self.brain_atlas.spacing 
         print('xyz channels length', len(xyz_channels))
         print('xyz channels', xyz_channels)
         return xyz_channels
