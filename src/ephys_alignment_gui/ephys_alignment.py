@@ -463,7 +463,7 @@ class EphysAlignment:
         channel_depths_track = self.feature2track(depths, feature, track) - self.track_extent[0]
         
         xyz_channels = histology.interpolate_along_track(self.xyz_track, channel_depths_track)
-        xyz_channels = np.round(xyz_channels * 1e6 / self.brain_atlas.spacing).astype(np.int64) 
+        xyz_channels = xyz_channels * 1e6 / self.brain_atlas.spacing
         print('xyz channels length', len(xyz_channels))
         print('xyz channels', xyz_channels)
         return xyz_channels
@@ -498,7 +498,7 @@ class EphysAlignment:
             extent = 500e-6
             vector = np.diff(xyz, axis=0)[0]
             point = xyz[0, :]
-            vector_perp = np.array([1, 0, -1 * vector[0] / vector[2]])
+            vector_perp = np.round(np.array([1, 0, -1 * vector[0] / vector[2]]))
             xyz_per = np.r_[[point + (-1 * extent * vector_perp)],
                             [point + (extent * vector_perp)]]
             slice_lines.append(xyz_per)
