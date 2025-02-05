@@ -169,7 +169,7 @@ class LoadDataLocal:
             "rms_AP",
             "rms_LF",
             "rms_AP_main",
-            "rms_LF_main"
+            "rms_LF_main",
             "psd_lf",
             "psd_lf_main"
         ]
