@@ -499,8 +499,8 @@ class EphysAlignment:
             vector = np.diff(xyz, axis=0)[0]
             point = xyz[0, :]
             vector_perp = np.array([1, 0, -1 * vector[0] / vector[2]])
-            xyz_per = np.round(np.r_[[point + (-1 * extent * vector_perp)],
-                            [point + (extent * vector_perp)]])
+            xyz_per = np.r_[[point + (-1 * extent * vector_perp)],
+                            [point + (extent * vector_perp)]]
             slice_lines.append(xyz_per)
 
         return slice_lines
