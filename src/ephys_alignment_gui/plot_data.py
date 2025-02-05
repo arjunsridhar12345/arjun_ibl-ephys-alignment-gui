@@ -374,7 +374,7 @@ class PlotData:
         }
 
         # Probe data
-        rms_avg = (np.mean(self.data[f'rms_{format}']['rms'], axis=0)[self.chn_ind]) * 1e6
+        rms_avg = (np.take(np.mean(self.data[f'rms_{format}']['rms'], axis=0), indices=self.chn_ind, mode='clip')) * 1e6
         probe_levels = np.quantile(rms_avg, [0.1, 0.9])
         probe_img, probe_scale, probe_offset = self.arrange_channels2banks(rms_avg)
 
