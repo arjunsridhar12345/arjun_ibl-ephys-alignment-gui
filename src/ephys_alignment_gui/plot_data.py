@@ -330,7 +330,7 @@ class PlotData:
             data_probe = None
             return data_img, data_probe
 
-        _rms = np.take(self.data[f'rms_{format}']['rms'], self.chn_ind, axis=1)
+        _rms = np.take(self.data[f'rms_{format}']['rms'], self.chn_ind, axis=1, mode='clip')
         _, self.chn_depth, chn_count = np.unique(self.chn_coords[:, 1], return_index=True,
                                                  return_counts=True)
         self.chn_depth_eq = np.copy(self.chn_depth)
