@@ -1349,7 +1349,10 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             self.img_rms_APdata, self.probe_rms_APdata = self.plotdata.get_rms_data_img_probe('AP')
             self.img_rms_LFPdata, self.probe_rms_LFPdata = self.plotdata.get_rms_data_img_probe(
                 'LF')
-            self.img_lfp_data, self.probe_lfp_data = self.plotdata.get_lfp_spectrum_data()
+            self.img_rms_APdata_main, self.probe_rms_APdata_main = self.plotdata.get_rms_data_img_probe('AP_main')
+            self.img_rms_LFPdata_main, self.probe_rms_LFPdata_main = self.plotdata.get_rms_data_img_probe('LF_main')
+            self.img_lfp_data, self.probe_lfp_data = self.plotdata.get_lfp_spectrum_data('lf')
+            self.img_lfp_data_main, self.probe_lfp_data_main = self.plotdata.get_lfp_spectrum_data('lf_main')
             self.line_fr_data, self.line_amp_data = self.plotdata.get_fr_amp_data_line()
             self.probe_rfmap, self.rfmap_boundaries = self.plotdata.get_rfmap_data()
             self.img_stim_data = self.plotdata.get_passive_events()

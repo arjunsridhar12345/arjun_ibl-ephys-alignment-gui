@@ -168,7 +168,10 @@ class LoadDataLocal:
             "channels",
             "rms_AP",
             "rms_LF",
+            "rms_AP_main",
+            "rms_LF_main"
             "psd_lf",
+            "psd_lf_main"
         ]
         objects = [
             "spikes",
@@ -176,7 +179,10 @@ class LoadDataLocal:
             "channels",
             "ephysTimeRmsAP",
             "ephysTimeRmsLF",
+            "ephystimermsapMainRec",
+            "ephystimermslfMainRec",
             "ephysSpectralDensityLF",
+            "ephysspectraldensitylfMainRec"
         ]
         for v, o in zip(values, objects):
             try:

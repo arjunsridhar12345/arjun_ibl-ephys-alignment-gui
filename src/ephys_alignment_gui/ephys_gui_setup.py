@@ -76,6 +76,14 @@ class Setup():
         img_LFP = QtWidgets.QAction('LFP Spectrum', self, checkable=True, checked=False)
         img_LFP.triggered.connect(lambda: self.plot_image(self.img_lfp_data))
 
+        img_rmsAP_main = QtWidgets.QAction('RMS AP Main Rec', self, checkable=True, checked=False)
+        img_rmsAP_main.triggered.connect(lambda: self.plot_image(self.img_rms_APdata_main))
+        img_rmsLFP_main = QtWidgets.QAction('RMS LFP Main Rec', self, checkable=True, checked=False)
+        img_rmsLFP_main.triggered.connect(lambda: self.plot_image(self.img_rms_LFPdata_main))
+        img_LFP_main = QtWidgets.QAction('LFP Spectrum Main Rec', self, checkable=True, checked=False)
+        img_LFP_main.triggered.connect(lambda: self.plot_image(self.img_lfp_data_main))
+
+
         # Initialise with firing rate 2D plot
         self.img_init = img_fr
 
@@ -93,10 +101,16 @@ class Setup():
         self.img_options_group.addAction(img_corr)
         img_options.addAction(img_rmsAP)
         self.img_options_group.addAction(img_rmsAP)
+        img_options.addAction(img_rmsAP_main)
+        self.img_options_group.addAction(img_rmsAP_main)
         img_options.addAction(img_rmsLFP)
         self.img_options_group.addAction(img_rmsLFP)
+        img_options.addAction(img_rmsLFP_main)
+        self.img_options_group.addAction(img_rmsLFP_main)
         img_options.addAction(img_LFP)
         self.img_options_group.addAction(img_LFP)
+        img_options.addAction(img_LFP_main)
+        self.img_options_group.addAction(img_LFP_main)
         img_options.addAction(scatter_fr)
         self.img_options_group.addAction(scatter_fr)
         img_options.addAction(scatter_p2t)

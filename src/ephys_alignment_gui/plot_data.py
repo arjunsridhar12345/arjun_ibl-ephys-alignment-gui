@@ -438,11 +438,11 @@ class PlotData:
 
         return data_img
 
-    def get_lfp_spectrum_data(self):
+    def get_lfp_spectrum_data(self, format: str):
         freq_bands = np.vstack(([0, 4], [4, 10], [10, 30], [30, 80], [80, 200]))
         data_probe = {}
 
-        if not self.data['psd_lf']['exists']:
+        if not self.data[f'psd_{format}']['exists']:
             data_img = None
             for freq in freq_bands:
                 lfp_band_data = {f"{freq[0]} - {freq[1]} Hz": None}
