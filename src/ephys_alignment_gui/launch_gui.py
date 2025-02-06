@@ -1837,8 +1837,8 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
                                     self.xyz_channels)
         self.loaddata.get_starting_alignment(0)
         
-        if self.loaddata.shank_idx > 0:
-            with open(self.output_directory / f'channel_locations_{self.loaddata.shank_idx}.json', 'r') as f:
+        if self.loaddata.n_shanks > 1:
+            with open(self.output_directory / f'channel_locations_shank{self.loaddata.shank_idx + 1}.json', 'r') as f:
                 channel_results = json.load(f)
         else:
             with open(self.output_directory / 'channel_locations.json', 'r') as f:
