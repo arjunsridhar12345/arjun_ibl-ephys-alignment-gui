@@ -1167,8 +1167,8 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
     Interaction functions
     """
     def _update_ephys_alignments(self, folder_path: Path, skip_shanks=False):
-        self.feature_prev, self.track_prev = self.loaddata.get_starting_alignment(0)
         self.prev_alignments, shank_options = self.loaddata.get_info(folder_path, skip_shanks=skip_shanks)
+        self.feature_prev, self.track_prev = self.loaddata.get_starting_alignment(0)
         if shank_options is not None:
             self.populate_lists(shank_options, self.shank_list, self.shank_combobox)
 
