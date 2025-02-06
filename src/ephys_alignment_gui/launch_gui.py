@@ -1280,7 +1280,9 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self.current_shank_idx = shank_id - 1
         # Update prev_alignments
         self.feature_prev, self.track_prev = self.loaddata.get_starting_alignment(0)
-        self.data_button_pressed(self.input_path, load_new_shank=True, reload_data=False)
+
+        if self.data_status:
+            self.data_button_pressed(self.input_path, load_new_shank=True, reload_data=False)
 
     def on_alignment_selected(self, idx):
         self.feature_prev, self.track_prev = self.loaddata.get_starting_alignment(idx)
