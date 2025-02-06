@@ -1836,9 +1836,13 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self.loaddata.upload_data(self.features[self.idx], self.track[self.idx],
                                     self.xyz_channels)
         self.loaddata.get_starting_alignment(0)
-
-        with open(self.output_directory / 'channel_locations.json', 'r') as f:
-            channel_results = json.load(f)
+        
+        if self.loaddata.shank_idx > 0:
+            with open(self.output_directory / f'channel_locations_{self.loaddata.shank_idx}.json', 'r') as f:
+                channel_results = json.load(f)
+        else:
+            with open(self.output_directory / 'channel_locations.json', 'r') as f:
+                channel_results = json.load(f)
         
         channel_ids = [channel for channel in tuple(channel_results.keys()) if 'channel' in channel]
         channel_coords = np.zeros((len(channel_ids), 3), dtype=int)
