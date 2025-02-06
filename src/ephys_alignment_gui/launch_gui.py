@@ -1168,14 +1168,13 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
     """
     def _update_ephys_alignments(self, folder_path: Path, skip_shanks=False):
         self.prev_alignments, shank_options = self.loaddata.get_info(folder_path, skip_shanks=skip_shanks)
-        self.feature_prev, self.track_prev = self.loaddata.get_starting_alignment(0)
         if shank_options is not None:
             self.populate_lists(shank_options, self.shank_list, self.shank_combobox)
 
         if shank_options is None:
             self.data_status = True
 
-        self.data_button_pressed(self.input_path)
+        self.data_button_pressed(folder_path)
         print('Feature prev', self.feature_prev)
 
     def load_existing_alignments(self):
@@ -1276,13 +1275,12 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         Triggered in offline mode for selecting shank when using NP2.0
         """
         #self.data_status = False
-        shank_text = self.shank_combobox.currentText()
-        shank_id = int(shank_text.split('/')[0])
-        self.current_shank_idx = shank_id - 1
-        # Update prev_alignments
-        self.feature_prev, self.track_prev = self.loaddata.get_starting_alignment(0)
-
         if self.data_status:
+            shank_text = self.shank_combobox.currentText()
+            shank_id = int(shank_text.split('/')[0])
+            self.current_shank_idx = shank_id - 1
+            # Update prev_alignments
+            self.feature_prev, self.track_prev = self.loaddata.get_starting_alignment(0)
             self.data_button_pressed(self.input_path, load_new_shank=True, reload_data=False)
 
     def on_alignment_selected(self, idx):
