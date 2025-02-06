@@ -1877,8 +1877,13 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
                 "brain_region": channel_dict_info['brain_region']
             }
         
-        with open(self.output_directory / 'ccf_channel_locations.json', "w") as f:
-            json.dump(ccf_result_json, f, indent=2, separators=(",", ": "))
+        if self.loaddata.n_shanks > 1:
+            with open(self.output_directory / f'ccf_channel_locations_shank{self.loaddata.shank_idx + 1}.json', "w") as f:
+                json.dump(ccf_result_json, f, indent=2, separators=(",", ": "))
+        else:
+            with open(self.output_directory / 'ccf_channel_locations.json', "w") as f:
+                json.dump(ccf_result_json, f, indent=2, separators=(",", ": "))
+
 
         QtWidgets.QMessageBox.information(self, 'Status', "Channels locations saved, and ccf coordinates saved")
 
