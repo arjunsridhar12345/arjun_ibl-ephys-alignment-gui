@@ -1174,6 +1174,8 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
 
         if shank_options is None:
             self.data_status = True
+        
+        self.current_shank_idx = 0
 
         self.data_button_pressed(folder_path)
         print('Feature prev', self.feature_prev)
