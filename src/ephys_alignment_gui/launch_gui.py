@@ -1171,8 +1171,6 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         if shank_options is not None:
             self.populate_lists(shank_options, self.shank_list, self.shank_combobox)
 
-        self.on_shank_selected(0)
-
         if shank_options is None:
             self.data_status = True
 
@@ -1276,15 +1274,18 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         """
         Triggered in offline mode for selecting shank when using NP2.0
         """
-        self.data_status = False
-        self.current_shank_idx = idx
+        #self.data_status = False
+        shank_text = self.shank_combobox.currentText()
+        shank_id = int(shank_text.split('/')[0])
+        self.current_shank_idx = shank_id - 1
         # Update prev_alignments
         self.feature_prev, self.track_prev = self.loaddata.get_starting_alignment(0)
+        self.data_button_pressed(self.input_path, load_new_shank=True, reload_data=False)
 
     def on_alignment_selected(self, idx):
         self.feature_prev, self.track_prev = self.loaddata.get_starting_alignment(idx)
 
-    def data_button_pressed(self, folder_path: Path):
+    def data_button_pressed(self, folder_path: Path, load_new_shank: bool = False, reload_data: bool = True):
         """
         Triggered when Get Data button pressed, uses subject and session info to find eid and
         downloads and computes data needed for GUI display
@@ -1309,11 +1310,14 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
 
         # Only run once
         if not self.data_status:
-            self.probe_path, self.chn_depths, self.sess_notes, data = \
-                self.loaddata.get_data()
+            if reload_data:
+                self.probe_path, self.chn_depths, self.sess_notes, data = \
+                    self.loaddata.get_data(reload_data=reload_data)
             if not self.probe_path:
                 return
-
+            
+        if not reload_data:
+            self.chn_depths = self.loaddata.get_data(reload_data=reload_data)
 
         # Only get histology specific stuff if the histology tracing exists
         if self.histology_exists:
@@ -1337,7 +1341,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
 
             self.get_scaled_histology()
         # If we have not loaded in the data before then we load eveything we need
-        if not self.data_status:
+        if not self.data_status or load_new_shank:
             self.plotdata = pd.PlotData(self.probe_path, data,
                                         self.current_shank_idx)
             self.set_lims(np.min([0, self.plotdata.chn_min]), self.plotdata.chn_max)

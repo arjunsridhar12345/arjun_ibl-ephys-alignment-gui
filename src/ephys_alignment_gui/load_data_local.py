@@ -124,26 +124,28 @@ class LoadDataLocal:
 
         return shank_list
 
-    def get_data(self):
+    def get_data(self, reload_data: bool = True):
 
         # self.brain_atlas = atlas.AllenAtlas(hist_path=self.atlas_path)
         # self.brain_atlas = CustomAllenAtlas(
         #    template_path=self.atlas_path, label_path=self.atlas_path
         # )
-        self.atlas_image_path = tuple(DATA_PATH.glob(f'*/*/image_space_histology/ccf_in_*.nrrd'))
-        if not self.atlas_image_path:
-            raise FileNotFoundError('Could not find path to atlas image in data asset attached. Looking for folder image space histology')
-        
-        self.atlas_labels_path = tuple(DATA_PATH.glob(f'*/*/image_space_histology/labels_in_*.nrrd'))
-        if not self.atlas_labels_path:
-            raise FileNotFoundError('Could not find path to atlas labels in data asset attached. Looking for folder image space histology')
 
-        self.histology_path = self.atlas_image_path[0].parent
+        if reload_data:
+            self.atlas_image_path = tuple(DATA_PATH.glob(f'*/*/image_space_histology/ccf_in_*.nrrd'))
+            if not self.atlas_image_path:
+                raise FileNotFoundError('Could not find path to atlas image in data asset attached. Looking for folder image space histology')
+            
+            self.atlas_labels_path = tuple(DATA_PATH.glob(f'*/*/image_space_histology/labels_in_*.nrrd'))
+            if not self.atlas_labels_path:
+                raise FileNotFoundError('Could not find path to atlas labels in data asset attached. Looking for folder image space histology')
 
-        self.brain_atlas = CustomAtlas(
-           atlas_image_file=self.atlas_image_path[0].as_posix(),#ccf_in_713506.nrrd',
-           atlas_labels_file=self.atlas_labels_path[0].as_posix(),
-        )
+            self.histology_path = self.atlas_image_path[0].parent
+
+            self.brain_atlas = CustomAtlas(
+            atlas_image_file=self.atlas_image_path[0].as_posix(),#ccf_in_713506.nrrd',
+            atlas_labels_file=self.atlas_labels_path[0].as_posix(),
+            )
 
         chn_x = np.unique(self.chn_coords_all[:, 0])
         if self.n_shanks > 1:
@@ -161,54 +163,59 @@ class LoadDataLocal:
 
         chn_depths = self.chn_coords[:, 1]
 
-        data = {}
-        values = [
-            "spikes",
-            "clusters",
-            "channels",
-            "rms_AP",
-            "rms_LF",
-            "rms_AP_main",
-            "rms_LF_main",
-            "psd_lf",
-            "psd_lf_main"
-        ]
-        objects = [
-            "spikes",
-            "clusters",
-            "channels",
-            "ephysTimeRmsAP",
-            "ephysTimeRmsLF",
-            "ephystimermsapMainRec",
-            "ephystimermslfMainRec",
-            "ephysSpectralDensityLF",
-            "ephysspectraldensitylfMainRec"
-        ]
-        for v, o in zip(values, objects):
-            try:
-                data[v] = alfio.load_object(self.folder_path, o)
-                data[v]["exists"] = True
-                if "rms" in v:
-                    data[v]["xaxis"] = "Time (s)"
-            except alf.exceptions.ALFObjectNotFound:
-                logger.warning(
-                    f"{v} data was not found, some plots will not display"
-                )
-                data[v] = {"exists": False}
+        if reload_data:
+            data = {}
+            values = [
+                "spikes",
+                "clusters",
+                "channels",
+                "rms_AP",
+                "rms_LF",
+                "rms_AP_main",
+                "rms_LF_main",
+                "psd_lf",
+                "psd_lf_main"
+            ]
+            objects = [
+                "spikes",
+                "clusters",
+                "channels",
+                "ephysTimeRmsAP",
+                "ephysTimeRmsLF",
+                "ephystimermsapMainRec",
+                "ephystimermslfMainRec",
+                "ephysSpectralDensityLF",
+                "ephysspectraldensitylfMainRec"
+            ]
+            for v, o in zip(values, objects):
+                try:
+                    data[v] = alfio.load_object(self.folder_path, o)
+                    data[v]["exists"] = True
+                    if "rms" in v:
+                        data[v]["xaxis"] = "Time (s)"
+                except alf.exceptions.ALFObjectNotFound:
+                    logger.warning(
+                        f"{v} data was not found, some plots will not display"
+                    )
+                    data[v] = {"exists": False}
 
-        data["rf_map"] = {"exists": False}
-        data["pass_stim"] = {"exists": False}
-        data["gabor"] = {"exists": False}
+            data["rf_map"] = {"exists": False}
+            data["pass_stim"] = {"exists": False}
+            data["gabor"] = {"exists": False}
 
-        # Read in notes for this experiment see if file exists in directory
-        if self.folder_path.joinpath("session_notes.txt").exists():
-            with open(
-                self.folder_path.joinpath("session_notes.txt"), "r"
-            ) as f:
-                sess_notes = f.read()
+            # Read in notes for this experiment see if file exists in directory
+            if self.folder_path.joinpath("session_notes.txt").exists():
+                with open(
+                    self.folder_path.joinpath("session_notes.txt"), "r"
+                ) as f:
+                    sess_notes = f.read()
+            else:
+                sess_notes = "No notes for this session"
+        
+        if reload_data:
+            return self.folder_path, chn_depths, sess_notes, data
         else:
-            sess_notes = "No notes for this session"
-        return self.folder_path, chn_depths, sess_notes, data
+            return chn_depths
 
     def get_allen_csv(self):
         allen_path = Path(
