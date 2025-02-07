@@ -1319,6 +1319,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             if reload_data:
                 self.probe_path, self.chn_depths, self.sess_notes, data = \
                     self.loaddata.get_data(reload_data=reload_data)
+                self.data = data
             if not self.probe_path:
                 return
             
@@ -1348,7 +1349,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             self.get_scaled_histology()
         # If we have not loaded in the data before then we load eveything we need
         if not self.data_status or load_new_shank:
-            self.plotdata = pd.PlotData(self.probe_path, data,
+            self.plotdata = pd.PlotData(self.probe_path, self.data,
                                         self.current_shank_idx)
             self.set_lims(np.min([0, self.plotdata.chn_min]), self.plotdata.chn_max)
             self.scat_drift_data = self.plotdata.get_depth_data_scatter()
