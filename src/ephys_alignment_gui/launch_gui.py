@@ -1285,7 +1285,8 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             shank_text = self.shank_combobox.currentText()
             shank_id = int(shank_text.split('/')[0])
             self.current_shank_idx = shank_id - 1
-            self.data_button_pressed(self.input_path, load_new_shank=True, reload_data=False)
+            if self.current_shank_idx != 0:
+                self.data_button_pressed(self.input_path, load_new_shank=True, reload_data=False)
 
     def on_alignment_selected(self, idx):
         self.feature_prev, self.track_prev = self.loaddata.get_starting_alignment(idx)
