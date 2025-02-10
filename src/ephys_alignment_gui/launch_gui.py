@@ -1349,6 +1349,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
             self.get_scaled_histology()
         # If we have not loaded in the data before then we load eveything we need
         if not self.data_status or load_new_shank:
+            print('Shank index', self.current_shank_idx)
             self.plotdata = pd.PlotData(self.probe_path, self.data,
                                         self.current_shank_idx)
             self.set_lims(np.min([0, self.plotdata.chn_min]), self.plotdata.chn_max)
