@@ -24,6 +24,7 @@ class PlotData:
 
         self.probe_path = probe_path
         self.data = data
+        print('Data', self.data)
 
         self.chn_coords_all = data['channels']['localCoordinates']
         self.chn_ind_all = data['channels']['rawInd'].astype(int)
