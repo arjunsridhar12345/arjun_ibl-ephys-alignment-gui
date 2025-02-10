@@ -70,6 +70,9 @@ class PlotData:
                 self.data['spikes'][key] = self.data['spikes'][key][shank_spikes]
             self.filter_units('all')
             self.compute_timescales()
+        
+        print('Spike idx', self.spike_idx)
+        print('Keep idx', self.kp_idx)
 
     def filter_units(self, type):
 
