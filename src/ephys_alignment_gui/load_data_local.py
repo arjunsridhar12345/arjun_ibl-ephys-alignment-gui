@@ -182,10 +182,10 @@ class LoadDataLocal:
                 "channels",
                 "ephysTimeRmsAP",
                 "ephysTimeRmsLF",
-                "ephystimermsapMainRec",
-                "ephystimermslfMainRec",
+                "ephysTimeRmsAPMain",
+                "ephysTimeRmsLFMain",
                 "ephysSpectralDensityLF",
-                "ephysspectraldensitylfMainRec"
+                "ephysSpectralDensityLFMain"
             ]
             for v, o in zip(values, objects):
                 try:
