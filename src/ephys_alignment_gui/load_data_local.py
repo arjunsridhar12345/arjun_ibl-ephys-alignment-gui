@@ -39,7 +39,7 @@ class LoadDataLocal:
         self.output_directory = None
         self.previous_directory = None
 
-    def get_info(self, folder_path, skip_shanks=False):
+    def get_info(self, folder_path, shank_idx: int, skip_shanks=False):
         """
         Read in the local json file to see if any previous alignments exist
         """
@@ -48,7 +48,7 @@ class LoadDataLocal:
         if not skip_shanks:
             shank_list = self.get_nshanks()
 
-        prev_aligns = self.get_previous_alignments()
+        prev_aligns = self.get_previous_alignments(shank_idx=shank_idx)
         return prev_aligns, shank_list
 
 
@@ -221,13 +221,13 @@ class LoadDataLocal:
 
         return self.allen
 
-    def get_xyzpicks(self, folder_path: Path):
+    def get_xyzpicks(self, folder_path: Path, shank_idx: int):
         # Read in local xyz_picks file
         # This file must exist, otherwise we don't know where probe was
         xyz_file_name = (
             "*xyz_picks_image_space.json"
             if self.n_shanks == 1
-            else f"*xyz_picks_shank{self.shank_idx + 1}_image_space.json"
+            else f"*xyz_picks_shank{shank_idx + 1}_image_space.json"
         )
         xyz_file = sorted(folder_path.glob(xyz_file_name))
 

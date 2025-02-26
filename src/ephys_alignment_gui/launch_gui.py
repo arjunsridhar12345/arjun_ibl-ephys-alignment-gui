@@ -1329,7 +1329,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
 
         # Only get histology specific stuff if the histology tracing exists
         if self.histology_exists:
-            self.xyz_picks = self.loaddata.get_xyzpicks(folder_path)
+            self.xyz_picks = self.loaddata.get_xyzpicks(folder_path, self.current_shank_idx)
 
             if np.any(self.feature_prev):
                 self.ephysalign = EphysAlignment(self.xyz_picks, self.chn_depths,
