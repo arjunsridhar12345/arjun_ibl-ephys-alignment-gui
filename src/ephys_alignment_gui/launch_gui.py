@@ -1290,7 +1290,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
     def on_alignment_selected(self, idx):
         self.feature_prev, self.track_prev = self.loaddata.get_starting_alignment(idx)
 
-    def data_button_pressed(self, folder_path: Path, load_new_shank: bool = False, reload_data: bool = True):
+    def data_button_pressed(self, folder_path: Path, load_new_shank: bool = False):
         """
         Triggered when Get Data button pressed, uses subject and session info to find eid and
         downloads and computes data needed for GUI display
@@ -1314,9 +1314,9 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self.init_variables()
 
         # Only run once
-        if not self.data_status:
+        if not self.data_status or load_new_shank:
             self.probe_path, self.chn_depths, self.sess_notes, data = \
-                self.loaddata.get_data(reload_data=reload_data)
+                self.loaddata.get_data(reload_data=False)
             self.data = data
             if not self.probe_path:
                 return
