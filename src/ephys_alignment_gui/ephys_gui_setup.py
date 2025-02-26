@@ -699,7 +699,7 @@ class Setup():
 
         # 1D line plot
         self.fig_line = pg.PlotItem()
-        self.fig_line.setMouseEnabled(x=False, y=False)
+        self.fig_line.setMouseEnabled(x=False, y=True)
         self.fig_line.setYRange(min=self.probe_tip - self.probe_extra, max=self.probe_top +
                                 self.probe_extra, padding=self.pad)
         self.probe_tip_lines.append(self.fig_line.addLine(y=self.probe_tip, pen=self.kpen_dot,
