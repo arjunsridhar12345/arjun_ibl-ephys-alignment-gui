@@ -64,12 +64,12 @@ class PlotData:
         if self.data['clusters']['exists']:
             shank_spikes = np.isin(self.chn_ind_all[self.data['clusters'].channels[self.data['spikes'].clusters]],
                                    self.chn_ind)
+            print(self.data['spikes'].clusters.max())
             print('Shank spikes', self.data['spikes'].clusters[shank_spikes])
             for key in self.data['spikes'].keys():
                 if key == 'exists':
                     continue
                 self.data['spikes'][key] = self.data['spikes'][key][shank_spikes]
-                print(self.data['spikes'][key])
             self.filter_units('all')
             self.compute_timescales()
         
