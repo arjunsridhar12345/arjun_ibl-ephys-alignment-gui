@@ -1314,7 +1314,13 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self.init_variables()
 
         # Only run once
-        if not self.data_status or load_new_shank:
+        if not self.data_status:
+            self.probe_path, self.chn_depths, self.sess_notes, data = \
+                self.loaddata.get_data()
+            self.data = data
+            if not self.probe_path:
+                return
+        if self.data_status and load_new_shank:
             self.probe_path, self.chn_depths, self.sess_notes, data = \
                 self.loaddata.get_data(reload_data=False)
             self.data = data
