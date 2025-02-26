@@ -163,59 +163,55 @@ class LoadDataLocal:
 
         chn_depths = self.chn_coords[:, 1]
 
-        if reload_data:
-            data = {}
-            values = [
-                "spikes",
-                "clusters",
-                "channels",
-                "rms_AP",
-                "rms_LF",
-                "rms_AP_main",
-                "rms_LF_main",
-                "psd_lf",
-                "psd_lf_main"
-            ]
-            objects = [
-                "spikes",
-                "clusters",
-                "channels",
-                "ephysTimeRmsAP",
-                "ephysTimeRmsLF",
-                "ephysTimeRmsAPMain",
-                "ephysTimeRmsLFMain",
-                "ephysSpectralDensityLF",
-                "ephysSpectralDensityLFMain"
-            ]
-            for v, o in zip(values, objects):
-                try:
-                    data[v] = alfio.load_object(self.folder_path, o)
-                    data[v]["exists"] = True
-                    if "rms" in v:
-                        data[v]["xaxis"] = "Time (s)"
-                except alf.exceptions.ALFObjectNotFound:
-                    logger.warning(
-                        f"{v} data was not found, some plots will not display"
-                    )
-                    data[v] = {"exists": False}
+        data = {}
+        values = [
+            "spikes",
+            "clusters",
+            "channels",
+            "rms_AP",
+            "rms_LF",
+            "rms_AP_main",
+            "rms_LF_main",
+            "psd_lf",
+            "psd_lf_main"
+        ]
+        objects = [
+            "spikes",
+            "clusters",
+            "channels",
+            "ephysTimeRmsAP",
+            "ephysTimeRmsLF",
+            "ephysTimeRmsAPMain",
+            "ephysTimeRmsLFMain",
+            "ephysSpectralDensityLF",
+            "ephysSpectralDensityLFMain"
+        ]
+        for v, o in zip(values, objects):
+            try:
+                data[v] = alfio.load_object(self.folder_path, o)
+                data[v]["exists"] = True
+                if "rms" in v:
+                    data[v]["xaxis"] = "Time (s)"
+            except alf.exceptions.ALFObjectNotFound:
+                logger.warning(
+                    f"{v} data was not found, some plots will not display"
+                )
+                data[v] = {"exists": False}
 
-            data["rf_map"] = {"exists": False}
-            data["pass_stim"] = {"exists": False}
-            data["gabor"] = {"exists": False}
+        data["rf_map"] = {"exists": False}
+        data["pass_stim"] = {"exists": False}
+        data["gabor"] = {"exists": False}
 
-            # Read in notes for this experiment see if file exists in directory
-            if self.folder_path.joinpath("session_notes.txt").exists():
-                with open(
-                    self.folder_path.joinpath("session_notes.txt"), "r"
-                ) as f:
-                    sess_notes = f.read()
-            else:
-                sess_notes = "No notes for this session"
-        
-        if reload_data:
-            return self.folder_path, chn_depths, sess_notes, data
+        # Read in notes for this experiment see if file exists in directory
+        if self.folder_path.joinpath("session_notes.txt").exists():
+            with open(
+                self.folder_path.joinpath("session_notes.txt"), "r"
+            ) as f:
+                sess_notes = f.read()
         else:
-            return chn_depths
+            sess_notes = "No notes for this session"
+        
+        return self.folder_path, chn_depths, sess_notes, data
 
     def get_allen_csv(self):
         allen_path = Path(

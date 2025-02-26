@@ -590,7 +590,6 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         axis.setTicks([self.hist_data['axis_label']])
         axis.setZValue(10)
         self.set_axis(self.fig_hist, 'bottom', pen='w', label='blank')
-        print(self.hist_data)
         # Plot each histology region
         for ir, reg in enumerate(self.hist_data['region']):
             colour = QtGui.QColor(*self.hist_data['colour'][ir])
@@ -1316,15 +1315,11 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
 
         # Only run once
         if not self.data_status:
-            if reload_data:
-                self.probe_path, self.chn_depths, self.sess_notes, data = \
-                    self.loaddata.get_data(reload_data=reload_data)
-                self.data = data
+            self.probe_path, self.chn_depths, self.sess_notes, data = \
+                self.loaddata.get_data(reload_data=reload_data)
+            self.data = data
             if not self.probe_path:
                 return
-            
-        if not reload_data:
-            self.chn_depths = self.loaddata.get_data(reload_data=reload_data)
 
         # Only get histology specific stuff if the histology tracing exists
         if self.histology_exists:
