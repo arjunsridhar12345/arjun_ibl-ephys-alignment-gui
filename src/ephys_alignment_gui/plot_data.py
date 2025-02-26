@@ -64,6 +64,7 @@ class PlotData:
         if self.data['clusters']['exists']:
             shank_spikes = np.isin(self.chn_ind_all[self.data['clusters'].channels[self.data['spikes'].clusters]],
                                    self.chn_ind)
+            print('Shank spikes', shank_spikes)
             for key in self.data['spikes'].keys():
                 if key == 'exists':
                     continue
