@@ -682,7 +682,7 @@ class Setup():
         self.fig_img = pg.PlotItem()
         self.fig_img.setYRange(min=self.probe_tip - self.probe_extra, max=self.probe_top +
                                self.probe_extra, padding=self.pad)
-        self.fig_img.setEnabled(x=False, y=True)
+        self.fig_img.setMouseEnabled(x=False, y=True)
         self.probe_tip_lines.append(self.fig_img.addLine(y=self.probe_tip, pen=self.kpen_dot,
                                                          z=50))
         self.probe_top_lines.append(self.fig_img.addLine(y=self.probe_top, pen=self.kpen_dot,
