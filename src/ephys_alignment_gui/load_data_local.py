@@ -88,11 +88,11 @@ class LoadDataLocal:
 
         return self.prev_align
 
-    def get_starting_alignment(self, idx):
+    def get_starting_alignment(self, idx, shank_idx=0):
         """
         Find out the starting alignmnet
         """
-        align = self.prev_align[idx]
+        align = self.get_previous_alignments(shank_idx=shank_idx)[idx]
 
         if align == "original":
             feature = None
