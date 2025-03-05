@@ -1283,7 +1283,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         #self.data_status = False
         # Update prev_alignments
         self.feature_prev, self.track_prev = self.loaddata.get_starting_alignment(0)
-
+        print('Data status', self.data_status)
         if self.data_status:
             shank_text = self.shank_combobox.currentText()
             shank_id = int(shank_text.split('/')[0])
