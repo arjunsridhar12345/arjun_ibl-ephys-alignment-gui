@@ -591,7 +591,8 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         axis.setTickFont(QtGui.QFont('Arial', 8))
         axis.setZValue(10)
         self.set_axis(self.fig_hist, 'bottom', pen='w', label='blank')
- 
+        for label in axis.items:
+            label.setTextAlignment(QtCore.Qt.AlignLeft)
         # Plot each histology region
         for ir, reg in enumerate(self.hist_data['region']):
             colour = QtGui.QColor(*self.hist_data['colour'][ir])
