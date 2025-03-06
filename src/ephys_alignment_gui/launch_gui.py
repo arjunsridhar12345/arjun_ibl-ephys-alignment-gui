@@ -589,7 +589,6 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         axis = fig.getAxis(ax)
         axis.setTicks([self.hist_data['axis_label']])
         axis.setTickFont(QtGui.QFont('Arial', 8))
-        axis.setTickLabelFormat('%s')
         axis.setZValue(10)
         self.set_axis(self.fig_hist, 'bottom', pen='w', label='blank')
  
