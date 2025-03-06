@@ -588,9 +588,13 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         self.hist_regions = np.empty((0, 1))
         axis = fig.getAxis(ax)
         axis.setTicks([self.hist_data['axis_label']])
+        axis.setTickFont(QtGui.QFont('Arial', 8))
+        axis.setTickLabelFormat('%s')
         axis.setZValue(10)
         self.set_axis(self.fig_hist, 'bottom', pen='w', label='blank')
-        print('Hist data', self.hist_data)
+        for label in axis.items:
+            label.setTextAlignment(QtCore.Qt.AlignLeft)
+ 
         # Plot each histology region
         for ir, reg in enumerate(self.hist_data['region']):
             colour = QtGui.QColor(*self.hist_data['colour'][ir])
