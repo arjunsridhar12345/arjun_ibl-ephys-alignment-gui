@@ -593,7 +593,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         # Plot each histology region
         for ir, reg in enumerate(self.hist_data['region']):
             colour = QtGui.QColor(*self.hist_data['colour'][ir])
-            region = pg.LinearRegionItem(values=(reg[0] - 200, reg[1]),
+            region = pg.LinearRegionItem(values=(reg[0], reg[1] - 200),
                                          orientation=pg.LinearRegionItem.Horizontal,
                                          brush=colour, movable=False)
             # Add a white line at the boundary between regions
