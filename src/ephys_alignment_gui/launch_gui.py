@@ -587,17 +587,11 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         fig.clear()
         self.hist_regions = np.empty((0, 1))
         axis = fig.getAxis(ax)
-        custom_ticks = []
-        for i, label in enumerate(self.hist_data['axis_label']):
-            # Create custom label tuple (position, label), where label is left-aligned
-            # Adjust the position of the label here if necessary
-            custom_ticks.append((i, str(label).ljust(10)))  # Add spaces to left-align the label (adjust the 10 as needed)
-        #axis.setTicks([self.hist_data['axis_label']])
-        axis.setTicks(custom_ticks)
+        axis.setTicks([self.hist_data['axis_label']])
         axis.setTickFont(QtGui.QFont('Arial', 8))
         axis.setZValue(10)
         self.set_axis(self.fig_hist, 'bottom', pen='w', label='blank')
-
+ 
         # Plot each histology region
         for ir, reg in enumerate(self.hist_data['region']):
             colour = QtGui.QColor(*self.hist_data['colour'][ir])
