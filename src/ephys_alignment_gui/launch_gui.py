@@ -591,7 +591,7 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         for i, label in enumerate(self.hist_data['axis_label']):
             # Create custom label tuple (position, label), where label is left-aligned
             # Adjust the position of the label here if necessary
-            custom_ticks.append((i, label.ljust(10)))  # Add spaces to left-align the label (adjust the 10 as needed)
+            custom_ticks.append((i, str(label).ljust(10)))  # Add spaces to left-align the label (adjust the 10 as needed)
         #axis.setTicks([self.hist_data['axis_label']])
         axis.setTicks(custom_ticks)
         axis.setTickFont(QtGui.QFont('Arial', 8))
