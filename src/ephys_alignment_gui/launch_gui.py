@@ -591,8 +591,16 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         axis.setTickFont(QtGui.QFont('Arial', 8))
         axis.setZValue(10)
         self.set_axis(self.fig_hist, 'bottom', pen='w', label='blank')
-        for label in axis.items:
-            label.setTextAlignment(QtCore.Qt.AlignLeft)
+        # Access tick label items
+        tick_items = axis.tickItems
+
+        # Manually adjust the alignment for the tick labels
+        for tick_item in tick_items:
+            # Check if this is an instance of the TickLabelItem
+            if isinstance(tick_item, pg.AxisItem.TickLabelItem):
+                # Set the alignment to left
+                tick_item.setTextAlignment(QtCore.Qt.AlignLeft)
+
         # Plot each histology region
         for ir, reg in enumerate(self.hist_data['region']):
             colour = QtGui.QColor(*self.hist_data['colour'][ir])
