@@ -569,6 +569,11 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
     """
     Plot functions
     """
+    # Define custom tick label formatting
+    def _custom_tick_formatter(self, tick, _):
+        # Convert tick to string and add extra spaces for left alignment
+        return str(tick).ljust(10)  # Adjust the number 10 to space the labels as needed
+    
     def plot_histology(self, fig, ax='left', movable=True):
         """
         Plots histology figure - brain regions that intersect with probe track
@@ -589,7 +594,8 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         axis = fig.getAxis(ax)
         axis.setTicks([self.hist_data['axis_label']])
         axis.setTickFont(QtGui.QFont('Arial', 8))
-        axis.setTickLabelAlignment(QtCore.Qt.AlignLeft)
+        # Optionally, set a custom tick label formatter (this will affect the tick labels themselves)
+        axis.setStyle(tickLabelFormatter=self._custom_tick_formatter)
         axis.setZValue(10)
         self.set_axis(self.fig_hist, 'bottom', pen='w', label='blank')
 
