@@ -760,8 +760,8 @@ class Setup():
         self.set_axis(self.fig_hist, 'bottom', pen='w')
 
         self.fig_img.setYLink(self.fig_line)
-        self.fig_img.setYLink(self.fig_hist)
-        self.fig_line.setYLink(self.fig_hist)
+        #self.fig_img.setYLink(self.fig_hist)
+        #self.fig_line.setYLink(self.fig_hist)
         # This is the solution from pyqtgraph people, but doesn't show ticks
         # self.fig_hist.showGrid(False, True, 0)
 
