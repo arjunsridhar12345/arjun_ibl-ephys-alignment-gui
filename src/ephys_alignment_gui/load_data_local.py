@@ -201,6 +201,10 @@ class LoadDataLocal:
         data["rf_map"] = {"exists": False}
         data["pass_stim"] = {"exists": False}
         data["gabor"] = {"exists": False}
+        
+        shank_indices_file = self.folder_path / "spike_shank_indices.npy"
+        if shank_indices_file.exists():
+            data["spike_shanks"] = np.load(shank_indices_file)
 
         # Read in notes for this experiment see if file exists in directory
         if self.folder_path.joinpath("session_notes.txt").exists():
