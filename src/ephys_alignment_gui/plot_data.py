@@ -64,7 +64,7 @@ class PlotData:
         if self.data['clusters']['exists']:
             shanks_spikes_subset = self.data['spike_shanks'][self.data['spike_shanks'] == shank_idx]
             shanks_spikes_clusters = self.data['spikes'].clusters[shanks_spikes_subset]
-            shank_spikes = self.data['clusters'].channels[shanks_spikes_clusters]
+            shank_spikes = np.isin(self.data['clusters'].channels[shanks_spikes_clusters], np.arange(96))
             #shank_spikes = np.isin(self.chn_ind_all[self.data['clusters'].channels[shanks_spikes_clusters]],
             #                      self.chn_ind)
             for key in self.data['spikes'].keys():
