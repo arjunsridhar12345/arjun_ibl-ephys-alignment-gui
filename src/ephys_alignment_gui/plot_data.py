@@ -70,10 +70,11 @@ class PlotData:
             shank_spikes = shank_cluster_channels[shank_spikes_clusters]
             #shank_spikes = np.isin(self.chn_ind_all[self.data['clusters'].channels[shanks_spikes_clusters]],
             #                      self.chn_ind)
+            shank_spikes_channel_indices = np.isin(self.chn_ind_all, shank_spikes)
             for key in self.data['spikes'].keys():
                 if key == 'exists':
                     continue
-                self.data['spikes'][key] = self.data['spikes'][key][shank_spikes]
+                self.data['spikes'][key] = self.data['spikes'][key][shank_spikes_channel_indices]
             self.filter_units('all')
             self.compute_timescales()
         
