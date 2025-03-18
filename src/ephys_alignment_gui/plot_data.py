@@ -62,9 +62,12 @@ class PlotData:
             self.max_spike_time = np.max(self.data['spikes']['times'])
 
         if self.data['clusters']['exists']:
-            shanks_spikes_subset = self.data['spike_shanks'][self.data['spike_shanks'] == shank_idx]
-            shanks_spikes_clusters = self.data['spikes'].clusters[shanks_spikes_subset]
-            shank_spikes = np.isin(self.data['clusters'].channels[shanks_spikes_clusters], np.arange(96))
+            shank_spikes_subset = self.data['spike_shanks'][self.data['spike_shanks'] == shank_idx]
+            shank_spikes_clusters = self.data['spikes'].clusters[shank_spikes_subset]
+            shank_units_subset = self.data['unit_shank_indices'][self.data['unit_shank_indices'] == shank_idx]
+
+            shank_cluster_channels = self.data['clusters'].channels[shank_units_subset]
+            shank_spikes = shank_cluster_channels[shank_spikes_clusters]
             #shank_spikes = np.isin(self.chn_ind_all[self.data['clusters'].channels[shanks_spikes_clusters]],
             #                      self.chn_ind)
             for key in self.data['spikes'].keys():
