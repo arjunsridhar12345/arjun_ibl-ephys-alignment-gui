@@ -73,7 +73,7 @@ class PlotData:
             for key in self.data['spikes'].keys():
                 if key == 'exists':
                     continue
-                self.data['spikes'][key] = self.data['spikes'][key][np.isin(self.data['clusters'].channels[self.data['spikes'].clusters], shank_spike_channels)]
+                self.data['spikes'][key] = self.data['spikes'][key][np.sort(shank_spike_channels)]
             self.filter_units('all')
             self.compute_timescales()
         
