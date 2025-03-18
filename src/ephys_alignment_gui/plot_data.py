@@ -63,17 +63,19 @@ class PlotData:
 
         if self.data['clusters']['exists']:
             shank_spikes_subset = np.where(self.data['spike_shanks'] == shank_idx)
+            """
             shank_spikes_clusters = self.data['spikes'].clusters[shank_spikes_subset]
             shank_units_subset = np.where(self.data['unit_shank_indices'] == shank_idx)
 
             shank_cluster_channels = self.data['clusters'].channels[shank_units_subset]
             shank_spike_channels = shank_cluster_channels[shank_spikes_clusters]
             shank_spikes = np.isin(self.chn_ind_all[self.data['clusters'].channels[self.data['spikes'].clusters]],
-                                  self.chn_ind)
+                                  self.chn_ind)"
+            """
             for key in self.data['spikes'].keys():
                 if key == 'exists':
                     continue
-                self.data['spikes'][key] = self.data['spikes'][key][shank_spikes]
+                self.data['spikes'][key] = self.data['spikes'][key][shank_spikes_subset]
             self.filter_units('all')
             self.compute_timescales()
         
