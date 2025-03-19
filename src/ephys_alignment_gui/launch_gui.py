@@ -1177,8 +1177,8 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
         if shank_options is not None:
             self.populate_lists(shank_options, self.shank_list, self.shank_combobox)
 
-        if shank_options is None:
-            self.data_status = True
+        #if shank_options is None:
+        #    self.data_status = True
         
         self.current_shank_idx = 0
 
