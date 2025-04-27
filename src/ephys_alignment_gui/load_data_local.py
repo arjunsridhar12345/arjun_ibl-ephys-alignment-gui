@@ -132,24 +132,23 @@ class LoadDataLocal:
         #    template_path=self.atlas_path, label_path=self.atlas_path
         # )
 
-        if reload_data:
-            """
-            self.atlas_image_path = tuple(DATA_PATH.glob(f'*/*/image_space_histology/ccf_in_*.nrrd'))
-            if not self.atlas_image_path:
-                raise FileNotFoundError('Could not find path to atlas image in data asset attached. Looking for folder image space histology')
-            
-            self.atlas_labels_path = tuple(DATA_PATH.glob(f'*/*/image_space_histology/labels_in_*.nrrd'))
-            if not self.atlas_labels_path:
-                raise FileNotFoundError('Could not find path to atlas labels in data asset attached. Looking for folder image space histology')
+        """
+        self.atlas_image_path = tuple(DATA_PATH.glob(f'*/*/image_space_histology/ccf_in_*.nrrd'))
+        if not self.atlas_image_path:
+            raise FileNotFoundError('Could not find path to atlas image in data asset attached. Looking for folder image space histology')
+        
+        self.atlas_labels_path = tuple(DATA_PATH.glob(f'*/*/image_space_histology/labels_in_*.nrrd'))
+        if not self.atlas_labels_path:
+            raise FileNotFoundError('Could not find path to atlas labels in data asset attached. Looking for folder image space histology')
 
-            self.histology_path = self.atlas_image_path[0].parent
+        self.histology_path = self.atlas_image_path[0].parent
 
-            self.brain_atlas = CustomAtlas(
-            atlas_image_file=self.atlas_image_path[0].as_posix(),#ccf_in_713506.nrrd',
-            atlas_labels_file=self.atlas_labels_path[0].as_posix(),
-            )
-            """
-            self.brain_atlas = CustomAllenAtlas(template_path=self.atlas_path, label_path=self.atlas_path)
+        self.brain_atlas = CustomAtlas(
+        atlas_image_file=self.atlas_image_path[0].as_posix(),#ccf_in_713506.nrrd',
+        atlas_labels_file=self.atlas_labels_path[0].as_posix(),
+        )
+        """
+        self.brain_atlas = CustomAllenAtlas(template_path=self.atlas_path, label_path=self.atlas_path)
 
 
         chn_x = np.unique(self.chn_coords_all[:, 0])
