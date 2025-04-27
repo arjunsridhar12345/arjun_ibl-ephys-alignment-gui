@@ -252,45 +252,25 @@ class LoadDataLocal:
         return xyz_picks
 
     def get_slice_images(self, xyz_channels):
+
         # Load the CCF images
-        """
         index = self.brain_atlas.bc.xyz2i(xyz_channels)[
             :, self.brain_atlas.xyz2dims
         ]
-        """
-        index = np.round(xyz_channels * 1e6 / self.brain_atlas.spacing).astype(np.int64)
-        index = index[(index[:, 0] < self.brain_atlas.image.shape[0]) & (index[:, 1] < self.brain_atlas.image.shape[1])
-                                  & (index[:, 2] < self.brain_atlas.image.shape[2])]
-        ccf_slice = self.brain_atlas.image[:, index[:, 1], index[:, 2]]
-        print('Ccf slice', ccf_slice.shape)
-
-        #ccf_slice = np.swapaxes(ccf_slice, 0, 1)
-
-        label_indices = self.brain_atlas.label[:, index[:, 1], index[:, 2]]
-
-        #IBL function requires the label ids to the the row indices of the structure tree rather than the atlas id
-        structure_tree = self.get_allen_csv()
-        structure_tree['row_id'] = structure_tree.index.values
-        unique_labels = np.unique(label_indices)
-        new_labels = structure_tree.set_index('id').loc[unique_labels]['row_id']
-
-        mapping = {old:new for old, new in zip(unique_labels, new_labels)}
-        vectorized_map = np.vectorize(mapping.get)
-
-        label_indices = vectorized_map(label_indices)
+        ccf_slice = self.brain_atlas.image[index[:, 0], :, index[:, 2]]
+        ccf_slice = np.swapaxes(ccf_slice, 0, 1)
 
         label_slice = self.brain_atlas._label2rgb(
-            label_indices
+            self.brain_atlas.label[index[:, 0], :, index[:, 2]]
         )
-        #label_slice = np.swapaxes(label_slice, 0, 1)
+        label_slice = np.swapaxes(label_slice, 0, 1)
 
-        width = [0, self.brain_atlas.image.shape[0]]
+        width = [self.brain_atlas.bc.i2x(0), self.brain_atlas.bc.i2x(456)]
         height = [
-            index[0, 2],
-            index[-1, 2],
+            self.brain_atlas.bc.i2z(index[0, 2]),
+            self.brain_atlas.bc.i2z(index[-1, 2]),
         ]
 
-        print('Ccf slice', ccf_slice.shape)
         slice_data = {
             "ccf": ccf_slice,
             "label": label_slice,
@@ -308,7 +288,7 @@ class LoadDataLocal:
             histology_images = [
                 ii.name
                 for ii in list(Path(self.histology_path).iterdir())
-                if ".nii.gz" in ii.name
+                if ".nrrd" in ii.name
             ]
             for image in histology_images:
                 path_to_image = glob.glob(
@@ -321,12 +301,12 @@ class LoadDataLocal:
 
                 if hist_path:
                     # hist_atlas = atlas.AllenAtlas(hist_path=hist_path)
-                    hist_atlas = CustomAtlas(
-                        atlas_image_file=hist_path, atlas_labels_file=self.atlas_labels_path
+                    hist_atlas = CustomAllenAtlas(
+                        template_path=hist_path, label_path=self.atlas_path
                     )
-                    hist_slice = hist_atlas.image[:, index[:, 1], index[:, 2]]
-                    #hist_slice = np.swapaxes(hist_slice, 0, 1)
-                    slice_data[image.split(".nii.gz")[0]] = hist_slice
+                    hist_slice = hist_atlas.image[index[:, 0], :, index[:, 2]]
+                    hist_slice = np.swapaxes(hist_slice, 0, 1)
+                    slice_data[image.split(".nrrd")[0]] = hist_slice
 
         return slice_data, None
 
