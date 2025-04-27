@@ -13,6 +13,7 @@ from one import alf
 import iblatlas.atlas as atlas
 
 from .custom_atlas import CustomAtlas
+from .custom_atlas import CustomAllenAtlas
 
 
 # temporarily add this in for neuropixel course
@@ -132,6 +133,7 @@ class LoadDataLocal:
         # )
 
         if reload_data:
+            """
             self.atlas_image_path = tuple(DATA_PATH.glob(f'*/*/image_space_histology/ccf_in_*.nrrd'))
             if not self.atlas_image_path:
                 raise FileNotFoundError('Could not find path to atlas image in data asset attached. Looking for folder image space histology')
@@ -146,6 +148,9 @@ class LoadDataLocal:
             atlas_image_file=self.atlas_image_path[0].as_posix(),#ccf_in_713506.nrrd',
             atlas_labels_file=self.atlas_labels_path[0].as_posix(),
             )
+            """
+            self.brain_atlas = CustomAllenAtlas(template_path=self.atlas_path, label_path=self.atlas_path)
+
 
         chn_x = np.unique(self.chn_coords_all[:, 0])
         if self.n_shanks > 1:
@@ -233,9 +238,9 @@ class LoadDataLocal:
         # Read in local xyz_picks file
         # This file must exist, otherwise we don't know where probe was
         xyz_file_name = (
-            "*xyz_picks_image_space.json"
+            "*xyz_picks.json"
             if self.n_shanks == 1
-            else f"*xyz_picks_shank{shank_idx + 1}_image_space.json"
+            else f"*xyz_picks_shank{shank_idx + 1}.json"
         )
         xyz_file = sorted(folder_path.glob(xyz_file_name))
 
