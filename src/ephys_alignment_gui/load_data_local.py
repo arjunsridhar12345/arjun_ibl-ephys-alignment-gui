@@ -250,7 +250,7 @@ class LoadDataLocal:
         #xyz_picks = np.array(user_picks["xyz_picks"]) / self.brain_atlas.spacing
         xyz_picks = np.array(user_picks["xyz_picks"]) / 1e3
         #xyz_picks[:, 0] = self.brain_atlas.image.shape[0] - xyz_picks[:, 0]
-        xyz_picks[:, 0] = xyz_picks[:, 0] - extrema[0]
+        xyz_picks[:, 0] = extrema[0] - xyz_picks[:, 0]
         xyz_picks = xyz_picks * 1e3
         xyz_picks = xyz_picks / self.brain_atlas.spacing
         xyz_picks[:, 2] = self.brain_atlas.image.shape[2] - xyz_picks[:, 2]
