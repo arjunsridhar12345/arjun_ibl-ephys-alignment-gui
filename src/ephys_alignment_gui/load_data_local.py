@@ -18,6 +18,7 @@ from .custom_atlas import CustomAtlas
 # temporarily add this in for neuropixel course
 # until figured out fix to problem on win32
 import ssl
+import ants
 
 ssl._create_default_https_context = ssl._create_unverified_context
 logger = logging.getLogger("ibllib")
@@ -243,8 +244,12 @@ class LoadDataLocal:
         with open(xyz_file[0], "r") as f:
             user_picks = json.load(f)
 
+        zarr_read = ants.image_read('/root/capsule/data/SmartSPIM_764769_2025-02-04_13-05-22_stitched_2025-02-12_07-39-37/image_atlas_alignment/Ex_639_Em_667/metadata/registration_metadata/prep_n4bias.nii.gz')
         xyz_picks = np.array(user_picks["xyz_picks"]) / self.brain_atlas.spacing
         #xyz_picks[:, 0] = self.brain_atlas.image.shape[0] - xyz_picks[:, 0]
+        xyz_picks[:, 0] = xyz_picks[:, 0] + zarr_read.origin[0]
+        xyz_picks[:, 1] = xyz_picks[:, 1] + zarr_read.origin[1]
+        xyz_picks[:, 2] = xyz_picks[:, 2] + zarr_read.origin[2]
         xyz_picks[:, 2] = self.brain_atlas.image.shape[2] - xyz_picks[:, 2]
         xyz_picks = xyz_picks * self.brain_atlas.spacing / 1e6
 
