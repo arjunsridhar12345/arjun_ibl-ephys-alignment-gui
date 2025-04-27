@@ -240,20 +240,15 @@ class LoadDataLocal:
         xyz_file_name = (
             "*xyz_picks.json"
             if self.n_shanks == 1
-            else f"*xyz_picks_shank{shank_idx + 1}.json"
+            else f"*xyz_picks_shank{self.shank_idx + 1}.json"
         )
-        xyz_file = sorted(folder_path.glob(xyz_file_name))
+        xyz_file = sorted(self.folder_path.glob(xyz_file_name))
 
         assert len(xyz_file) == 1
         with open(xyz_file[0], "r") as f:
             user_picks = json.load(f)
 
-        xyz_picks = np.array(user_picks["xyz_picks"]) / self.brain_atlas.spacing
-        xyz_picks[:, 0] = self.brain_atlas.image.shape[0] - xyz_picks[:, 0]
-        xyz_picks[:, 2] = self.brain_atlas.image.shape[2] - xyz_picks[:, 2]
-        xyz_picks = xyz_picks * self.brain_atlas.spacing / 1e6
-
-        print('xyz_picks', xyz_picks)
+        xyz_picks = np.array(user_picks["xyz_picks"]) / 1e6
         return xyz_picks
 
     def get_slice_images(self, xyz_channels):
