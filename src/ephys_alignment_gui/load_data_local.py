@@ -334,27 +334,17 @@ class LoadDataLocal:
         return description, region_lookup
 
     def upload_data(self, feature, track, xyz_channels):
-        print('Channels', xyz_channels)
-        region_ids = []
-        index = np.round(xyz_channels).astype(np.int64)
-        index = index[(index[:, 0] < self.brain_atlas.image.shape[0]) & (index[:, 1] < self.brain_atlas.image.shape[1])
-                                  & (index[:, 2] < self.brain_atlas.image.shape[2])]
-        
-        for coord in index:
-            region_ids.append(self.brain_atlas.label[coord[0], coord[1], coord[2]])
-        
+
         brain_regions = self.brain_atlas.regions.get(
-            region_ids
+            self.brain_atlas.get_labels(xyz_channels)
         )
         brain_regions["xyz"] = xyz_channels
         brain_regions["lateral"] = self.chn_coords[:, 0]
         brain_regions["axial"] = self.chn_coords[:, 1]
-        
         assert (
             np.unique([len(brain_regions[k]) for k in brain_regions]).size == 1
         )
         channel_dict = self.create_channel_dict(brain_regions)
-        self.channel_dict = channel_dict
         bregma = atlas.ALLEN_CCF_LANDMARKS_MLAPDV_UM["bregma"].tolist()
         origin = {"origin": {"bregma": bregma}}
         channel_dict.update(origin)
