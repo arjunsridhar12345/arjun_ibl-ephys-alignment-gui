@@ -150,6 +150,7 @@ class LoadDataLocal:
         """
         if reload_data:
             self.brain_atlas = CustomAllenAtlas(template_path=self.atlas_path, label_path=self.atlas_path)
+            self.histology_path = self.atlas_path.parent
 
 
         chn_x = np.unique(self.chn_coords_all[:, 0])
