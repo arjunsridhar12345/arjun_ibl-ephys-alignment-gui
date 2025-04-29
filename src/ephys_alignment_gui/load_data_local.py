@@ -244,7 +244,7 @@ class LoadDataLocal:
             user_picks = json.load(f)
 
         xyz_picks = np.array(user_picks["xyz_picks"]) / self.brain_atlas.spacing
-        temp = xyz_picks[:, 2]
+        temp = xyz_picks[:, 0]
         xyz_picks[:, 0] = xyz_picks[:, 2]
         xyz_picks[:, 2] = temp
 
