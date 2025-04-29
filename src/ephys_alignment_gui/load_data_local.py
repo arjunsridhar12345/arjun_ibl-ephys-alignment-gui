@@ -353,7 +353,7 @@ class LoadDataLocal:
 
         return description, region_lookup
 
-    def upload_data(self, feature, track, xyz_channels):
+    def upload_data(self, feature, track, xyz_channels, shank_idx):
         print('Channels', xyz_channels)
         region_ids = []
         index = np.round(xyz_channels).astype(np.int64)
@@ -382,7 +382,7 @@ class LoadDataLocal:
         chan_loc_filename = (
             "channel_locations.json"
             if self.n_shanks == 1
-            else f"channel_locations_shank{self.shank_idx + 1}.json"
+            else f"channel_locations_shank{shank_idx}.json"
         )
         
         os.makedirs(self.output_directory, exist_ok=True)

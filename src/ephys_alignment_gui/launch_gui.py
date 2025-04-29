@@ -1853,11 +1853,11 @@ class MainWindow(QtWidgets.QMainWindow, ephys_gui.Setup):
                 return
 
         self.loaddata.upload_data(self.features[self.idx], self.track[self.idx],
-                                    self.xyz_channels)
+                                    self.xyz_channels, self.current_shank_idx + 1)
         self.loaddata.get_starting_alignment(0)
         
         if self.loaddata.n_shanks > 1:
-            with open(self.output_directory / f'channel_locations_shank{self.loaddata.shank_idx + 1}.json', 'r') as f:
+            with open(self.output_directory / f'channel_locations_shank{self.current_shank_idx + 1}.json', 'r') as f:
                 channel_results = json.load(f)
         else:
             with open(self.output_directory / 'channel_locations.json', 'r') as f:
