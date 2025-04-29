@@ -132,11 +132,11 @@ class LoadDataLocal:
         # )
 
         if reload_data:
-            self.atlas_image_path = tuple(DATA_PATH.glob(f'*/*/image_space_histology/ccf_in_*.nrrd'))
+            self.atlas_image_path = tuple(DATA_PATH.glob(f'*/image_space_histology/ccf_in_*.nrrd'))
             if not self.atlas_image_path:
                 raise FileNotFoundError('Could not find path to atlas image in data asset attached. Looking for folder image space histology')
             
-            self.atlas_labels_path = tuple(DATA_PATH.glob(f'*/*/image_space_histology/labels_in_*.nrrd'))
+            self.atlas_labels_path = tuple(DATA_PATH.glob(f'*/image_space_histology/labels_in_*.nrrd'))
             if not self.atlas_labels_path:
                 raise FileNotFoundError('Could not find path to atlas labels in data asset attached. Looking for folder image space histology')
 
@@ -247,7 +247,7 @@ class LoadDataLocal:
         temp = xyz_picks[:, 2]
         xyz_picks[:, 0] = xyz_picks[:, 2]
         xyz_picks[:, 2] = temp
-        
+
         xyz_picks[:, 0] = self.brain_atlas.image.shape[0] - xyz_picks[:, 0]
         xyz_picks[:, 2] = self.brain_atlas.image.shape[2] - xyz_picks[:, 2]
         xyz_picks = xyz_picks * self.brain_atlas.spacing / 1e6
