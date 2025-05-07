@@ -247,7 +247,6 @@ class CustomAtlas(BrainAtlas):
             dxyz = self.res_um * 1e-6 * np.array([1, -1, -1]) * scaling        
         self.read_atlas_labels()
         regions = BrainRegions()
-        regions.id = regions.id.astype(np.float32)
         #_, im = ismember(self.label, regions.id)
         #label = np.reshape(im.astype(np.uint16), self.label.shape)
         #self.label[~np.isin(self.label,regions.id)]=997
