@@ -262,6 +262,7 @@ class CustomAtlas(BrainAtlas):
             bregma = (ALLEN_CCF_LANDMARKS_MLAPDV_UM['bregma'] / self.res_um)
         super().__init__(self.image, self.label, dxyz, regions, iorigin=list(self.offset), dims2xyz=dims2xyz, xyz2dims=xyz2dims)
         self.label[~np.isin(self.label,regions.id)]=997
+        print('Max region', np.max(regions.id))
 
     def read_atlas_image(self):
         # Reads the 
