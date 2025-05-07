@@ -250,7 +250,7 @@ class CustomAtlas(BrainAtlas):
         #_, im = ismember(self.label, regions.id)
         #label = np.reshape(im.astype(np.uint16), self.label.shape)
         self.label[~np.isin(self.label,regions.id)]=997
-        self.label = self.label.astype(np.uint32)
+        self.label = self.label.astype(np.uint128)
 
         
         xyz2dims = np.array([0, 1, 2])  # this is the c-contiguous ordering
@@ -279,4 +279,4 @@ class CustomAtlas(BrainAtlas):
         IMG = sitk.ReadImage(self.atlas_labels_file)
         # Convert sitk to the (ap, ml, dv) np array needed by BrainAtlas
         #IMG2 = sitk.DICOMOrient(IMG,self.read_string)
-        self.label = np.flip(sitk.GetArrayFromImage(IMG).astype(np.int64).T, axis=(0, 2))
+        self.label = np.flip(sitk.GetArrayFromImage(IMG).astype(np.int32).T, axis=(0, 2))
