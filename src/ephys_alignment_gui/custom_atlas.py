@@ -2,7 +2,7 @@
 from iblatlas.atlas import BrainAtlas,ALLEN_CCF_LANDMARKS_MLAPDV_UM
 from iblatlas.atlas import _download_atlas_allen
 from iblutil.numerical import ismember
-from iblatlas.regions import BrainRegions, FranklinPaxinosRegions
+from iblatlas.regions import BrainRegions, FranklinPaxinosRegions, img_aBrainRegions
 
 
 from pathlib import Path, PurePosixPath
@@ -246,10 +246,10 @@ class CustomAtlas(BrainAtlas):
             self.res_um = force_um
             dxyz = self.res_um * 1e-6 * np.array([1, -1, -1]) * scaling        
         self.read_atlas_labels()
-        regions = BrainRegions()
+        regions = img_aBrainRegions()
         #_, im = ismember(self.label, regions.id)
         #label = np.reshape(im.astype(np.uint16), self.label.shape)
-        self.label[~np.isin(self.label,regions.id)]=997
+        #self.label[~np.isin(self.label,regions.id)]=997
         #self.label = self.label.astype(np.uint128)
 
         
