@@ -247,6 +247,7 @@ class CustomAtlas(BrainAtlas):
             dxyz = self.res_um * 1e-6 * np.array([1, -1, -1]) * scaling        
         self.read_atlas_labels()
         regions = BrainRegions()
+        regions.id = regions.id.astype(np.float32)
         #_, im = ismember(self.label, regions.id)
         #label = np.reshape(im.astype(np.uint16), self.label.shape)
         #self.label[~np.isin(self.label,regions.id)]=997
@@ -261,7 +262,6 @@ class CustomAtlas(BrainAtlas):
             bregma = (ALLEN_CCF_LANDMARKS_MLAPDV_UM['bregma'] / self.res_um)
         super().__init__(self.image, self.label, dxyz, regions, iorigin=list(self.offset), dims2xyz=dims2xyz, xyz2dims=xyz2dims)
         self.label[~np.isin(self.label,regions.id)]=997
-        print('Max region', np.max(regions.id))
 
     def read_atlas_image(self):
         # Reads the 
@@ -279,4 +279,4 @@ class CustomAtlas(BrainAtlas):
         IMG = sitk.ReadImage(self.atlas_labels_file)
         # Convert sitk to the (ap, ml, dv) np array needed by BrainAtlas
         #IMG2 = sitk.DICOMOrient(IMG,self.read_string)
-        self.label = np.flip(sitk.GetArrayFromImage(IMG).T, axis=(0, 2))
+        self.label = np.flip(sitk.GetArrayFromImage(IMG).astype(np.uint32).T, axis=(0, 2))
