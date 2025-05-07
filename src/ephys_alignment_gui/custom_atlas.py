@@ -56,7 +56,7 @@ class CustomAllenAtlas(BrainAtlas):
         ... ba = AllenAtlas(hist_path=target_dir)
         """
         LUT_VERSION = 'v01'  # version 01 is the lateralized version
-        regions = BrainRegions(brainmap="allen")
+        regions = BrainRegions()
         xyz2dims = np.array([1, 0, 2])  # this is the c-contiguous ordering
         dims2xyz = np.array([1, 0, 2])
         # we use Bregma as the origin
@@ -261,6 +261,7 @@ class CustomAtlas(BrainAtlas):
             bregma = (ALLEN_CCF_LANDMARKS_MLAPDV_UM['bregma'] / self.res_um)
         super().__init__(self.image, self.label, dxyz, regions, iorigin=list(self.offset), dims2xyz=dims2xyz, xyz2dims=xyz2dims)
         self.label[~np.isin(self.label,regions.id)]=997
+        print('Max region id', np.max(regions.id))
 
     
     def read_atlas_image(self):
