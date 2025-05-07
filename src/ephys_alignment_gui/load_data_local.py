@@ -270,6 +270,7 @@ class LoadDataLocal:
 
         #IBL function requires the label ids to the the row indices of the structure tree rather than the atlas id
         structure_tree = self.get_allen_csv()
+        structure_tree.to_csv('/results/ibl_tree.csv')
         structure_tree['row_id'] = structure_tree.index.values
         unique_labels = np.unique(label_indices)
         new_labels = structure_tree.set_index('id').loc[unique_labels]['row_id']
