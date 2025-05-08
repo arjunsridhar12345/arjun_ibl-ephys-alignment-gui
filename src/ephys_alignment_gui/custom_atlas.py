@@ -262,65 +262,7 @@ class CustomAtlas(BrainAtlas):
         elif isinstance(bregma,str) and (bregma.lower() == 'allen'):
             bregma = (ALLEN_CCF_LANDMARKS_MLAPDV_UM['bregma'] / self.res_um)
         super().__init__(self.image, self.label, dxyz, regions, iorigin=list(self.offset), dims2xyz=dims2xyz, xyz2dims=xyz2dims)
-
-        if correct_labels:
-            coords = np.argwhere(self.label >= 0)
-            label_ids = self.label[tuple(coords.T)]
-            corrected_ids = self._correct_ids_by_spatial_proximity(np.argwhere(self.label >= 0), label_ids, regions.id)
-            self.label[tuple(coords.T)] = corrected_ids
-            self.label[~np.isin(self.label,regions.id)]=997
-
-    def _correct_ids_by_spatial_proximity(self, coords, ids, valid_ids, max_dist=5.0):
-        """
-        Corrects region IDs in an array of spatial coordinates by assigning the ID
-        of the nearest valid point in space, if within a specified distance.
-
-        This is useful for cleaning up label images where some region IDs have been 
-        corrupted by interpolation or transformation artifacts. The function searches 
-        for the nearest spatially valid point and uses its label to replace invalid entries.
-
-        Parameters
-        ----------
-        coords : ndarray of shape (N, D)
-            Array of coordinates (e.g., voxel indices) for each point in the image.
-            Typically obtained using `np.argwhere(...)`.
-
-        ids : ndarray of shape (N,)
-            Region IDs corresponding to each coordinate. These may contain invalid or
-            slightly incorrect values due to interpolation artifacts.
-
-        valid_ids : array-like
-            A list or array of region IDs that are considered valid. Only IDs in this 
-            list will be used as replacement values.
-
-        max_dist : float, optional (default=5.0)
-            The maximum spatial distance to search for a valid point. Invalid points
-            farther than this distance from any valid point will be left unchanged.
-
-        Returns
-        -------
-        ids_corrected : ndarray of shape (N,)
-            A copy of `ids` with invalid entries replaced by the nearest valid region ID,
-            if within `max_dist`. Otherwise, original values are retained.
-        """
-        coords = np.asarray(coords)
-        ids = np.asarray(ids)
-        valid_ids = set(valid_ids)
-
-        is_valid = np.isin(ids, list(valid_ids))
-        valid_coords = coords[is_valid]
-        valid_labels = ids[is_valid]
-        
-        tree = cKDTree(valid_coords)
-        ids_corrected = ids.copy()
-        
-        invalid_idxs = np.where(~is_valid)[0]
-        for idx in invalid_idxs:
-            dist, nn_idx = tree.query(coords[idx], distance_upper_bound=max_dist)
-            if dist != np.inf:
-                ids_corrected[idx] = valid_labels[nn_idx]
-
-        return ids_corrected
+        self.label[~np.isin(self.label,regions.id)]=997
 
     def read_atlas_image(self):
         # Reads the 
