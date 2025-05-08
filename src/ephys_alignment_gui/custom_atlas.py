@@ -263,7 +263,8 @@ class CustomAtlas(BrainAtlas):
         super().__init__(self.image, self.label, dxyz, regions, iorigin=list(self.offset), dims2xyz=dims2xyz, xyz2dims=xyz2dims)
         coords = np.argwhere(self.label >= 0)
         label_ids = self.label[tuple(coords.T)]
-        self.label = self._correct_ids_by_spatial_proximity(np.argwhere(self.label >= 0), label_ids, regions.id)
+        corrected_ids = self._correct_ids_by_spatial_proximity(np.argwhere(self.label >= 0), label_ids, regions.id)
+        self.label[tuple(coords.T)] = corrected_ids
         self.label[~np.isin(self.label,regions.id)]=997
 
     def _correct_ids_by_spatial_proximity(self, coords, ids, valid_ids, max_dist=5.0):
