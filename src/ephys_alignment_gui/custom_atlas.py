@@ -9,6 +9,7 @@ from pathlib import Path, PurePosixPath
 from dataclasses import dataclass
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy.spatial import cKDTree
 import nrrd
 
 import one.params
@@ -260,39 +261,60 @@ class CustomAtlas(BrainAtlas):
         elif isinstance(bregma,str) and (bregma.lower() == 'allen'):
             bregma = (ALLEN_CCF_LANDMARKS_MLAPDV_UM['bregma'] / self.res_um)
         super().__init__(self.image, self.label, dxyz, regions, iorigin=list(self.offset), dims2xyz=dims2xyz, xyz2dims=xyz2dims)
-        self.label = self._correct_region_ids(self.label, regions.id)
+        self.label = self._correct_ids_by_spatial_proximity(np.argwhere(self.label >= 0), self.label, regions.id)
         self.label[~np.isin(self.label,regions.id)]=997
 
-    def _correct_region_ids(self, arr, valid_ids, threshold=5):
+    def _correct_ids_by_spatial_proximity(self, coords, ids, valid_ids, max_dist=5.0):
         """
-        Replace invalid region IDs with the nearest valid ID within a threshold.
-        
-        Parameters:
-        - arr: numpy array of region IDs
-        - valid_ids: iterable of valid region IDs
-        - threshold: max difference allowed to replace with a valid ID
-        
-        Returns:
-        - A new array with corrected region IDs
+        Corrects region IDs in an array of spatial coordinates by assigning the ID
+        of the nearest valid point in space, if within a specified distance.
+
+        This is useful for cleaning up label images where some region IDs have been 
+        corrupted by interpolation or transformation artifacts. The function searches 
+        for the nearest spatially valid point and uses its label to replace invalid entries.
+
+        Parameters
+        ----------
+        coords : ndarray of shape (N, D)
+            Array of coordinates (e.g., voxel indices) for each point in the image.
+            Typically obtained using `np.argwhere(...)`.
+
+        ids : ndarray of shape (N,)
+            Region IDs corresponding to each coordinate. These may contain invalid or
+            slightly incorrect values due to interpolation artifacts.
+
+        valid_ids : array-like
+            A list or array of region IDs that are considered valid. Only IDs in this 
+            list will be used as replacement values.
+
+        max_dist : float, optional (default=5.0)
+            The maximum spatial distance to search for a valid point. Invalid points
+            farther than this distance from any valid point will be left unchanged.
+
+        Returns
+        -------
+        ids_corrected : ndarray of shape (N,)
+            A copy of `ids` with invalid entries replaced by the nearest valid region ID,
+            if within `max_dist`. Otherwise, original values are retained.
         """
-        arr = arr.copy()
-        valid_ids = np.array(valid_ids)
+        coords = np.asarray(coords)
+        ids = np.asarray(ids)
+        valid_ids = set(valid_ids)
+
+        is_valid = np.isin(ids, list(valid_ids))
+        valid_coords = coords[is_valid]
+        valid_labels = ids[is_valid]
         
-        # Create a mask for invalid IDs
-        is_valid = np.isin(arr, valid_ids)
-        invalid_indices = np.where(~is_valid)
+        tree = cKDTree(valid_coords)
+        ids_corrected = ids.copy()
         
-        for idx in zip(*invalid_indices):
-            val = arr[idx]
-            # Find closest valid ID
-            diffs = np.abs(valid_ids - val)
-            min_diff = np.min(diffs)
-            if min_diff <= threshold:
-                closest_valid = valid_ids[np.argmin(diffs)]
-                arr[idx] = closest_valid  # Replace
-            # else: leave as-is or optionally set to 0 / NaN
-        
-        return arr
+        invalid_idxs = np.where(~is_valid)[0]
+        for idx in invalid_idxs:
+            dist, nn_idx = tree.query(coords[idx], distance_upper_bound=max_dist)
+            if dist != np.inf:
+                ids_corrected[idx] = valid_labels[nn_idx]
+
+        return ids_corrected
 
     def read_atlas_image(self):
         # Reads the 
