@@ -260,8 +260,39 @@ class CustomAtlas(BrainAtlas):
         elif isinstance(bregma,str) and (bregma.lower() == 'allen'):
             bregma = (ALLEN_CCF_LANDMARKS_MLAPDV_UM['bregma'] / self.res_um)
         super().__init__(self.image, self.label, dxyz, regions, iorigin=list(self.offset), dims2xyz=dims2xyz, xyz2dims=xyz2dims)
+        self.label = self._correct_region_ids(self.label, regions.id)
         self.label[~np.isin(self.label,regions.id)]=997
-        print('Max region', np.max(regions.id))
+
+    def _correct_region_ids(self, arr, valid_ids, threshold=5):
+        """
+        Replace invalid region IDs with the nearest valid ID within a threshold.
+        
+        Parameters:
+        - arr: numpy array of region IDs
+        - valid_ids: iterable of valid region IDs
+        - threshold: max difference allowed to replace with a valid ID
+        
+        Returns:
+        - A new array with corrected region IDs
+        """
+        arr = arr.copy()
+        valid_ids = np.array(valid_ids)
+        
+        # Create a mask for invalid IDs
+        is_valid = np.isin(arr, valid_ids)
+        invalid_indices = np.where(~is_valid)
+        
+        for idx in zip(*invalid_indices):
+            val = arr[idx]
+            # Find closest valid ID
+            diffs = np.abs(valid_ids - val)
+            min_diff = np.min(diffs)
+            if min_diff <= threshold:
+                closest_valid = valid_ids[np.argmin(diffs)]
+                arr[idx] = closest_valid  # Replace
+            # else: leave as-is or optionally set to 0 / NaN
+        
+        return arr
 
     def read_atlas_image(self):
         # Reads the 
