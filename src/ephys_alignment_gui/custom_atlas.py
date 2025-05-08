@@ -261,7 +261,9 @@ class CustomAtlas(BrainAtlas):
         elif isinstance(bregma,str) and (bregma.lower() == 'allen'):
             bregma = (ALLEN_CCF_LANDMARKS_MLAPDV_UM['bregma'] / self.res_um)
         super().__init__(self.image, self.label, dxyz, regions, iorigin=list(self.offset), dims2xyz=dims2xyz, xyz2dims=xyz2dims)
-        self.label = self._correct_ids_by_spatial_proximity(np.argwhere(self.label >= 0), self.label, regions.id)
+        coords = np.argwhere(self.label >= 0)
+        label_ids = self.label[tuple(coords.T)]
+        self.label = self._correct_ids_by_spatial_proximity(np.argwhere(self.label >= 0), label_ids, regions.id)
         self.label[~np.isin(self.label,regions.id)]=997
 
     def _correct_ids_by_spatial_proximity(self, coords, ids, valid_ids, max_dist=5.0):
