@@ -232,6 +232,7 @@ class CustomAtlas(BrainAtlas):
                  atlas_labels_file = None,
                  bregma = None,
                  force_um = None,
+                 correct_labels = True,
                  scaling = np.array([1,1,1])):
         self.atlas_image_file = atlas_image_file
         self.atlas_labels_file = atlas_labels_file
@@ -261,11 +262,13 @@ class CustomAtlas(BrainAtlas):
         elif isinstance(bregma,str) and (bregma.lower() == 'allen'):
             bregma = (ALLEN_CCF_LANDMARKS_MLAPDV_UM['bregma'] / self.res_um)
         super().__init__(self.image, self.label, dxyz, regions, iorigin=list(self.offset), dims2xyz=dims2xyz, xyz2dims=xyz2dims)
-        coords = np.argwhere(self.label >= 0)
-        label_ids = self.label[tuple(coords.T)]
-        corrected_ids = self._correct_ids_by_spatial_proximity(np.argwhere(self.label >= 0), label_ids, regions.id)
-        self.label[tuple(coords.T)] = corrected_ids
-        self.label[~np.isin(self.label,regions.id)]=997
+
+        if correct_labels:
+            coords = np.argwhere(self.label >= 0)
+            label_ids = self.label[tuple(coords.T)]
+            corrected_ids = self._correct_ids_by_spatial_proximity(np.argwhere(self.label >= 0), label_ids, regions.id)
+            self.label[tuple(coords.T)] = corrected_ids
+            self.label[~np.isin(self.label,regions.id)]=997
 
     def _correct_ids_by_spatial_proximity(self, coords, ids, valid_ids, max_dist=5.0):
         """

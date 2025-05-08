@@ -322,7 +322,7 @@ class LoadDataLocal:
                 if hist_path:
                     # hist_atlas = atlas.AllenAtlas(hist_path=hist_path)
                     hist_atlas = CustomAtlas(
-                        atlas_image_file=hist_path, atlas_labels_file=self.atlas_labels_path
+                        atlas_image_file=hist_path, atlas_labels_file=self.atlas_labels_path, correct_labels=False
                     )
                     hist_slice = hist_atlas.image[:, index[:, 1], index[:, 2]]
                     #hist_slice = np.swapaxes(hist_slice, 0, 1)
